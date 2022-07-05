@@ -1,0 +1,15 @@
+C:\Users\a.lagodzinska\source\repos\ConwaysGameOfLife\ConwaysGameOfLife\bin\Debug\net6.0\ConwaysGameOfLife.exe
+C:\Users\a.lagodzinska\source\repos\ConwaysGameOfLife\ConwaysGameOfLife\bin\Debug\net6.0\ConwaysGameOfLife.deps.json
+C:\Users\a.lagodzinska\source\repos\ConwaysGameOfLife\ConwaysGameOfLife\bin\Debug\net6.0\ConwaysGameOfLife.runtimeconfig.json
+C:\Users\a.lagodzinska\source\repos\ConwaysGameOfLife\ConwaysGameOfLife\bin\Debug\net6.0\ConwaysGameOfLife.dll
+C:\Users\a.lagodzinska\source\repos\ConwaysGameOfLife\ConwaysGameOfLife\bin\Debug\net6.0\ConwaysGameOfLife.pdb
+C:\Users\a.lagodzinska\source\repos\ConwaysGameOfLife\ConwaysGameOfLife\obj\Debug\net6.0\ConwaysGameOfLife.csproj.AssemblyReference.cache
+C:\Users\a.lagodzinska\source\repos\ConwaysGameOfLife\ConwaysGameOfLife\obj\Debug\net6.0\ConwaysGameOfLife.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\a.lagodzinska\source\repos\ConwaysGameOfLife\ConwaysGameOfLife\obj\Debug\net6.0\ConwaysGameOfLife.AssemblyInfoInputs.cache
+C:\Users\a.lagodzinska\source\repos\ConwaysGameOfLife\ConwaysGameOfLife\obj\Debug\net6.0\ConwaysGameOfLife.AssemblyInfo.cs
+C:\Users\a.lagodzinska\source\repos\ConwaysGameOfLife\ConwaysGameOfLife\obj\Debug\net6.0\ConwaysGameOfLife.csproj.CoreCompileInputs.cache
+C:\Users\a.lagodzinska\source\repos\ConwaysGameOfLife\ConwaysGameOfLife\obj\Debug\net6.0\ConwaysGameOfLife.dll
+C:\Users\a.lagodzinska\source\repos\ConwaysGameOfLife\ConwaysGameOfLife\obj\Debug\net6.0\refint\ConwaysGameOfLife.dll
+C:\Users\a.lagodzinska\source\repos\ConwaysGameOfLife\ConwaysGameOfLife\obj\Debug\net6.0\ConwaysGameOfLife.pdb
+C:\Users\a.lagodzinska\source\repos\ConwaysGameOfLife\ConwaysGameOfLife\obj\Debug\net6.0\ConwaysGameOfLife.genruntimeconfig.cache
+C:\Users\a.lagodzinska\source\repos\ConwaysGameOfLife\ConwaysGameOfLife\obj\Debug\net6.0\ref\ConwaysGameOfLife.dll
