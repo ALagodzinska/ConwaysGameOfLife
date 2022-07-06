@@ -32,6 +32,10 @@ class Program
         Console.WriteLine("Count of cells to change");
         Console.WriteLine(game.MarkAllCellsThatNeedToChange());
 
+        Console.WriteLine("See next generation");
+        game.DrawNextGeneration(height,width);
+        Console.ReadLine();
+
         //Console.WriteLine("Count of cell 2:2");
         //var foundcell = game.FindCellByCoordinates(2, 2);
         //Console.WriteLine(game.CountLiveCells(foundcell));

@@ -84,5 +84,29 @@
         {
             return cells.FirstOrDefault(c => c.Height == height && c.Width == width);
         }
+        public void DrawNextGeneration(int height, int width)
+        {
+            for (int h = 0; h < height; h++)
+            {
+                for (int w = 0; w < width; w++)
+                {
+                    var foundCell = FindCellByCoordinates(h, w);
+                    if(foundCell.Change == true)
+                    {
+                        foundCell.IsLive= !foundCell.IsLive;
+                        foundCell.Change= false;
+                    }
+                    if (foundCell.IsLive)
+                    {
+                        Console.Write("X");
+                    }
+                    else
+                    {
+                        Console.Write("O");
+                    }
+                }
+                Console.WriteLine();
+            }
+        }
     }
 }
