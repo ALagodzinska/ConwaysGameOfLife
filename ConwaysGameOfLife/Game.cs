@@ -3,8 +3,10 @@
     public class Game
     {
         public List<Cell> cells = new List<Cell>();
-        public void CreateGrid(int height, int width)
+        public async Task CreateGrid(int height, int width)
         {
+            await Task.Delay(1000);
+            Console.Clear();
             var random = new Random();
             for (int h = 0; h < height; h++)
             {
@@ -20,12 +22,13 @@
                     else
                     {
                         cells.Add(cell);
-                        Console.Write("O");
+                        Console.Write(" ");
                     }
                 }
                 Console.WriteLine();
             }
         }
+
         //at the moment + applying rules for 2nd generation
         public void CountLiveCells(Cell cell)
         {
@@ -67,25 +70,31 @@
             }
             //return liveCellsCount;
         }
-        public int MarkAllCellsThatNeedToChange()
-        {
-            var countOfCellsToChange = 0;
-            foreach (var cell in cells)
-            {
-                CountLiveCells(cell);
-                if(cell.Change == true)
-                {
-                    countOfCellsToChange++;
-                }
-            }
-            return countOfCellsToChange;
-        }
+        //public void MarkAllCellsThatNeedToChange()
+        //{
+        //    //var countOfCellsToChange = 0;
+        //    foreach (var cell in cells)
+        //    {
+        //        CountLiveCells(cell);
+        //        //if(cell.Change == true)
+        //        //{
+        //        //    countOfCellsToChange++;
+        //        //}
+        //    }
+        //    //return countOfCellsToChange;
+        //}
         public Cell? FindCellByCoordinates(int height, int width)
         {
             return cells.FirstOrDefault(c => c.Height == height && c.Width == width);
         }
-        public void DrawNextGeneration(int height, int width)
-        {
+        public async Task DrawNextGeneration(int height, int width)
+        { 
+            foreach (var cell in cells)
+            {
+                CountLiveCells(cell);
+            }
+            await Task.Delay(1000);
+            Console.Clear();
             for (int h = 0; h < height; h++)
             {
                 for (int w = 0; w < width; w++)
@@ -102,7 +111,7 @@
                     }
                     else
                     {
-                        Console.Write("O");
+                        Console.Write(" ");
                     }
                 }
                 Console.WriteLine();

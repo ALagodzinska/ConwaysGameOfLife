@@ -2,11 +2,12 @@
 
 class Program
 {
-    static void Main(string[] args)
+    static async Task Main(string[] args)
     {
         Game game = new Game();
         int height;
         int width;
+        int iterationCount;
 
         Console.WriteLine("Hello, Welcom to the 'Game Of Life'!");
         Console.WriteLine("Please input height of field?");
@@ -17,8 +18,8 @@ class Program
             return;
         }
 
-        Console.WriteLine("Please input width of field?");
-        
+        Console.WriteLine("Please input width of field!");
+
         var widthInput = Console.ReadLine();
         if (!int.TryParse(widthInput, out width))
         {
@@ -26,14 +27,31 @@ class Program
             return;
         }
 
-        game.CreateGrid(height, width);
-        Console.ReadLine();
+        Console.WriteLine("Please input iteration count for the game!");
 
-        Console.WriteLine("Count of cells to change");
-        Console.WriteLine(game.MarkAllCellsThatNeedToChange());
+        var countInput = Console.ReadLine();
+        if (!int.TryParse(countInput, out iterationCount))
+        {
+            Console.WriteLine("Please enter valid input!");
+            return;
+        }
 
-        Console.WriteLine("See next generation");
-        game.DrawNextGeneration(height,width);
+        Console.WriteLine("Let the game begin...");
+        await game.CreateGrid(height, width);
+
+
+        //Console.WriteLine("Count of cells to change");
+        //game.MarkAllCellsThatNeedToChange();
+
+        //Console.WriteLine("See next generation");
+
+        int count = 0;
+        while (count < iterationCount)
+        {
+            await game.DrawNextGeneration(height, width);
+            count++;
+        }
+
         Console.ReadLine();
 
         //Console.WriteLine("Count of cell 2:2");
