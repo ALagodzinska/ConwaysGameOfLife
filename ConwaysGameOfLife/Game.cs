@@ -26,7 +26,8 @@
                 Console.WriteLine();
             }
         }
-        public int CountLiveCells(Cell cell)
+        //at the moment + applying rules for 2nd generation
+        public void CountLiveCells(Cell cell)
         {
             var liveCellsCount = 0;
             for (int h = cell.Height - 1; h < cell.Height + 2; h++)
@@ -48,7 +49,36 @@
                     }
                 }
             }
-            return liveCellsCount;
+            //apply game rules
+            //one or no neighbour - dies
+            if(liveCellsCount < 2 && cell.IsLive)
+            {
+                cell.Change = true;
+            }
+            //four or more - dies
+            if (liveCellsCount > 3 && cell.IsLive)
+            {
+                cell.Change = true;
+            }
+            //empty cell with three neighbours - populated
+            if (liveCellsCount == 3 && cell.IsLive == false)
+            {
+                cell.Change = true;
+            }
+            //return liveCellsCount;
+        }
+        public int MarkAllCellsThatNeedToChange()
+        {
+            var countOfCellsToChange = 0;
+            foreach (var cell in cells)
+            {
+                CountLiveCells(cell);
+                if(cell.Change == true)
+                {
+                    countOfCellsToChange++;
+                }
+            }
+            return countOfCellsToChange;
         }
         public Cell? FindCellByCoordinates(int height, int width)
         {
