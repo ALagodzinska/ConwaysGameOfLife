@@ -2,14 +2,14 @@
 {
     public class Cell
     {
-        public Cell(int height, int width, bool liveOrDead)
+        public Cell(int height, int width, bool isLive)
         {
             Height = height;
             Width = width;
-            LiveOrDead = liveOrDead;
+            IsLive = isLive;
         }
         public int Height { get; set; }
         public int Width { get; set; }
-        public bool LiveOrDead { get; set; }
+        public bool IsLive { get; set; }
     }
 }
