@@ -1,6 +1,6 @@
 ﻿namespace ConwaysGameOfLife
 {
-    public class Game
+    public class GameLogic
     {
         public List<Cell> cells = new List<Cell>();
         public async Task CreateGrid(int height, int width)
@@ -27,10 +27,12 @@
                 }
                 Console.WriteLine();
             }
+            Console.WriteLine("Count of iteration: 0");
+            Console.WriteLine($"Count of live cells: {CountOfLiveCells()}");
         }
 
         //at the moment + applying rules for 2nd generation
-        public void CountLiveCells(Cell cell)
+        public void CountLiveNeighboursAndApplyGameRules(Cell cell)
         {
             var liveCellsCount = 0;
             for (int h = cell.Height - 1; h < cell.Height + 2; h++)
@@ -38,11 +40,7 @@
                 for (int w = cell.Width - 1; w < cell.Width + 2; w++)
                 {
                     var foundCell = FindCellByCoordinates(h, w);
-                    if (foundCell == null)
-                    {
-                        continue;
-                    }
-                    if (h == cell.Height && w == cell.Width)
+                    if (foundCell == null || h == cell.Height && w == cell.Width)
                     {
                         continue;
                     }
@@ -68,30 +66,18 @@
             {
                 cell.Change = true;
             }
-            //return liveCellsCount;
         }
-        //public void MarkAllCellsThatNeedToChange()
-        //{
-        //    //var countOfCellsToChange = 0;
-        //    foreach (var cell in cells)
-        //    {
-        //        CountLiveCells(cell);
-        //        //if(cell.Change == true)
-        //        //{
-        //        //    countOfCellsToChange++;
-        //        //}
-        //    }
-        //    //return countOfCellsToChange;
-        //}
+
         public Cell? FindCellByCoordinates(int height, int width)
         {
             return cells.FirstOrDefault(c => c.Height == height && c.Width == width);
         }
-        public async Task DrawNextGeneration(int height, int width)
+
+        public async Task DrawNextGeneration(int height, int width, int count)
         { 
             foreach (var cell in cells)
             {
-                CountLiveCells(cell);
+                CountLiveNeighboursAndApplyGameRules(cell);
             }
             await Task.Delay(1000);
             Console.Clear();
@@ -116,6 +102,13 @@
                 }
                 Console.WriteLine();
             }
+            Console.WriteLine($"Count of iteration: {count}");
+            Console.WriteLine($"Count of live cells: {CountOfLiveCells()}");            
+        }
+
+        public int CountOfLiveCells()
+        {
+            return cells.Count(c => c.IsLive);
         }
     }
 }
