@@ -3,9 +3,9 @@
     public class GameLogic
     {
         public List<Cell> cells = new List<Cell>();
-        public async Task CreateGrid(int height, int width)
+        public void CreateGrid(int height, int width)
         {
-            await Task.Delay(1000);
+            Thread.Sleep(1000);
             Console.Clear();
             var random = new Random();
             for (int h = 0; h < height; h++)
@@ -32,7 +32,7 @@
         }
 
         //at the moment + applying rules for 2nd generation
-        public void CountLiveNeighboursAndApplyGameRules(Cell cell)
+        public void CountLiveNeighbours(Cell cell)
         {
             var liveCellsCount = 0;
             for (int h = cell.Height - 1; h < cell.Height + 2; h++)
@@ -50,19 +50,24 @@
                     }
                 }
             }
+            cell.LiveNeighbours = liveCellsCount;            
+        }
+
+        public void ApplyGameRules(Cell cell)
+        {
             //apply game rules
             //one or no neighbour - dies
-            if(liveCellsCount < 2 && cell.IsLive)
+            if (cell.LiveNeighbours < 2 && cell.IsLive)
             {
                 cell.Change = true;
             }
             //four or more - dies
-            if (liveCellsCount > 3 && cell.IsLive)
+            if (cell.LiveNeighbours > 3 && cell.IsLive)
             {
                 cell.Change = true;
             }
             //empty cell with three neighbours - populated
-            if (liveCellsCount == 3 && cell.IsLive == false)
+            if (cell.LiveNeighbours == 3 && cell.IsLive == false)
             {
                 cell.Change = true;
             }
@@ -73,13 +78,14 @@
             return cells.FirstOrDefault(c => c.Height == height && c.Width == width);
         }
 
-        public async Task DrawNextGeneration(int height, int width, int count)
+        public void DrawNextGeneration(int height, int width, int count)
         { 
             foreach (var cell in cells)
             {
-                CountLiveNeighboursAndApplyGameRules(cell);
+                CountLiveNeighbours(cell);
+                ApplyGameRules(cell);
             }
-            await Task.Delay(1000);
+            Thread.Sleep(1000);
             Console.Clear();
             for (int h = 0; h < height; h++)
             {

@@ -8,7 +8,7 @@ class Program
         int height;
         int width;
         int iterationCount;
-        bool userRequestedStop = false;
+        //bool userRequestedStop = false;
 
         Console.WriteLine("Hello, Welcom to the 'Game Of Life'!");
         Console.WriteLine("Please input height of field?");
@@ -38,12 +38,12 @@ class Program
         }
 
         Console.WriteLine("Let the game begin...");
-        await game.CreateGrid(height, width);
+        game.CreateGrid(height, width);
 
         int count = 1;
         while (count <= iterationCount)
         {
-            await game.DrawNextGeneration(height, width, count);
+            game.DrawNextGeneration(height, width, count);
             count++;
         }
 
