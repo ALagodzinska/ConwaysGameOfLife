@@ -98,6 +98,7 @@
                     case ConsoleKey.Enter:
                         setField = false;
                         break;
+                        //think of default action to ignore any others keys
                     default:
                         break;
                 }
