@@ -31,25 +31,22 @@
         }
 
         public Grid InputGridParameters(string choise)
-        {
-            var createdGrid = new Grid();
+        {            
             Console.WriteLine("Please Remember that MAX Height is 30 and MAX Width is 120");
             Console.WriteLine();
             Console.WriteLine("Input height of field:");
             var heightInput = Console.ReadLine();
             var validHeight = CheckForValidInput(choise, heightInput, "height");
-            createdGrid.Height = validHeight;
 
             Console.WriteLine("Input width of field:");
             var widthInput = Console.ReadLine();
             var validWidth = CheckForValidInput(choise, widthInput, "width");
-            createdGrid.Width = validWidth;
 
             Console.WriteLine("Input iteration count for the game:");
             var countInput = Console.ReadLine();
             var validCount = CheckForValidInput(choise, countInput, "count");
-            createdGrid.IterationCount = validCount;
-            return createdGrid;
+
+            return CreateNewGrid(validHeight, validWidth, validCount);
         }
 
         public int CheckForValidInput(string choise, string input, string typeOfInput)
@@ -71,6 +68,37 @@
             Console.WriteLine();
             Console.WriteLine("Game is over! You will be sent to main menu ater 5 seconds");
             Thread.Sleep(5000);
+        }
+
+        public Grid CreateNewGrid(int height, int width, int count)
+        {
+            var createdGrid = new Grid(height, width, count);
+            for (int h = 0; h < createdGrid.Height; h++)
+            {
+                for (int w = 0; w < createdGrid.Width; w++)
+                {
+                    createdGrid.Cells[h, w] = new Cell()
+                    {
+                        Height = h,
+                        Width = w,
+                    };
+                }
+            }
+
+            return createdGrid;
+        }
+
+        public void CustomGridRules()
+        {
+            Console.WriteLine();
+            Console.WriteLine("To move use ARROWS. To make cell live use SPACE. To stop setting field use ENTER.");
+        }
+
+        public void MessageAfterEachIteration(int iterationCount, int liveCellsCount)
+        {
+            Console.WriteLine();
+            Console.WriteLine($"Count of iteration: {iterationCount}");
+            Console.WriteLine($"Count of live cells: {liveCellsCount}");
         }
     }
 }
