@@ -42,11 +42,7 @@
             var widthInput = Console.ReadLine();
             var validWidth = CheckForValidInput(choise, widthInput, "width");
 
-            Console.WriteLine("Input iteration count for the game:");
-            var countInput = Console.ReadLine();
-            var validCount = CheckForValidInput(choise, countInput, "count");
-
-            return CreateNewGrid(validHeight, validWidth, validCount);
+            return CreateNewGrid(validHeight, validWidth);
         }
 
         public int CheckForValidInput(string choise, string input, string typeOfInput)
@@ -70,9 +66,9 @@
             Thread.Sleep(5000);
         }
 
-        public Grid CreateNewGrid(int height, int width, int count)
+        public Grid CreateNewGrid(int height, int width)
         {
-            var createdGrid = new Grid(height, width, count);
+            var createdGrid = new Grid(height, width);
             for (int h = 0; h < createdGrid.Height; h++)
             {
                 for (int w = 0; w < createdGrid.Width; w++)

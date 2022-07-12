@@ -5,7 +5,7 @@
         UserOutput userOutput = new UserOutput();     
 
         public void DrawGrid(Grid grid)
-        {            
+        {  
             Console.Clear();
 
             for (int h = 0; h < grid.Height; h++)
@@ -70,11 +70,20 @@
                 {
                     case ConsoleKey.Spacebar:
                         Console.SetCursorPosition(startPosition.Left, startPosition.Top);
-                        var cell = grid.Cells[startPosition.Top, startPosition.Left];/*FindCellByCoordinates(startPosition.Top, startPosition.Left);*/
+                        var cell = grid.Cells[startPosition.Top, startPosition.Left];
                         if (cell != null)
                         {
-                            Console.Write("X");
-                            cell.IsLive = true;
+                            if (cell.IsLive)
+                            {
+                                cell.IsLive = false;
+                                Console.Write("O");
+                            }
+                            else
+                            {
+                                Console.Write("X");
+                                cell.IsLive = true;
+                            }
+                            
                             if (cell.Width == grid.Width - 1 || cell.Height == grid.Height - 1)
                             {
                                 Console.SetCursorPosition(startPosition.Left, startPosition.Top);
@@ -200,25 +209,29 @@
         public void DrawNextGeneration(Grid grid)
         {
             var currentIterationCount = 1;
-
-            while (currentIterationCount <= grid.IterationCount)
+            do
             {
-                foreach (var cell in grid.Cells)
+                while (Console.KeyAvailable == false && CountOfLiveCells(grid) != 0)
                 {
-                    CountLiveNeighbours(cell, grid);
+                    foreach (var cell in grid.Cells)
+                    {
+                        CountLiveNeighbours(cell, grid);
+                    }
+
+                    foreach (var cell in grid.Cells)
+                    {
+                        ApplyGameRules(cell);
+                    }
+
+                    Thread.Sleep(1000);
+                    DrawGrid(grid);
+                    userOutput.MessageAfterEachIteration(currentIterationCount, CountOfLiveCells(grid));
+                    Console.WriteLine("Press ESC to stop game");
+
+                    currentIterationCount++;
                 }
 
-                foreach (var cell in grid.Cells)
-                {
-                    ApplyGameRules(cell);
-                }
-
-                Thread.Sleep(1000);
-                DrawGrid(grid);
-                userOutput.MessageAfterEachIteration(currentIterationCount, CountOfLiveCells(grid));
-                
-                currentIterationCount++;
-            }
+            } while (Console.ReadKey(true).Key != ConsoleKey.Escape);
 
             userOutput.GameOverMessage();
         }
