@@ -11,14 +11,21 @@
             for (int h = 0; h < grid.Height; h++)
             {
                 for (int w = 0; w < grid.Width; w++)
-                {                    
+                {
+                    Console.SetCursorPosition(w, h);
                     if (grid.Cells[h, w].IsLive)
                     {
-                        Console.Write("X");
+                        Console.BackgroundColor = ConsoleColor.Red;
+                        Console.ForegroundColor = ConsoleColor.Black;
+                        Console.Write("*");
+                        Console.ResetColor();
                     }
                     else
                     {
-                        Console.Write("O");
+                        Console.BackgroundColor = ConsoleColor.White;
+                        Console.ForegroundColor = ConsoleColor.Black;
+                        Console.Write("-");
+                        Console.ResetColor();
                     }
                 }
 
@@ -76,12 +83,18 @@
                             if (cell.IsLive)
                             {
                                 cell.IsLive = false;
-                                Console.Write("O");
+                                Console.BackgroundColor = ConsoleColor.White;
+                                Console.ForegroundColor = ConsoleColor.Black;
+                                Console.Write("-");
+                                Console.ResetColor();
                             }
                             else
                             {
-                                Console.Write("X");
                                 cell.IsLive = true;
+                                Console.BackgroundColor = ConsoleColor.Red;
+                                Console.ForegroundColor = ConsoleColor.Black;
+                                Console.Write("*");
+                                Console.ResetColor();                                
                             }
                             
                             if (cell.Width == grid.Width - 1 || cell.Height == grid.Height - 1)
