@@ -18,6 +18,7 @@
         public Grid GameIntro(string choise)
         {
             Console.Clear();
+
             if (choise == "1")
             {
                 Console.WriteLine("Your Game Field live cells will be created Randomly");
@@ -26,36 +27,37 @@
             {
                 Console.WriteLine("Your Game Field live cells will be created By You");
             }
+
             Console.WriteLine();
-            return InputGridParameters(choise);
+            return InputGridParameters();
         }
 
-        public Grid InputGridParameters(string choise)
-        {            
+        public Grid InputGridParameters()
+        {
             Console.WriteLine("Please Remember that MAX Height is 30 and MAX Width is 120");
             Console.WriteLine();
             Console.WriteLine("Input height of field:");
             var heightInput = Console.ReadLine();
-            var validHeight = CheckForValidInput(choise, heightInput, "height");
+            var validHeight = CheckForValidInput(heightInput, "height");
 
             Console.WriteLine("Input width of field:");
             var widthInput = Console.ReadLine();
-            var validWidth = CheckForValidInput(choise, widthInput, "width");
+            var validWidth = CheckForValidInput(widthInput, "width");
 
             return CreateNewGrid(validHeight, validWidth);
         }
 
-        public int CheckForValidInput(string choise, string input, string typeOfInput)
+        public int CheckForValidInput(string input, string typeOfInput)
         {
-            if (!int.TryParse(input, out validInput) || validInput <= 0
+            while (!int.TryParse(input, out validInput) || validInput <= 0
                 || typeOfInput == "height" && validInput > 30
                 || typeOfInput == "width" && validInput > 120)
             {
                 Console.WriteLine("Please enter valid input!");
-                Console.WriteLine("Try one more time after 5 seconds");
-                Thread.Sleep(5000);
-                GameIntro(choise);
+                input = Console.ReadLine();
+
             }
+
             return validInput;
         }
 
@@ -69,6 +71,7 @@
         public Grid CreateNewGrid(int height, int width)
         {
             var createdGrid = new Grid(height, width);
+
             for (int h = 0; h < createdGrid.Height; h++)
             {
                 for (int w = 0; w < createdGrid.Width; w++)
