@@ -18,15 +18,15 @@ class Program
             {
                 case "1":
                     Console.WriteLine("Let the game begin...");
-                    var createdGridRandomGame = userOutput.GameIntro(option);
+                    var createdGridRandomGame = userOutput.CreateGameGridFromUserInput();
                     game.CreateRandomGrid(createdGridRandomGame);
-                    game.DrawNextGeneration(createdGridRandomGame);
+                    game.PlayGame(createdGridRandomGame);
                     break;
 
                 case "2":
-                    var createdGridCustomGame = userOutput.GameIntro(option);
+                    var createdGridCustomGame = userOutput.CreateGameGridFromUserInput();
                     game.ChooseLiveCells(createdGridCustomGame);
-                    game.DrawNextGeneration(createdGridCustomGame);
+                    game.PlayGame(createdGridCustomGame);
                     break;
 
                 case "3":
