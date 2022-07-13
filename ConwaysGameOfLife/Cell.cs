@@ -1,17 +1,25 @@
 ﻿namespace ConwaysGameOfLife
 {
+    /// <summary>
+    /// Stores data about cell in a grid
+    /// </summary>
     public class Cell
     {
-        public Cell(int height, int width, bool isLive)
-        {
-            Height = height;
-            Width = width;
-            IsLive = isLive;
-        }
+        /// <summary>
+        /// Position in the grid. Height of cell.
+        /// </summary>
         public int Height { get; set; }
+        /// <summary>
+        /// Position in the grid. Width of cell.
+        /// </summary>
         public int Width { get; set; }
+        /// <summary>
+        /// Count of live neighbours around cell.
+        /// </summary>
         public int LiveNeighbours { get; set; }
+        /// <summary>
+        /// Check if cell is live. If false - cell is dead.
+        /// </summary>
         public bool IsLive { get; set; }
-        public bool Change { get; set; }
     }
 }

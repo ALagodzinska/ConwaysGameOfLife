@@ -2,49 +2,42 @@
 
 class Program
 {
-    static async Task Main(string[] args)
+    static void Main(string[] args)
     {
         GameLogic game = new GameLogic();
-        int height;
-        int width;
-        int iterationCount;
-        //bool userRequestedStop = false;
+        UserOutput userOutput = new UserOutput();
+        
+        var exit = "continue";        
 
-        Console.WriteLine("Hello, Welcom to the 'Game Of Life'!");
-        Console.WriteLine("Please input height of field?");
-        var heightInput = Console.ReadLine();
-        if (!int.TryParse(heightInput, out height))
+        while(exit == "continue")
         {
-            Console.WriteLine("Please enter valid input!");
-            return;
-        }
+            userOutput.ShowMenu();
+            var option = Console.ReadLine();
+            
+            switch (option)
+            {
+                case "1":
+                    Console.WriteLine("Let the game begin...");
+                    var createdGridRandomGame = userOutput.CreateGameGridFromUserInput();
+                    game.CreateRandomGrid(createdGridRandomGame);
+                    game.PlayGame(createdGridRandomGame);
+                    break;
 
-        Console.WriteLine("Please input width of field!");
+                case "2":
+                    var createdGridCustomGame = userOutput.CreateGameGridFromUserInput();
+                    game.ChooseLiveCells(createdGridCustomGame);
+                    game.PlayGame(createdGridCustomGame);
+                    break;
 
-        var widthInput = Console.ReadLine();
-        if (!int.TryParse(widthInput, out width))
-        {
-            Console.WriteLine("Please enter valid input!");
-            return;
-        }
+                case "3":
+                    Console.WriteLine("Thank you for the game. Bye!");
+                    exit = "exit";
+                    break;
 
-        Console.WriteLine("Please input iteration count for the game!");
-
-        var countInput = Console.ReadLine();
-        if (!int.TryParse(countInput, out iterationCount))
-        {
-            Console.WriteLine("Please enter valid input!");
-            return;
-        }
-
-        Console.WriteLine("Let the game begin...");
-        game.CreateGrid(height, width);
-
-        int count = 1;
-        while (count <= iterationCount)
-        {
-            game.DrawNextGeneration(height, width, count);
-            count++;
+                default:
+                    Console.WriteLine("Wrong input! Please Try Again.");
+                    break;
+            }
         }
 
         Console.ReadLine();
