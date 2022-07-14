@@ -1,8 +1,11 @@
-﻿namespace ConwaysGameOfLife
+﻿using Newtonsoft.Json;
+
+namespace ConwaysGameOfLife
 {
     /// <summary>
     /// Stores data about cell in a grid
     /// </summary>
+    [JsonObject(MemberSerialization.OptOut)]
     public class Cell
     {
         /// <summary>

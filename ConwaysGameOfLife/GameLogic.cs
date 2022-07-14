@@ -5,6 +5,7 @@
     /// </summary>
     public class GameLogic
     {
+        GameDataSerializer dataSerializer = new GameDataSerializer();
         UserOutput userOutput = new UserOutput();     
 
         /// <summary>
@@ -226,8 +227,14 @@
 
             } while (Console.ReadKey(true).Key != ConsoleKey.Escape);
 
+            //save data on the exit
+            if(CountOfLiveCells(grid) != 0)
+            {
+                dataSerializer.SaveDataToTheFile(grid);
+            }            
+
             userOutput.GameOverMessage();
-        }
+        }        
 
         /// <summary>
         /// Drawing grid for next generation

@@ -5,6 +5,7 @@
     /// </summary>
     public class UserOutput
     {
+        GameDataSerializer dataSerializer = new GameDataSerializer();
         /// <summary>
         /// Field that stores input if it meet all requirements.
         /// </summary>
@@ -21,7 +22,8 @@
             Console.WriteLine("Please choose action what you want to do?(INPUT NUMBER)");
             Console.WriteLine("1. Play Game: Create Random field");
             Console.WriteLine("2. Play Game: Create Customized field");
-            Console.WriteLine("3. Exit Game");
+            Console.WriteLine("3. Restore Game: Continue to play one of the previous games");
+            Console.WriteLine("4. Exit Game");
         }
 
         /// <summary>
@@ -34,34 +36,56 @@
             Console.WriteLine("Please Remember that MAX Height is 30 and MAX Width is 120");
             Console.WriteLine();
 
+            Console.WriteLine("Create name for this game:");
+            var gameNameInput = Console.ReadLine();
+            var validName = CheckForValidGameName(gameNameInput);            
+
             Console.WriteLine("Input height of field:");
             var heightInput = Console.ReadLine();
-            var validHeight = CheckForValidInput(heightInput, "height");
+            var validHeight = CheckForValidNumberInput(heightInput, "height");
 
             Console.WriteLine("Input width of field:");
             var widthInput = Console.ReadLine();
-            var validWidth = CheckForValidInput(widthInput, "width");
+            var validWidth = CheckForValidNumberInput(widthInput, "width");
 
-            return Grid.CreateNewGrid(validHeight, validWidth);
+            return Grid.CreateNewGrid(validHeight, validWidth, validName);
         }
 
         /// <summary>
-        /// Check if inputted value is valid and if it is not asks for valid input.
+        /// Check if inputted numeric value is valid and if it is not asks for valid input.
         /// </summary>
-        /// <param name="input">The string value that was inputted by user</param>
+        /// <param name="numberInput">The string value that was inputted by user</param>
         /// <param name="typeOfInput">Allows to understand what type of input it is(height or width)</param>
         /// <returns>Returns an integer after correct input.</returns>
-        public int CheckForValidInput(string input, string typeOfInput)
+        public int CheckForValidNumberInput(string numberInput, string typeOfInput)
         {
-            while (!int.TryParse(input, out validInput) || validInput <= 0
+            while (!int.TryParse(numberInput, out validInput) || validInput <= 0
                 || typeOfInput == "height" && validInput > 30
                 || typeOfInput == "width" && validInput > 120)
             {
                 Console.WriteLine("Please enter valid input!");
-                input = Console.ReadLine();
+                numberInput = Console.ReadLine();
             }
 
             return validInput;
+        }
+
+        /// <summary>
+        /// Check if inputted game name already exsists and if it is not empty input.
+        /// </summary>
+        /// <param name="gameNameInput">Name of the game from user</param>
+        /// <returns>Return valid name</returns>
+        public string CheckForValidGameName(string gameNameInput)
+        {
+            dataSerializer.ReadDataFromTheFile();
+            while (dataSerializer.FindGameGridByName(gameNameInput) != null ||
+                gameNameInput == null)
+            {
+                Console.WriteLine("That name is taken");
+                Console.WriteLine("Please enter valid input!");
+                gameNameInput = Console.ReadLine();
+            }
+            return gameNameInput;
         }
 
         /// <summary>

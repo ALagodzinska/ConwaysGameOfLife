@@ -30,6 +30,12 @@ class Program
                     break;
 
                 case "3":
+                    Console.WriteLine("List of previous games:");
+                    
+                    
+                    break;
+
+                case "4":
                     Console.WriteLine("Thank you for the game. Bye!");
                     exit = "exit";
                     break;
