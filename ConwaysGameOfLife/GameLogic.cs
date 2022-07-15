@@ -1,11 +1,10 @@
 ﻿namespace ConwaysGameOfLife
 {
     /// <summary>
-    /// Containes methods that apply game rules and logic.
+    /// Contains methods that apply game rules and logic.
     /// </summary>
     public class GameLogic
     {
-        GameDataSerializer dataSerializer = new GameDataSerializer();
         UserOutput userOutput = new UserOutput();     
 
         /// <summary>
@@ -215,7 +214,8 @@
         /// Playing game until user wants to stop it
         /// </summary>
         /// <param name="grid">Game Grid</param>
-        public void PlayGame(Grid grid, List<Grid> gridList)
+        /// /// <param name="gameGridList">List of played/saved games. Used to add new game to the list or update restored game.</param>
+        public void PlayGame(Grid grid, List<Grid> gameGridList)
         {
             do
             {
@@ -227,22 +227,31 @@
 
             } while (Console.ReadKey(true).Key != ConsoleKey.Escape);
 
-            //save data on the exit
-            if(CountOfLiveCells(grid) != 0)
+            UpdateGridList(gameGridList, grid);
+
+            userOutput.GameOverMessage();
+        }
+
+        /// <summary>
+        /// Save stopped game in the list where are stored all previous games. Or if this game has been restored replace with updated data.
+        /// </summary>
+        /// <param name="gridList">List of the game grids</param>
+        /// <param name="grid">One play grid.</param>
+        public void UpdateGridList(List<Grid> gridList, Grid grid)
+        {
+            if (CountOfLiveCells(grid) != 0)
             {
                 var restoredGridFromTheList = gridList.FirstOrDefault(g => g.GameName == grid.GameName);
                 if (restoredGridFromTheList != null)
                 {
-                    restoredGridFromTheList = grid;                    
+                    restoredGridFromTheList = grid;
                 }
                 else
                 {
                     gridList.Add(grid);
-                }                
-            }            
-
-            userOutput.GameOverMessage();
-        }        
+                }
+            }
+        }
 
         /// <summary>
         /// Drawing grid for next generation
