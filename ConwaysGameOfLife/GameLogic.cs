@@ -215,7 +215,7 @@
         /// Playing game until user wants to stop it
         /// </summary>
         /// <param name="grid">Game Grid</param>
-        public void PlayGame(Grid grid)
+        public void PlayGame(Grid grid, List<Grid> gridList)
         {
             do
             {
@@ -230,7 +230,15 @@
             //save data on the exit
             if(CountOfLiveCells(grid) != 0)
             {
-                dataSerializer.SaveDataToTheFile(grid);
+                var restoredGridFromTheList = gridList.FirstOrDefault(g => g.GameName == grid.GameName);
+                if (restoredGridFromTheList != null)
+                {
+                    restoredGridFromTheList = grid;                    
+                }
+                else
+                {
+                    gridList.Add(grid);
+                }                
             }            
 
             userOutput.GameOverMessage();
