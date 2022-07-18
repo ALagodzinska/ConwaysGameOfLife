@@ -8,7 +8,8 @@
         /// <summary>
         /// Path to the file where the data is stored.
         /// </summary>
-        private readonly string FilePath = @"C:\Users\a.lagodzinska\source\repos\ConwaysGameOfLife\ConwaysGameOfLife\GameOfLifeData.json";
+        private readonly string FilePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "GameOfLife", "GameOfLife.json");
+        
 
         /// <summary>
         /// Convert a field that contains two dimensional array to a list.
@@ -64,11 +65,28 @@
         }
 
         /// <summary>
+        /// Creates a folder and a file if not exsists.
+        /// </summary>
+        public void CreateDirectoryAndFile()
+        {
+            var pathToFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "GameOfLife");
+            if (!Directory.Exists(pathToFolder))
+            {
+                Directory.CreateDirectory(pathToFolder);
+            }
+            if (!File.Exists(FilePath))
+            {
+                File.Create(FilePath);
+            }
+        }
+
+        /// <summary>
         /// Read all data from file and convert them into Grid objects.
         /// </summary>
         /// <returns>List of stored game grids</returns>
         public List<Grid> ReadDataFromTheFile()
         {
+            CreateDirectoryAndFile();
             List<Grid> gridList = new();
 
             var jsonData = File.ReadAllLines(FilePath);

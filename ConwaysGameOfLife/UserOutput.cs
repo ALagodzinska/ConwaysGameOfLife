@@ -40,7 +40,7 @@
 
             Console.WriteLine("Create name for this game:");
             var gameNameInput = Console.ReadLine();
-            var validName = CheckForValidGameNameOnCreate(gameNameInput, listOfExsistingGrids);            
+            var validName = CheckForValidGameNameOnCreate(gameNameInput, listOfExsistingGrids);
 
             Console.WriteLine("Input height of field:");
             var heightInput = Console.ReadLine();
@@ -120,7 +120,7 @@
             Console.WriteLine("Please choose one of the games from the list" + "\n" + "List of saved games:");
             Console.WriteLine();
 
-            foreach(var grid in gridList)
+            foreach (var grid in gridList)
             {
                 Console.WriteLine($"{numberInList}. {grid.GameName} : Iteration count - {grid.IterationCount}");
                 numberInList++;
