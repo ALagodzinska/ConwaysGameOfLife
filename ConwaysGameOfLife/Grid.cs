@@ -9,10 +9,10 @@ namespace ConwaysGameOfLife
     public class Grid
     {
         /// <summary>
-        /// Set initial values for grid fields
+        /// Set initial values for grid fields.
         /// </summary>
-        /// <param name="height">Height of grid</param>
-        /// <param name="width">Width of grid</param>
+        /// <param name="height">Height of grid.</param>
+        /// <param name="width">Width of grid.</param>
         public Grid(int height, int width, string gameName)
         {
             Cell[,] cells = new Cell[height, width];
@@ -30,34 +30,39 @@ namespace ConwaysGameOfLife
         /// Name of the Game. To identify what game you want to replay.
         /// </summary>
         public string GameName { get; set; }
+
         /// <summary>
-        /// Height of grid
+        /// Height of grid.
         /// </summary>
         public int Height { get; set; }
+
         /// <summary>
-        /// Width of grid
+        /// Width of grid.
         /// </summary>
         public int Width { get; set; }
+
         /// <summary>
         /// How many iterations grid had.
-        /// </summary>w
+        /// </summary>
         public int IterationCount { get; set; }
+
         /// <summary>
-        /// Stores all cells inside of this grid as collection of rows and columns
+        /// Stores all cells inside of this grid as collection of rows and columns.
         /// </summary>
         [System.Text.Json.Serialization.JsonIgnore]
         public Cell[,] Cells { get; set; }
+
         /// <summary>
         /// List to serialize data of what is stored in two-dimensional array.
         /// </summary>
         public List<Cell> SerializableCells { get; set; }
 
         /// <summary>
-        /// Creates new grid and all cells inside of it.
+        /// Create new grid and all cells inside of it.
         /// </summary>
-        /// <param name="height">Height of the grid</param>
-        /// <param name="width">Width of the grid</param>
-        /// <returns>New grid created by parameters</returns>
+        /// <param name="height">Height of the grid.</param>
+        /// <param name="width">Width of the grid.</param>
+        /// <returns>New grid created by parameters.</returns>
         public static Grid CreateNewGrid(int height, int width, string gameName)
         {
             var grid = new Grid(height, width, gameName);
