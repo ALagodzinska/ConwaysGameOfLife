@@ -4,13 +4,13 @@ class Program
 {
     static void Main(string[] args)
     {
-        GameLogic game = new GameLogic();
-        UserOutput userOutput = new UserOutput();
-        GameDataSerializer dataSerializer = new GameDataSerializer();
+        GameLogic game = new();
+        UserOutput userOutput = new();
+        GameDataSerializer dataSerializer = new();
 
         var exit = "continue";
 
-        var listOfPlayedGames = dataSerializer.ReadDataFromTheFile();
+        dataSerializer.ReadDataFromTheFile();
 
         while (exit == "continue")
         {
@@ -21,26 +21,26 @@ class Program
             {
                 case "1":
                     Console.WriteLine("Let the game begin...");
-                    var createdGridRandomGame = userOutput.CreateGameGridFromUserInput(listOfPlayedGames);
+                    var createdGridRandomGame = userOutput.CreateGameGridFromUserInput();
                     game.CreateRandomGrid(createdGridRandomGame);
-                    game.PlayGame(createdGridRandomGame, listOfPlayedGames);
+                    game.PlayGame(createdGridRandomGame);
                     break;
 
                 case "2":
-                    var createdGridCustomGame = userOutput.CreateGameGridFromUserInput(listOfPlayedGames);
+                    var createdGridCustomGame = userOutput.CreateGameGridFromUserInput();
                     game.ChooseLiveCells(createdGridCustomGame);
-                    game.PlayGame(createdGridCustomGame, listOfPlayedGames);
+                    game.PlayGame(createdGridCustomGame);
                     break;
 
                 case "3":
-                    userOutput.DisplayGamesForUser(listOfPlayedGames);
-                    var foundGrid = userOutput.RestoreGameFromUserInput(listOfPlayedGames);
-                    game.PlayGame(foundGrid, listOfPlayedGames);
+                    userOutput.DisplayGamesForUser();
+                    var foundGrid = userOutput.RestoreGameFromUserInput();
+                    game.PlayGame(foundGrid);
                     break;
 
                 case "4":
                     Console.WriteLine("Thank you for the game. Bye!");
-                    dataSerializer.SaveAllData(listOfPlayedGames);
+                    dataSerializer.SaveAllData();
                     exit = "exit";
                     break;
 

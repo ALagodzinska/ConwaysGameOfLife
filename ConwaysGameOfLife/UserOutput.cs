@@ -5,7 +5,7 @@
     /// </summary>
     public class UserOutput
     {
-        GameDataSerializer dataSerializer = new GameDataSerializer();
+        GameDataSerializer dataSerializer = new();
 
         /// <summary>
         /// Field that stores number input if it meet all requirements.
@@ -30,9 +30,8 @@
         /// <summary>
         /// Display to user what values should be inputted and processes data input.
         /// </summary>
-        /// <param name="listOfExsistingGrids">List of the saved grids.</param>
         /// <returns>New grid.</returns>
-        public Grid CreateGameGridFromUserInput(List<Grid> listOfExsistingGrids)
+        public Grid CreateGameGridFromUserInput()
         {
             Console.Clear();
             Console.WriteLine("Please Remember that MAX Height is 30 and MAX Width is 120");
@@ -40,7 +39,7 @@
 
             Console.WriteLine("Create name for this game:");
             var gameNameInput = Console.ReadLine();
-            var validName = CheckForValidGameNameOnCreate(gameNameInput, listOfExsistingGrids);
+            var validName = CheckForValidGameNameOnCreate(gameNameInput);
 
             Console.WriteLine("Input height of field:");
             var heightInput = Console.ReadLine();
@@ -76,11 +75,11 @@
         /// On creating the new game check if inputted game name already exsists. If name is taken asks for new game name.
         /// </summary>
         /// <param name="gameName">Inputted name for the grid.</param>
-        /// /// <param name="gridList">List of the saved grids.</param>
         /// <returns>Return valid(not taken) name for game grid.</returns>
-        public string CheckForValidGameNameOnCreate(string gameName, List<Grid> gridList)
+        public string CheckForValidGameNameOnCreate(string gameName)
         {
-            while (dataSerializer.FindGameGridByName(gameName, gridList) != null ||
+            var gridList = dataSerializer.ReturnListOfExistingGrids();
+            while (dataSerializer.FindGameGridByName(gameName) != null ||
                 gameName == null)
             {
                 Console.WriteLine("That name is taken" + "\n" + "Please enter valid input!");
@@ -94,11 +93,11 @@
         /// Check if the inputted name matches one of the saved game names. Return name only if there is a match.
         /// </summary>
         /// <param name="gameName">Inputted name for the grid.</param>
-        /// <param name="gridList">List of the saved grids.</param>
         /// <returns>Return valid name(exsisting name of the grid from the saved grid list).</returns>
-        public string CheckValidGameNameInputOnSearch(string gameName, List<Grid> gridList)
+        public string CheckValidGameNameInputOnSearch(string gameName)
         {
-            while (dataSerializer.FindGameGridByName(gameName, gridList) == null)
+            var gridList = dataSerializer.ReturnListOfExistingGrids();
+            while (dataSerializer.FindGameGridByName(gameName) == null)
             {
                 Console.WriteLine("There is no game with such name" + "\n" + "Please enter one of the names from the list!");
                 gameName = Console.ReadLine();
@@ -110,12 +109,12 @@
         /// <summary>
         /// Show to user all names of the grids that are stored in a list.
         /// </summary>
-        /// <param name="gridList">List of the saved game grids.</param>
-        public void DisplayGamesForUser(List<Grid> gridList)
+        public void DisplayGamesForUser()
         {
             Console.Clear();
 
             int numberInList = 1;
+            var gridList = dataSerializer.ReturnListOfExistingGrids();
 
             Console.WriteLine("Please choose one of the games from the list" + "\n" + "List of saved games:");
             Console.WriteLine();
@@ -130,17 +129,18 @@
         /// <summary>
         /// Get game grid which user want to restore.
         /// </summary>
-        /// <param name="gridList">List of the saved game grids.</param>
         /// <returns>A game grid.</returns>
-        public Grid RestoreGameFromUserInput(List<Grid> gridList)
+        public Grid RestoreGameFromUserInput()
         {
             Console.WriteLine();
             Console.WriteLine("Please input NAME of the game you want to restore.");
             var userInputtedName = Console.ReadLine();
 
-            var existingGame = CheckValidGameNameInputOnSearch(userInputtedName, gridList);
+            var gridList = dataSerializer.ReturnListOfExistingGrids();
 
-            return dataSerializer.FindGameGridByName(existingGame, gridList);
+            var existingGame = CheckValidGameNameInputOnSearch(userInputtedName);
+
+            return dataSerializer.FindGameGridByName(existingGame);
         }
 
         /// <summary>

@@ -5,6 +5,8 @@
     /// </summary>
     public class GameDataSerializer
     {
+        public static List<Grid> gridList = new();
+
         /// <summary>
         /// Path to the file where the data will be stored.
         /// </summary>
@@ -52,11 +54,10 @@
         /// <summary>
         /// Write data about all saved grids to the file.
         /// </summary>
-        /// <param name="gridList">List of played game grids.</param>
-        public void SaveAllData(List<Grid> gridList)
+        public void SaveAllData()
         {
             ClearFile();
-
+            var gridList = ReturnListOfExistingGrids();
             foreach(var grid in gridList)
             {
                 SaveGameDataToFile(grid);
@@ -80,13 +81,20 @@
         }
 
         /// <summary>
+        /// Return a list of played game grids.
+        /// </summary>
+        /// <returns>List of game grids.</returns>
+        public List<Grid> ReturnListOfExistingGrids()
+        {
+            return gridList;
+        }
+
+        /// <summary>
         /// Read all data from file and convert them into Grid objects.
         /// </summary>
-        /// <returns>List of stored game grids.</returns>
-        public List<Grid> ReadDataFromTheFile()
+        public void ReadDataFromTheFile()
         {
-            CreateDirectoryAndFile();
-            List<Grid> gridList = new();
+            CreateDirectoryAndFile();            
 
             var jsonData = File.ReadAllLines(FilePath);
             foreach (var oneGridData in jsonData)
@@ -95,8 +103,6 @@
                 ConvertCellsListToArray(gridObject);
                 gridList.Add(gridObject);
             }
-
-            return gridList;
         }
 
         /// <summary>
@@ -116,9 +122,8 @@
         /// Find grid by the grid name.
         /// </summary>
         /// <param name="name">Name of the grid.</param>
-        /// <param name="gridList">List of the existing grids.</param>
         /// <returns>If exists return object if not return null.</returns>
-        public Grid? FindGameGridByName(string name, List<Grid> gridList)
+        public Grid? FindGameGridByName(string name)
         {
            return gridList.FirstOrDefault(g => g.GameName == name);
         }

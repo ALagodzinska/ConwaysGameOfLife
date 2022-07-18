@@ -5,7 +5,8 @@
     /// </summary>
     public class GameLogic
     {
-        UserOutput userOutput = new UserOutput();     
+        UserOutput userOutput = new();
+        GameDataSerializer dataSerializer = new();
 
         /// <summary>
         /// Draw grid based on the cells stored in the grid.
@@ -214,8 +215,7 @@
         /// Playing game until user wants to stop it.
         /// </summary>
         /// <param name="grid">Game Grid.</param>
-        /// /// <param name="gameGridList">List of played/saved games.</param>
-        public void PlayGame(Grid grid, List<Grid> gameGridList)
+        public void PlayGame(Grid grid)
         {
             do
             {
@@ -227,7 +227,7 @@
 
             } while (Console.ReadKey(true).Key != ConsoleKey.Escape);
 
-            UpdateGridList(gameGridList, grid);
+            UpdateGridList(grid);
 
             userOutput.GameOverMessage();
         }
@@ -235,10 +235,10 @@
         /// <summary>
         /// Save stopped game in the list where are stored all previous games. Or if this game has been restored replace with updated data.
         /// </summary>
-        /// <param name="gridList">List of the game grids.</param>
         /// <param name="grid">A played game grid.</param>
-        public void UpdateGridList(List<Grid> gridList, Grid grid)
+        public void UpdateGridList(Grid grid)
         {
+            var gridList = dataSerializer.ReturnListOfExistingGrids();
             if (CountOfLiveCells(grid) != 0)
             {
                 var restoredGridFromTheList = gridList.FirstOrDefault(g => g.GameName == grid.GameName);
