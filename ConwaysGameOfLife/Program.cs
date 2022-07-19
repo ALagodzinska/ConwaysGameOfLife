@@ -35,7 +35,11 @@ class Program
                 case "3":
                     userOutput.DisplayGamesForUser();
                     var foundGrid = userOutput.RestoreGameFromUserInput();
-                    game.PlayGame(foundGrid);
+                    if(foundGrid != null)
+                    {
+                        game.PlayGame(foundGrid);
+                    }
+
                     break;
 
                 case "4":

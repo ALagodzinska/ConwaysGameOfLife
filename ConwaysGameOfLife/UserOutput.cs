@@ -18,8 +18,7 @@
         public void ShowMenu()
         {
             Console.Clear();
-            Console.WriteLine("Hello, Welcome to the 'Game Of Life'!");
-            Console.WriteLine();
+            Console.WriteLine("Hello, Welcome to the 'Game Of Life'!" + "\n");
             Console.WriteLine("Please choose action what you want to do?(INPUT NUMBER)");
             Console.WriteLine("1. Play Game: Create Random field");
             Console.WriteLine("2. Play Game: Create Customized field");
@@ -34,8 +33,7 @@
         public Grid CreateGameGridFromUserInput()
         {
             Console.Clear();
-            Console.WriteLine("Please Remember that MAX Height is 30 and MAX Width is 120");
-            Console.WriteLine();
+            Console.WriteLine("Please Remember that MAX Height is 30 and MAX Width is 120" + "\n");
 
             Console.WriteLine("Create name for this game:");
             var gameNameInput = Console.ReadLine();
@@ -116,8 +114,7 @@
             int numberInList = 1;
             var gridList = dataSerializer.ReturnListOfExistingGrids();
 
-            Console.WriteLine("Please choose one of the games from the list" + "\n" + "List of saved games:");
-            Console.WriteLine();
+            Console.WriteLine("Please choose one of the games from the list" + "\n" + "List of saved games:" + "\n");
 
             foreach (var grid in gridList)
             {
@@ -130,13 +127,15 @@
         /// Get game grid which user want to restore.
         /// </summary>
         /// <returns>A game grid.</returns>
-        public Grid RestoreGameFromUserInput()
+        public Grid? RestoreGameFromUserInput()
         {
-            Console.WriteLine();
-            Console.WriteLine("Please input NAME of the game you want to restore.");
+            Console.WriteLine("\n" + "Please input NAME of the game you want to restore." + "\n" + "Type EXIT if you want to go back to main menu.");
             var userInputtedName = Console.ReadLine();
 
-            var gridList = dataSerializer.ReturnListOfExistingGrids();
+            if (userInputtedName.ToLower() == "exit")
+            {
+                return null;
+            }
 
             var existingGame = CheckValidGameNameInputOnSearch(userInputtedName);
 
@@ -148,8 +147,7 @@
         /// </summary>
         public void GameOverMessage()
         {
-            Console.WriteLine();
-            Console.WriteLine("Game is over! You will be sent to main menu ater 5 seconds");
+            Console.WriteLine("\n" + "Game is over! You will be sent to main menu ater 5 seconds");
             Thread.Sleep(5000);
         }
 
@@ -158,8 +156,7 @@
         /// </summary>
         public void CustomGameGridRulesMessage()
         {
-            Console.WriteLine();
-            Console.WriteLine("To move use ARROWS. To make cell live use SPACE. To stop setting field use ENTER.");
+            Console.WriteLine("\n" + "To move use ARROWS. To make cell live use SPACE. To stop setting field use ENTER.");
         }
 
         /// <summary>
@@ -169,8 +166,7 @@
         /// <param name="liveCellsCount">Count of live cells on a grid at this iteration.</param>
         public void MessageAfterEachIteration(int iterationCount, int liveCellsCount)
         {
-            Console.WriteLine();
-            Console.WriteLine($"Count of iteration: {iterationCount}");
+            Console.WriteLine("\n" + $"Count of iteration: {iterationCount}");
             Console.WriteLine($"Count of live cells: {liveCellsCount}");
         }
     }
