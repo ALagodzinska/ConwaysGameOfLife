@@ -13,6 +13,7 @@ namespace ConwaysGameOfLife
         /// </summary>
         /// <param name="height">Height of grid.</param>
         /// <param name="width">Width of grid.</param>
+        /// <param name="gameName">Name of the game.</param>
         public Grid(int height, int width, string gameName)
         {
             Cell[,] cells = new Cell[height, width];
