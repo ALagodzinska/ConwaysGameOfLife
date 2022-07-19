@@ -76,9 +76,9 @@
         /// <returns>Return valid(not taken) name for game grid.</returns>
         public string CheckForValidGameNameOnCreate(string gameName)
         {
-            var gridList = dataSerializer.ReturnListOfExistingGrids();
+            var exitName = "exit";
             while (dataSerializer.FindGameGridByName(gameName) != null ||
-                gameName == null)
+                gameName == null || gameName.ToLower() == exitName)
             {
                 Console.WriteLine("That name is taken" + "\n" + "Please enter valid input!");
                 gameName = Console.ReadLine();
@@ -94,7 +94,6 @@
         /// <returns>Return valid name(exsisting name of the grid from the saved grid list).</returns>
         public string CheckValidGameNameInputOnSearch(string gameName)
         {
-            var gridList = dataSerializer.ReturnListOfExistingGrids();
             while (dataSerializer.FindGameGridByName(gameName) == null)
             {
                 Console.WriteLine("There is no game with such name" + "\n" + "Please enter one of the names from the list!");

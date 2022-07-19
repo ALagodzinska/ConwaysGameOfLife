@@ -39,7 +39,6 @@ class Program
                     {
                         game.PlayGame(foundGrid);
                     }
-
                     break;
 
                 case "4":

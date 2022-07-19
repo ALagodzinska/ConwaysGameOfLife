@@ -249,6 +249,7 @@
         {
             var gridList = dataSerializer.ReturnListOfExistingGrids();
             var restoredGridFromTheList = gridList.FirstOrDefault(g => g.GameName == grid.GameName);
+
             if (restoredGridFromTheList != null)
             {
                 restoredGridFromTheList = grid;
