@@ -22,8 +22,7 @@ namespace ConwaysGameOfLife
             GameName = gameName;
             Height = height;
             Width = width;
-            IterationCount = 1;
-            
+            IterationCount = 1;            
         }
 
         /// <summary>
@@ -62,6 +61,7 @@ namespace ConwaysGameOfLife
         /// </summary>
         /// <param name="height">Height of the grid.</param>
         /// <param name="width">Width of the grid.</param>
+        /// <param name="gameName">Name of the game.</param>
         /// <returns>New grid created by parameters.</returns>
         public static Grid CreateNewGrid(int height, int width, string gameName)
         {

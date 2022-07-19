@@ -11,9 +11,19 @@
         public static List<Grid> gridList = new();
 
         /// <summary>
+        /// Name of the folder where file with data will be stored.
+        /// </summary>
+        private static string folderName = "GameOfLife";
+
+        /// <summary>
+        /// Name of the file where game data will be stored.
+        /// </summary>
+        private static string fileName = "GameOfLife.json";
+
+        /// <summary>
         /// Path to the file where the data will be stored.
         /// </summary>
-        private readonly string FilePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "GameOfLife", "GameOfLife.json");        
+        private readonly string FilePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), folderName, fileName);        
 
         /// <summary>
         /// Convert a field that contains two dimensional array to a list.

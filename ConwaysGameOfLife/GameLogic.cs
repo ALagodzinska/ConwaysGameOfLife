@@ -278,7 +278,7 @@
         }
 
         /// <summary>
-        /// Drawing grid for next generation.
+        /// Draw grid for next generation.
         /// </summary>
         /// <param name="grid">Game Grid.</param>
         public void DrawNextGeneration(Grid grid)
