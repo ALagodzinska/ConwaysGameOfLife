@@ -82,7 +82,7 @@
         /// </summary>
         public void CreateDirectoryAndFile()
         {
-            var pathToFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "GameOfLife");
+            var pathToFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), folderName);
             if (!Directory.Exists(pathToFolder))
             {
                 Directory.CreateDirectory(pathToFolder);
