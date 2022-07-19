@@ -9,6 +9,11 @@
         GameDataSerializer dataSerializer = new();
 
         /// <summary>
+        /// Stores the number of cells that didnt change on each iteration.
+        /// </summary>
+        int unchangedCellsCount;
+
+        /// <summary>
         /// Draw grid based on the cells stored in the grid.
         /// </summary>
         /// <param name="grid">Game grid.</param>
@@ -209,24 +214,28 @@
                 //empty cell with three neighbours - populated
                 cell.IsLive = true;
             }
+            else
+            {
+                unchangedCellsCount++;
+            }
         }
 
         /// <summary>
-        /// Playing game until user wants to stop it.
+        /// Playing game until user wants to stop it or the game is over.
         /// </summary>
         /// <param name="grid">Game Grid.</param>
         public void PlayGame(Grid grid)
         {
             do
             {
-                while (Console.KeyAvailable == false && CountOfLiveCells(grid) != 0)
+                while (Console.KeyAvailable == false && CountOfLiveCells(grid) != 0 && !CheckIfGridIsSame(grid))
                 {
                     DrawNextGeneration(grid);
                     Console.WriteLine("Press ESC to stop game");
                 }
 
             } while (Console.ReadKey(true).Key != ConsoleKey.Escape);
-
+            
             UpdateGridList(grid);
 
             userOutput.GameOverMessage();
@@ -239,18 +248,32 @@
         public void UpdateGridList(Grid grid)
         {
             var gridList = dataSerializer.ReturnListOfExistingGrids();
-            if (CountOfLiveCells(grid) != 0)
+            var restoredGridFromTheList = gridList.FirstOrDefault(g => g.GameName == grid.GameName);
+            if (restoredGridFromTheList != null)
             {
-                var restoredGridFromTheList = gridList.FirstOrDefault(g => g.GameName == grid.GameName);
-                if (restoredGridFromTheList != null)
+                restoredGridFromTheList = grid;
+                if (CountOfLiveCells(grid) == 0 || CheckIfGridIsSame(grid))
                 {
-                    restoredGridFromTheList = grid;
+                    gridList.Remove(restoredGridFromTheList);
                 }
-                else
+            }
+            else
+            {
+                if (CountOfLiveCells(grid) != 0 && !CheckIfGridIsSame(grid))
                 {
                     gridList.Add(grid);
                 }
-            }
+            }            
+        }
+
+        /// <summary>
+        /// Check if unchanged cells count is the same with cells count in a grid. If all cells stay unchanged - game is over.
+        /// </summary>
+        /// <param name="grid">A game grid.</param>
+        /// <returns>True if all cells stayed the same, false if grid have been changed.</returns>
+        public bool CheckIfGridIsSame(Grid grid)
+        {
+            return unchangedCellsCount == grid.Height * grid.Width ? true : false;            
         }
 
         /// <summary>
@@ -259,6 +282,8 @@
         /// <param name="grid">Game Grid.</param>
         public void DrawNextGeneration(Grid grid)
         {
+            unchangedCellsCount = 0;
+
             foreach (var cell in grid.Cells)
             {
                 CountLiveNeighbours(cell, grid);
