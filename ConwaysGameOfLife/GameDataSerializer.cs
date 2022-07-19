@@ -5,6 +5,9 @@
     /// </summary>
     public class GameDataSerializer
     {
+        /// <summary>
+        /// List to store played game grids.
+        /// </summary>
         public static List<Grid> gridList = new();
 
         /// <summary>
