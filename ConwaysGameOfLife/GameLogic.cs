@@ -1,16 +1,22 @@
 ﻿namespace ConwaysGameOfLife
 {
     /// <summary>
-    /// Containes methods that apply game rules and logic.
+    /// Contain methods that apply game rules and logic.
     /// </summary>
     public class GameLogic
     {
-        UserOutput userOutput = new UserOutput();     
+        UserOutput userOutput = new();
+        GameDataSerializer dataSerializer = new();
 
         /// <summary>
-        /// Draws grid based on the cells stored in the grid.
+        /// Stores the number of cells that didnt change on each iteration.
         /// </summary>
-        /// <param name="grid">Game grid</param>
+        int unchangedCellsCount;
+
+        /// <summary>
+        /// Draw grid based on the cells stored in the grid.
+        /// </summary>
+        /// <param name="grid">Game grid.</param>
         public void DrawGrid(Grid grid)
         {  
             Console.Clear();
@@ -28,9 +34,9 @@
         }
 
         /// <summary>
-        /// Draws one cell on the grid in certain style, depending on whether it is alive or not.
+        /// Draw one cell on the grid in certain style, depending on whether it is alive or not.
         /// </summary>
-        /// <param name="isLive">Cell parameter that tells if it is live or not</param>
+        /// <param name="isLive">Cell parameter that note if cell is live or not.</param>
         public void DrawCell(bool isLive)
         {
             string cellSymbol = isLive ? "*" : "-";
@@ -43,7 +49,7 @@
         /// <summary>
         /// Create a random grid with where by random is placed live and dead cells.
         /// </summary>
-        /// <param name="grid">Game grid</param>
+        /// <param name="grid">Game grid.</param>
         public void CreateRandomGrid(Grid grid)
         {
             var random = new Random();
@@ -66,7 +72,7 @@
         /// <summary>
         /// Allow to move coursor around field and change dead cells to live.
         /// </summary>
-        /// <param name="grid">Game grid</param>
+        /// <param name="grid">Game grid.</param>
         public void ChooseLiveCells(Grid grid)
         {
             DrawGrid(grid);
@@ -156,10 +162,10 @@
         }
 
         /// <summary>
-        /// Counts all live neighbours of the cell.
+        /// Count all live neighbours of the cell.
         /// </summary>
-        /// <param name="cell">One cell from grid</param>
-        /// <param name="grid">Game grid</param>
+        /// <param name="cell">A cell from grid.</param>
+        /// <param name="grid">Game grid.</param>
         public void CountLiveNeighbours(Cell cell, Grid grid)
         {
             var liveCellsCount = 0;
@@ -188,9 +194,9 @@
         }
 
         /// <summary>
-        /// Apply all game rules for one cell, and mark if it is going to change in next iteration.
+        /// Apply all game rules for one cell, and change IsLive status for next iteration.
         /// </summary>
-        /// <param name="cell">One cell from game grid</param>
+        /// <param name="cell">A cell from game grid.</param>
         public void ApplyGameRules(Cell cell)
         {
             if (cell.LiveNeighbours < 2 && cell.IsLive)
@@ -208,33 +214,77 @@
                 //empty cell with three neighbours - populated
                 cell.IsLive = true;
             }
+            else
+            {
+                unchangedCellsCount++;
+            }
         }
 
         /// <summary>
-        /// Playing game until user wants to stop it
+        /// Playing game until user wants to stop it or the game is over.
         /// </summary>
-        /// <param name="grid">Game Grid</param>
+        /// <param name="grid">Game Grid.</param>
         public void PlayGame(Grid grid)
         {
             do
             {
-                while (Console.KeyAvailable == false && CountOfLiveCells(grid) != 0)
+                while (Console.KeyAvailable == false && CountOfLiveCells(grid) != 0 && !CheckIfGridIsSame(grid))
                 {
                     DrawNextGeneration(grid);
                     Console.WriteLine("Press ESC to stop game");
                 }
 
             } while (Console.ReadKey(true).Key != ConsoleKey.Escape);
+            
+            UpdateGridList(grid);
 
             userOutput.GameOverMessage();
         }
 
         /// <summary>
-        /// Drawing grid for next generation
+        /// Save stopped game in the list where are stored all previous games. Or if this game has been restored replace with updated data.
         /// </summary>
-        /// <param name="grid">Game Grid</param>
+        /// <param name="grid">A played game grid.</param>
+        public void UpdateGridList(Grid grid)
+        {
+            var gridList = dataSerializer.ReturnListOfExistingGrids();
+            var restoredGridFromTheList = gridList.FirstOrDefault(g => g.GameName == grid.GameName);
+
+            if (restoredGridFromTheList != null)
+            {
+                restoredGridFromTheList = grid;
+                if (CountOfLiveCells(grid) == 0 || CheckIfGridIsSame(grid))
+                {
+                    gridList.Remove(restoredGridFromTheList);
+                }
+            }
+            else
+            {
+                if (CountOfLiveCells(grid) != 0 && !CheckIfGridIsSame(grid))
+                {
+                    gridList.Add(grid);
+                }
+            }            
+        }
+
+        /// <summary>
+        /// Check if unchanged cells count is the same with cells count in a grid. If all cells stay unchanged - game is over.
+        /// </summary>
+        /// <param name="grid">A game grid.</param>
+        /// <returns>True if all cells stayed the same, false if grid have been changed.</returns>
+        public bool CheckIfGridIsSame(Grid grid)
+        {
+            return unchangedCellsCount == grid.Height * grid.Width ? true : false;            
+        }
+
+        /// <summary>
+        /// Draw grid for next generation.
+        /// </summary>
+        /// <param name="grid">Game Grid.</param>
         public void DrawNextGeneration(Grid grid)
         {
+            unchangedCellsCount = 0;
+
             foreach (var cell in grid.Cells)
             {
                 CountLiveNeighbours(cell, grid);
@@ -253,8 +303,8 @@
         /// <summary>
         /// Count live cells in the game grid.
         /// </summary>
-        /// <param name="grid">Game grid</param>
-        /// <returns>Count of live cells(int) in the current grid</returns>
+        /// <param name="grid">Game grid.</param>
+        /// <returns>Count of live cells(int) in the current grid.</returns>
         public int CountOfLiveCells(Grid grid)
         {
             return grid.Cells.OfType<Cell>().Where(c => c.IsLive == true).Count();
