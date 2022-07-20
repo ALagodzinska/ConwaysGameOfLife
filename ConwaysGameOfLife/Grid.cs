@@ -74,7 +74,7 @@ namespace ConwaysGameOfLife
                     grid.Cells[h, w] = new Cell()
                     {
                         Height = h,
-                        Width = w,                        
+                        Width = w,
                     };
                 }
             }

@@ -22,8 +22,10 @@ class Program
                 case "1":
                     Console.WriteLine("Let the game begin...");
                     var createdGridRandomGame = userOutput.CreateGameGridFromUserInput();
-                    game.CreateRandomGrid(createdGridRandomGame);
-                    game.PlayGame(createdGridRandomGame);
+                    var randomGrid = game.CreateRandomGrid(createdGridRandomGame);
+                    ///do i even need this method
+                    game.DisplayRandomGrid(randomGrid);
+                    game.PlayGame(randomGrid);
                     break;
 
                 case "2":
@@ -42,6 +44,24 @@ class Program
                     break;
 
                 case "4":
+                    var gameCount = userOutput.GameCountInput();
+                    var gamesBase = userOutput.CreateGameGridFromUserInput();
+                    game.GenerateGridsForMultipleGames(gamesBase, gameCount);
+                    game.PlayMultipleGames();
+                    //choose how many games you want to play
+                    //choose size of the field for games
+                    //generate random grid
+                    //play games without drawing
+                    //on esc stop playing
+
+                    //save games to array
+                    //allow to choose up to 8 games for displaying 
+                    //choose array by index
+
+                    //change games that are showed on a screen
+                    break;
+
+                case "5":
                     Console.WriteLine("Thank you for the game. Bye!");
                     dataSerializer.SaveAllData();
                     exit = "exit";

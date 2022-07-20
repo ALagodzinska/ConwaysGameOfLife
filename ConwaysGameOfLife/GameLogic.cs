@@ -1,4 +1,6 @@
-﻿namespace ConwaysGameOfLife
+﻿using System.Diagnostics;
+
+namespace ConwaysGameOfLife
 {
     /// <summary>
     /// Contain methods that apply game rules and logic.
@@ -13,12 +15,14 @@
         /// </summary>
         int unchangedCellsCount;
 
+        public static List<Grid> multipleGameList = new();
+
         /// <summary>
         /// Draw grid based on the cells stored in the grid.
         /// </summary>
         /// <param name="grid">Game grid.</param>
         public void DrawGrid(Grid grid)
-        {  
+        {
             Console.Clear();
 
             for (int h = 0; h < grid.Height; h++)
@@ -50,7 +54,7 @@
         /// Create a random grid with where by random is placed live and dead cells.
         /// </summary>
         /// <param name="grid">Game grid.</param>
-        public void CreateRandomGrid(Grid grid)
+        public Grid CreateRandomGrid(Grid grid)
         {
             var random = new Random();
 
@@ -61,10 +65,15 @@
                     if (random.Next(2) != 0)
                     {
                         grid.Cells[h, w].IsLive = true;
-                    }                
+                    }
                 }
             }
-            
+
+            return grid;
+        }
+
+        public void DisplayRandomGrid(Grid grid)
+        {
             DrawGrid(grid);
             userOutput.MessageAfterEachIteration(0, CountOfLiveCells(grid));
         }
@@ -94,9 +103,9 @@
                         if (cell != null)
                         {
                             cell.IsLive = !cell.IsLive;
-                            
+
                             DrawCell(cell.IsLive);
-                            
+
                             if (cell.Width == grid.Width - 1 || cell.Height == grid.Height - 1)
                             {
                                 Console.SetCursorPosition(startPosition.Left, startPosition.Top);
@@ -174,7 +183,7 @@
             {
                 for (int w = cell.Width - 1; w < cell.Width + 2; w++)
                 {
-                    if (h >= grid.Height || h < 0 
+                    if (h >= grid.Height || h < 0
                         || w >= grid.Width || w < 0
                         || (h == cell.Height && w == cell.Width))
                     {
@@ -235,7 +244,7 @@
                 }
 
             } while (Console.ReadKey(true).Key != ConsoleKey.Escape);
-            
+
             UpdateGridList(grid);
 
             userOutput.GameOverMessage();
@@ -264,7 +273,7 @@
                 {
                     gridList.Add(grid);
                 }
-            }            
+            }
         }
 
         /// <summary>
@@ -274,7 +283,7 @@
         /// <returns>True if all cells stayed the same, false if grid have been changed.</returns>
         public bool CheckIfGridIsSame(Grid grid)
         {
-            return unchangedCellsCount == grid.Height * grid.Width ? true : false;            
+            return unchangedCellsCount == grid.Height * grid.Width ? true : false;
         }
 
         /// <summary>
@@ -285,6 +294,15 @@
         {
             unchangedCellsCount = 0;
 
+            ChangeGridForNextIteration(grid);
+
+            Thread.Sleep(1000);
+            DrawGrid(grid);
+            userOutput.MessageAfterEachIteration(grid.IterationCount++, CountOfLiveCells(grid));
+        }
+
+        public void ChangeGridForNextIteration(Grid grid)
+        {
             foreach (var cell in grid.Cells)
             {
                 CountLiveNeighbours(cell, grid);
@@ -294,10 +312,53 @@
             {
                 ApplyGameRules(cell);
             }
+            grid.IterationCount++;
+        }
 
-            Thread.Sleep(1000);
-            DrawGrid(grid);
-            userOutput.MessageAfterEachIteration(grid.IterationCount++, CountOfLiveCells(grid));
+        public void PlayMultipleGames()
+        {
+            Console.Clear();
+            Console.WriteLine("Press ESC to stop games");
+            foreach(var grid in multipleGameList)
+            {
+                Console.WriteLine($"{grid.GameName} countOfLiveCells {CountOfLiveCells(grid)}");
+                Console.WriteLine();
+            }
+            do
+            {
+                while (Console.KeyAvailable == false)
+                {
+                    Parallel.ForEach(multipleGameList, game =>
+                    {
+                        ChangeGridForNextIteration(game);
+                        Console.WriteLine($"{game.GameName} countOfLiveCells {CountOfLiveCells(game)}");
+                        if (CountOfLiveCells(game) == 0 && CheckIfGridIsSame(game))
+                        {
+                            multipleGameList.Remove(game);
+                        }
+                    });                    
+                }
+
+            } while (Console.ReadKey(true).Key != ConsoleKey.Escape);
+
+            Console.ReadLine();
+            userOutput.GameOverMessage();
+        }
+
+        /// <summary>
+        /// Creates random game fields based on inoutted user data.
+        /// </summary>
+        /// <param name="grid">Grid where are saved base data to create multiple games.</param>
+        /// <param name="gameCount">Count of the games that will play in parallel.</param>
+        public void GenerateGridsForMultipleGames(Grid grid, int gameCount)
+        {
+            multipleGameList = new List<Grid>();
+            for (int i = 0; i < gameCount; i++)
+            {
+                var newGrid = Grid.CreateNewGrid(grid.Height, grid.Width, grid.GameName + i.ToString());
+                var randomGrid = CreateRandomGrid(newGrid);
+                multipleGameList.Add(randomGrid);
+            }            
         }
 
         /// <summary>
