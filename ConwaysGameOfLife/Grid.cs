@@ -23,7 +23,7 @@ namespace ConwaysGameOfLife
             GameName = gameName;
             Height = height;
             Width = width;
-            IterationCount = 1;            
+            IterationCount = 0;            
         }
 
         /// <summary>

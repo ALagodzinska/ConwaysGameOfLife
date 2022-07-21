@@ -4,6 +4,8 @@ class Program
 {
     static void Main(string[] args)
     {
+        Console.SetWindowSize(Console.LargestWindowWidth, Console.LargestWindowHeight);
+
         GameLogic game = new();
         UserOutput userOutput = new();
         GameDataSerializer dataSerializer = new();
@@ -21,17 +23,19 @@ class Program
             {
                 case "1":
                     Console.WriteLine("Let the game begin...");
-                    var createdGridRandomGame = userOutput.CreateGameGridFromUserInput();
-                    var randomGrid = game.CreateRandomGrid(createdGridRandomGame);
+                    var gridParametersRandomGame = userOutput.GetGridParametersFromInput();
+                    var createdGridRandom = Grid.CreateNewGrid(gridParametersRandomGame.Height, gridParametersRandomGame.Width, gridParametersRandomGame.GameName);
+                    var randomGrid = game.CreateRandomGrid(createdGridRandom);
                     ///do i even need this method
                     game.DisplayRandomGrid(randomGrid);
                     game.PlayGame(randomGrid);
                     break;
 
                 case "2":
-                    var createdGridCustomGame = userOutput.CreateGameGridFromUserInput();
-                    game.ChooseLiveCells(createdGridCustomGame);
-                    game.PlayGame(createdGridCustomGame);
+                    var gridParametersCustomGame = userOutput.GetGridParametersFromInput();
+                    var createdGridCustom = Grid.CreateNewGrid(gridParametersCustomGame.Height, gridParametersCustomGame.Width, gridParametersCustomGame.GameName);
+                    game.ChooseLiveCells(createdGridCustom);
+                    game.PlayGame(createdGridCustom);
                     break;
 
                 case "3":
@@ -45,9 +49,9 @@ class Program
 
                 case "4":
                     var gameCount = userOutput.GameCountInput();
-                    var gamesBase = userOutput.CreateGameGridFromUserInput();
-                    game.GenerateGridsForMultipleGames(gamesBase, gameCount);
-                    game.PlayMultipleGames();
+                    var gridParametersMultipleGames = userOutput.GetMultipleGamesParametersFromInput();
+                    var listOfGames = game.GenerateGridsForMultipleGames(gridParametersMultipleGames, gameCount);
+                    game.PlayMultipleGames(listOfGames);
                     //choose how many games you want to play
                     //choose size of the field for games
                     //generate random grid

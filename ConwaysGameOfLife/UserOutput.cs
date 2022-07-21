@@ -31,24 +31,58 @@
         /// Display to user what values should be inputted and processes data input.
         /// </summary>
         /// <returns>New grid.</returns>
-        public Grid CreateGameGridFromUserInput()
+        public GridOptions GetGridParametersFromInput()
         {
             Console.Clear();
             Console.WriteLine("Please Remember that MAX Height is 30 and MAX Width is 60" + "\n");
 
             Console.WriteLine("Create name for this game:");
             var gameNameInput = Console.ReadLine();
-            var validName = CheckForValidGameNameOnCreate(gameNameInput);
+            var validName = GameNameOnCreateValidation(gameNameInput);
 
             Console.WriteLine("Input height of field:");
             var heightInput = Console.ReadLine();
-            var validHeight = CheckForValidDimensionInput(heightInput, "height");
+            var validHeight = DimensionInputValidation(heightInput, "height");           
 
             Console.WriteLine("Input width of field:");
             var widthInput = Console.ReadLine();
-            var validWidth = CheckForValidDimensionInput(widthInput, "width");
+            var validWidth = DimensionInputValidation(widthInput, "width");
 
-            return Grid.CreateNewGrid(validHeight, validWidth, validName);
+            var gridParameters = new GridOptions()
+            {
+                GameName = validName,
+                Height = validHeight,
+                Width = validWidth,
+            };
+
+            return gridParameters;
+        }
+
+        public GridOptions GetMultipleGamesParametersFromInput()
+        {
+            Console.Clear();
+            Console.WriteLine("Please Remember that MAX Height is 15 and MAX Width is 15" + "\n");
+
+            Console.WriteLine("Create name for this game:");
+            var gameNameInput = Console.ReadLine();
+            var validName = GameNameOnCreateValidation(gameNameInput);
+
+            Console.WriteLine("Input height of field:");
+            var heightInput = Console.ReadLine();
+            var validHeight = DimensionInputValidation(heightInput, "multipleGameHeight");
+
+            Console.WriteLine("Input width of field:");
+            var widthInput = Console.ReadLine();
+            var validWidth = DimensionInputValidation(widthInput, "multipleGameWidth");
+
+            var gridParameters = new GridOptions()
+            {
+                GameName = validName,
+                Height = validHeight,
+                Width = validWidth,
+            };
+
+            return gridParameters;
         }
 
         public int GameCountInput()
@@ -58,21 +92,66 @@
             Console.WriteLine("Input number from 2 to 1000");
 
             var gameCountInput = Console.ReadLine();
-            var validGameCountInput = CheckForValidGameCountInput(gameCountInput);
+            var validGameCountInput = GamesCountToPlayValidation(gameCountInput);
 
             return validGameCountInput;
         }
 
-        
-
-        public int CheckForValidGameCountInput(string gameCountInput)
+        public int[] ChooseMultipleGames(int countOfAllGames)
         {
-            while (!int.TryParse(gameCountInput, out validInput) || validInput <= 0
+            Console.WriteLine("No more than 8 games can be shown on the screen.");
+            Console.WriteLine("How many games you want to see on the screen?");
+
+            var gamesToDisplayCount = Console.ReadLine();
+            var countOfSelectedGames = SelectedGamesCountValidation(gamesToDisplayCount, countOfAllGames);
+
+            int[] gamesArray = new int[countOfSelectedGames];
+
+            for (int i = 0; i < countOfSelectedGames; i++)
+            {
+                Console.WriteLine($"To choose game input a number from 1 to {countOfAllGames}");
+                var gameNumberInput = Console.ReadLine();
+                var validGameNumber = GameNumberValidation(gameNumberInput, countOfAllGames);
+                gamesArray[i] = validGameNumber;
+            }
+
+            return gamesArray;
+        }
+
+        public int GameNumberValidation(string gameNumberInput, int countOfAllGames)
+        {
+            while (!int.TryParse(gameNumberInput, out validInput) || validInput <= 0
+                || validInput > countOfAllGames)
+            {
+                Console.WriteLine("Such game don't exist, try one more time!");
+                gameNumberInput = Console.ReadLine();
+            }
+
+            return validInput;
+        }
+
+        public int SelectedGamesCountValidation(string gamesCountInput, int countOfAllGames)
+        {
+            // 8 because no more than 8 games can be displayed
+            while (!int.TryParse(gamesCountInput, out validInput) || validInput <= 0
+                || validInput > countOfAllGames
+                || validInput > 8)
+            {
+                Console.WriteLine("Please enter valid input!");
+                gamesCountInput = Console.ReadLine();
+            }
+
+            return validInput;
+        }
+
+        public int GamesCountToPlayValidation(string countOfAllGames)
+        {
+            while (!int.TryParse(countOfAllGames, out validInput) || validInput <= 0
                 || validInput < 2
                 || validInput > 1000)
             {
                 Console.WriteLine("Please enter valid input!");
-                gameCountInput = Console.ReadLine();
+                countOfAllGames = Console.ReadLine();
             }
 
             return validInput;
@@ -84,11 +163,13 @@
         /// <param name="numberInput">The string value that was inputted by user.</param>
         /// <param name="typeOfInput">Allows to understand what type of input it is(height or width). Used for validation.</param>
         /// <returns>Returns an integer after correct input.</returns>
-        public int CheckForValidDimensionInput(string numberInput, string typeOfInput)
+        public int DimensionInputValidation(string numberInput, string typeOfInput)
         {
             while (!int.TryParse(numberInput, out validInput) || validInput <= 0
                 || typeOfInput == "height" && validInput > 30
-                || typeOfInput == "width" && validInput > 60)
+                || typeOfInput == "width" && validInput > 60
+                || typeOfInput == "multipleGameWidth" && validInput > 15
+                || typeOfInput == "multipleGameHeight" && validInput > 15)
             {
                 Console.WriteLine("Please enter valid input!");
                 numberInput = Console.ReadLine();
@@ -102,7 +183,7 @@
         /// </summary>
         /// <param name="gameName">Inputted name for the grid.</param>
         /// <returns>Return valid(not taken) name for game grid.</returns>
-        public string CheckForValidGameNameOnCreate(string gameName)
+        public string GameNameOnCreateValidation(string gameName)
         {
             var exitName = "exit";
             while (dataSerializer.FindGameGridByName(gameName) != null ||
@@ -120,7 +201,7 @@
         /// </summary>
         /// <param name="gameName">Inputted name for the grid.</param>
         /// <returns>Return valid name(exsisting name of the grid from the saved grid list).</returns>
-        public string CheckValidGameNameInputOnSearch(string gameName)
+        public string GameNameOnSearchValidation(string gameName)
         {
             while (dataSerializer.FindGameGridByName(gameName) == null)
             {
@@ -164,7 +245,7 @@
                 return null;
             }
 
-            var existingGame = CheckValidGameNameInputOnSearch(userInputtedName);
+            var existingGame = GameNameOnSearchValidation(userInputtedName);
 
             return dataSerializer.FindGameGridByName(existingGame);
         }
