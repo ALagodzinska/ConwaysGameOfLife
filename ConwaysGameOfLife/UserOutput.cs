@@ -61,7 +61,7 @@
         public GridOptions GetMultipleGamesParametersFromInput()
         {
             Console.Clear();
-            Console.WriteLine("Please Remember that MAX Height is 15 and MAX Width is 15" + "\n");
+            Console.WriteLine("Please Remember that MAX Height is 15 and MAX Width is 20" + "\n");
 
             Console.WriteLine("Create name for this game:");
             var gameNameInput = Console.ReadLine();
@@ -168,7 +168,7 @@
             while (!int.TryParse(numberInput, out validInput) || validInput <= 0
                 || typeOfInput == "height" && validInput > 30
                 || typeOfInput == "width" && validInput > 60
-                || typeOfInput == "multipleGameWidth" && validInput > 15
+                || typeOfInput == "multipleGameWidth" && validInput > 20
                 || typeOfInput == "multipleGameHeight" && validInput > 15)
             {
                 Console.WriteLine("Please enter valid input!");
@@ -274,8 +274,9 @@
         /// <param name="liveCellsCount">Count of live cells on a grid at this iteration.</param>
         public void MessageAfterEachIteration(int iterationCount, int liveCellsCount)
         {
-            Console.WriteLine("\n" + $"Count of iteration: {iterationCount}");
-            Console.WriteLine($"Count of live cells: {liveCellsCount}");
+            Console.WriteLine();
+            Console.WriteLine($"Iteration count: {iterationCount}");
+            Console.WriteLine($"Live cells count: {liveCellsCount}");
         }
         
         public void ShowGamesStatistics(List<Grid> gridList)

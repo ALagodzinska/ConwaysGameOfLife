@@ -46,6 +46,8 @@ namespace ConwaysGameOfLife
         /// </summary>
         public int IterationCount { get; set; }
 
+        public int UncahngedCellsCount { get; set; }
+
         /// <summary>
         /// Stores all cells inside of this grid as collection of rows and columns.
         /// </summary>
@@ -80,6 +82,48 @@ namespace ConwaysGameOfLife
             }
 
             return grid;
+        }
+
+        /// <summary>
+        /// Count all live neighbours of the cell.
+        /// </summary>
+        /// <param name="cell">A cell from grid.</param>
+        /// <param name="grid">Game grid.</param>
+        public int LiveNeighboursCount(Cell cell)
+        {
+            var liveCellsCount = 0;
+
+            for (int h = cell.Height - 1; h < cell.Height + 2; h++)
+            {
+                for (int w = cell.Width - 1; w < cell.Width + 2; w++)
+                {
+                    if (h >= this.Height || h < 0
+                        || w >= this.Width || w < 0
+                        || (h == cell.Height && w == cell.Width))
+                    {
+                        continue;
+                    }
+
+                    var foundCell = this.Cells[h, w];
+
+                    if (foundCell.IsLive)
+                    {
+                        liveCellsCount++;
+                    }
+                }
+            }
+
+            return liveCellsCount;
+        }
+
+        /// <summary>
+        /// Count live cells in the game grid.
+        /// </summary>
+        /// <param name="grid">Game grid.</param>
+        /// <returns>Count of live cells(int) in the current grid.</returns>
+        public int CountOfLiveCells()
+        {
+            return this.Cells.OfType<Cell>().Where(c => c.IsLive == true).Count();
         }
     }
 }

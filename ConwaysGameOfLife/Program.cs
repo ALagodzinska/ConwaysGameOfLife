@@ -50,7 +50,7 @@ class Program
                 case "4":
                     var gameCount = userOutput.GameCountInput();
                     var gridParametersMultipleGames = userOutput.GetMultipleGamesParametersFromInput();
-                    var listOfGames = game.GenerateGridsForMultipleGames(gridParametersMultipleGames, gameCount);
+                    var listOfGames = game.MultipleGridList(gridParametersMultipleGames, gameCount);
                     game.PlayMultipleGames(listOfGames);
                     //choose how many games you want to play
                     //choose size of the field for games
