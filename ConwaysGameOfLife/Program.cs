@@ -4,6 +4,7 @@ class Program
 {
     static void Main(string[] args)
     {
+        //setting window size to maximum, makes it easier to play multiple games.
         Console.SetWindowSize(Console.LargestWindowWidth, Console.LargestWindowHeight);
 
         GameLogic game = new();
@@ -22,7 +23,6 @@ class Program
             switch (option)
             {
                 case "1":
-                    Console.WriteLine("Let the game begin...");
                     var gridParametersRandomGame = userOutput.GetGridParametersFromInput();
                     var createdGridRandom = Grid.CreateNewGrid(gridParametersRandomGame.Height, gridParametersRandomGame.Width, gridParametersRandomGame.GameName);
                     var randomGrid = game.CreateRandomGrid(createdGridRandom);
@@ -44,6 +44,7 @@ class Program
                     {
                         game.PlayGame(foundGrid);
                     }
+
                     break;
 
                 case "4":
@@ -51,17 +52,6 @@ class Program
                     var gridParametersMultipleGames = userOutput.GetMultipleGamesParametersFromInput();
                     var listOfGames = game.MultipleGridList(gridParametersMultipleGames, gameCount);
                     game.PlayMultipleGames(listOfGames);
-                    //choose how many games you want to play
-                    //choose size of the field for games
-                    //generate random grid
-                    //play games without drawing
-                    //on esc stop playing
-
-                    //save games to array
-                    //allow to choose up to 8 games for displaying 
-                    //choose array by index
-
-                    //change games that are showed on a screen
                     break;
 
                 case "5":

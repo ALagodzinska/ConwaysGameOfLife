@@ -13,7 +13,7 @@
         int validInput;
 
         /// <summary>
-        /// Show menu to user, where are listed actions that user is able to choose to play or exit the game. 
+        /// Show menu to user, where are listed actions that user is able to choose. 
         /// </summary>
         public void ShowMenu()
         {
@@ -28,9 +28,9 @@
         }
 
         /// <summary>
-        /// Display to user what values should be inputted and processes data input.
+        /// Display to user what values should be inputted for one game and processes data input.
         /// </summary>
-        /// <returns>New grid.</returns>
+        /// <returns>Return base parameters(GridOptions) for future game grid.</returns>
         public GridOptions GetGridParametersFromInput()
         {
             Console.Clear();
@@ -58,6 +58,10 @@
             return gridParameters;
         }
 
+        /// <summary>
+        /// Display to user what values should be inputted for multiple games and processes data input.
+        /// </summary>
+        /// <returns>Return base parameters(GridOptions) for future game grid.</returns>
         public GridOptions GetMultipleGamesParametersFromInput()
         {
             Console.Clear();
@@ -85,6 +89,10 @@
             return gridParameters;
         }
 
+        /// <summary>
+        /// Get user input about how many games will be played at the same time.
+        /// </summary>
+        /// <returns>Count of the games to be played in parallel.</returns>
         public int GameCountInput()
         {
             Console.Clear();
@@ -97,6 +105,11 @@
             return validGameCountInput;
         }
 
+        /// <summary>
+        /// Get data from user about what games should be displayed on the screen.
+        /// </summary>
+        /// <param name="countOfAllGames">Count of all games that are playing in parallel.</param>
+        /// <returns>Array of numbers, number - indicate location in list of all games played at the same time.</returns>
         public int[] ChooseMultipleGames(int countOfAllGames)
         {
             Console.WriteLine("No more than 8 games can be shown on the screen.");
@@ -118,6 +131,12 @@
             return gamesArray;
         }
 
+        /// <summary>
+        /// Check if inputted numeric value is valid, is included in boundaries of chosen game list. If not asks for valid input.
+        /// </summary>
+        /// <param name="gameNumberInput">Serial number of game to choose from list.</param>
+        /// <param name="countOfAllGames">Count of all games in a list</param>
+        /// <returns>Returns valid game numeric identifier.</returns>
         public int GameNumberValidation(string gameNumberInput, int countOfAllGames)
         {
             while (!int.TryParse(gameNumberInput, out validInput) || validInput <= 0
@@ -130,6 +149,12 @@
             return validInput;
         }
 
+        /// <summary>
+        /// Check if inputted numeric value for games to display is valid. If not asks for valid input.
+        /// </summary>
+        /// <param name="gamesCountInput">Number of the game that user wants to see on screen.</param>
+        /// <param name="countOfAllGames">Count of all games played in parallel.</param>
+        /// <returns>Returns a valid count of games to display on screen.</returns>
         public int SelectedGamesCountValidation(string gamesCountInput, int countOfAllGames)
         {
             // 8 because no more than 8 games can be displayed
@@ -144,6 +169,11 @@
             return validInput;
         }
 
+        /// <summary>
+        /// Check if inputted numeric value for games to play in parallel is valid. If not asks for valid input.
+        /// </summary>
+        /// <param name="countOfAllGames">User input for count of all games played in parallel.</param>
+        /// <returns>Returns an valid count of games to play in parallel.</returns>
         public int GamesCountToPlayValidation(string countOfAllGames)
         {
             while (!int.TryParse(countOfAllGames, out validInput) || validInput <= 0
@@ -158,11 +188,11 @@
         }
 
         /// <summary>
-        /// Check if inputted numeric value is valid and if it is not asks for valid input.
+        /// Check if inputted numeric value for grid dimensions is valid. If not asks for valid input.
         /// </summary>
-        /// <param name="numberInput">The string value that was inputted by user.</param>
+        /// <param name="numberInput">Parameter for grid that was inputted by user.</param>
         /// <param name="typeOfInput">Allows to understand what type of input it is(height or width). Used for validation.</param>
-        /// <returns>Returns an integer after correct input.</returns>
+        /// <returns>Returns a valid integer - Grid parameter.</returns>
         public int DimensionInputValidation(string numberInput, string typeOfInput)
         {
             while (!int.TryParse(numberInput, out validInput) || validInput <= 0
@@ -257,7 +287,7 @@
         /// </summary>
         public void GameOverMessage()
         {
-            Console.WriteLine("\n" + "Game is over! You will be sent to main menu ater 5 seconds");
+            Console.WriteLine("\n" + "You will be sent to main menu ater 5 seconds.");
             Thread.Sleep(5000);
         }
 
@@ -272,8 +302,7 @@
         /// <summary>
         /// Display count of iteration and count of live cells to user.
         /// </summary>
-        /// <param name="iterationCount">Count of game iteration.</param>
-        /// <param name="liveCellsCount">Count of live cells on a grid at this iteration.</param>
+        /// <param name="grid">Game grid.</param>
         public void MessageAfterEachIteration(Grid grid)
         {
             Console.SetCursorPosition(0, grid.Height);
@@ -282,6 +311,11 @@
             Console.WriteLine($"Live cells: {grid.CountOfLiveCells()}");
         }
 
+        /// <summary>
+        /// Display game names and count of live cells of one grid on a multiple games field.
+        /// </summary>
+        /// <param name="grid">Game grid.</param>
+        /// <param name="startCoordinates">Start coordinates of a displayed grid.</param>
         public void MultipleGameMessageAfterIteration(Grid grid, int[] startCoordinates)
         {
             Console.SetCursorPosition(startCoordinates[0], grid.Height + startCoordinates[1] + 1);
@@ -289,21 +323,29 @@
             Console.SetCursorPosition(startCoordinates[0], grid.Height + startCoordinates[1] + 2);
             Console.Write($"Live cells: {grid.CountOfLiveCells()}");
         }
-        
-        public void ShowGamesStatistics(List<Grid> gridList)
-        {
-            Thread.Sleep(2000);
-            Console.Clear();
-            Console.WriteLine($"Played games:{gridList.Count()}");
-            Console.WriteLine($"Live cells count in total:");
-        }
 
+        /// <summary>
+        /// Clean live cells count after each iteration to change displayed value.
+        /// </summary>
+        /// <param name="grid">Game grid.</param>
+        /// <param name="startCoordinates">Start coordinates of a displayed grid.</param>
         public void CleanLiveCellsCount(Grid grid, int[] startCoordinates)
         {
             var mainPartOfMessage = "Live cells: ";
             var countLength = grid.CountOfLiveCells().ToString().Length;
+
             Console.SetCursorPosition(startCoordinates[0] + mainPartOfMessage.Length, startCoordinates[1] + grid.Height + 2);
             Console.Write(new string(' ', countLength + 1));
+        }
+
+        /// <summary>
+        /// Intoduction message for multiple games option.
+        /// </summary>
+        /// <param name="multipleGameList">List of games played in parallel.</param>
+        public void MultipleGamesIntro(List<Grid> multipleGameList)
+        {
+            Console.Clear();
+            Console.WriteLine($"You choose to play {multipleGameList.Count} games.");
         }
     }
 }

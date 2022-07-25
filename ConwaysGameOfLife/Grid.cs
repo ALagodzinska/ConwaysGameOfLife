@@ -46,6 +46,10 @@ namespace ConwaysGameOfLife
         /// </summary>
         public int IterationCount { get; set; }
 
+        /// <summary>
+        /// How many cells didn't change in this iteration.
+        /// When unchanged cells count equals to all cells count in a grid, game is over.
+        /// </summary>
         public int UncahngedCellsCount { get; set; }
 
         /// <summary>
@@ -85,10 +89,10 @@ namespace ConwaysGameOfLife
         }
 
         /// <summary>
-        /// Count all live neighbours of the cell.
+        /// Count all live neighbours of one cell.
         /// </summary>
-        /// <param name="cell">A cell from grid.</param>
-        /// <param name="grid">Game grid.</param>
+        /// <param name="cell">A cell from a grid.</param>
+        /// <returns>Count of life neighbours around this cell.</returns>
         public int LiveNeighboursCount(Cell cell)
         {
             var liveCellsCount = 0;
@@ -119,11 +123,19 @@ namespace ConwaysGameOfLife
         /// <summary>
         /// Count live cells in the game grid.
         /// </summary>
-        /// <param name="grid">Game grid.</param>
         /// <returns>Count of live cells(int) in the current grid.</returns>
         public int CountOfLiveCells()
         {
             return this.Cells.OfType<Cell>().Where(c => c.IsLive == true).Count();
+        }
+
+        /// <summary>
+        /// Check if unchanged cells count is the same with cells count in a grid. If all cells stay unchanged - game is over.
+        /// </summary>
+        /// <returns>True if all cells stayed the same, false if grid have been changed.</returns>
+        public bool CheckIfGridIsSame()
+        {
+            return this.UncahngedCellsCount == this.Height * this.Width ? true : false;
         }
     }
 }

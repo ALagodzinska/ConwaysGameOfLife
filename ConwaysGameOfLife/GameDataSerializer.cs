@@ -61,7 +61,7 @@
             string jsonString = System.Text.Json.JsonSerializer.Serialize(grid);
 
             gridListForFile.Add(jsonString);
-            File.AppendAllLines(FilePath, gridListForFile);            
+            File.AppendAllLines(FilePath, gridListForFile);
         }
 
         /// <summary>
@@ -70,6 +70,7 @@
         public void SaveAllData()
         {
             ClearFile();
+
             var gridList = ReturnListOfExistingGrids();
             foreach(var grid in gridList)
             {
@@ -87,6 +88,7 @@
             {
                 Directory.CreateDirectory(pathToFolder);
             }
+
             if (!File.Exists(FilePath))
             {
                 File.Create(FilePath);
@@ -135,7 +137,7 @@
         /// Find grid by the grid name.
         /// </summary>
         /// <param name="name">Name of the grid.</param>
-        /// <returns>If exists return object if not return null.</returns>
+        /// <returns>If exists return Grid object if not return null.</returns>
         public Grid? FindGameGridByName(string name)
         {
            return gridList.FirstOrDefault(g => g.GameName == name);

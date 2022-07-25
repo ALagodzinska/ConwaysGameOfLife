@@ -47,6 +47,7 @@ namespace ConwaysGameOfLife
         /// Create a random grid with where by random is placed live and dead cells.
         /// </summary>
         /// <param name="grid">Game grid.</param>
+        /// <returns>Game grid with randomly placed live and dead cells.</returns>
         public Grid CreateRandomGrid(Grid grid)
         {
             var random = new Random();
@@ -65,6 +66,10 @@ namespace ConwaysGameOfLife
             return grid;
         }
 
+        /// <summary>
+        /// Show created random grid.
+        /// </summary>
+        /// <param name="grid">Game grid to display.</param>
         public void DisplayRandomGrid(Grid grid)
         {
             Console.Clear();
@@ -172,7 +177,8 @@ namespace ConwaysGameOfLife
         /// <summary>
         /// Apply all game rules for one cell, and change IsLive status for next iteration.
         /// </summary>
-        /// <param name="cell">A cell from game grid.</param>
+        /// <param name="cell">A cell from a game grid.</param>
+        /// <returns>Value for cell IsLive parameter.</returns>
         public bool DecideIfIsLive(Cell cell)
         {
             if ((cell.LiveNeighbours < 2 && cell.IsLive) || (cell.LiveNeighbours > 3 && cell.IsLive))
@@ -199,13 +205,14 @@ namespace ConwaysGameOfLife
         {
             do
             {
-                while (Console.KeyAvailable == false && grid.CountOfLiveCells() != 0 && !CheckIfGridIsSame(grid))
-                {                   
+                while (Console.KeyAvailable == false && grid.CountOfLiveCells() != 0 && !grid.CheckIfGridIsSame())
+                {
+                    DrawNextGeneration(grid);
 
-                    DrawNextGeneration(grid);                    
-
-                    Console.WriteLine("Press ESC to stop game");
+                    Console.WriteLine("Press ESC to stop game and go back to main menu.");
                 }
+
+                Console.WriteLine("Game is over!");
 
             } while (Console.ReadKey(true).Key != ConsoleKey.Escape);
 
@@ -226,29 +233,19 @@ namespace ConwaysGameOfLife
             if (restoredGridFromTheList != null)
             {
                 restoredGridFromTheList = grid;
-                if (grid.CountOfLiveCells() == 0 || CheckIfGridIsSame(grid))
+                if (grid.CountOfLiveCells() == 0 || grid.CheckIfGridIsSame())
                 {
                     gridList.Remove(restoredGridFromTheList);
                 }
             }
             else
             {
-                if (grid.CountOfLiveCells() != 0 && !CheckIfGridIsSame(grid))
+                if (grid.CountOfLiveCells() != 0 && !grid.CheckIfGridIsSame())
                 {
                     gridList.Add(grid);
                 }
             }
-        }
-
-        /// <summary>
-        /// Check if unchanged cells count is the same with cells count in a grid. If all cells stay unchanged - game is over.
-        /// </summary>
-        /// <param name="grid">A game grid.</param>
-        /// <returns>True if all cells stayed the same, false if grid have been changed.</returns>
-        public bool CheckIfGridIsSame(Grid grid)
-        {
-            return grid.UncahngedCellsCount == grid.Height * grid.Width ? true : false;
-        }
+        }        
 
         /// <summary>
         /// Draw grid for next generation.
@@ -256,21 +253,26 @@ namespace ConwaysGameOfLife
         /// <param name="grid">Game Grid.</param>
         public void DrawNextGeneration(Grid grid)
         {
-            grid.UncahngedCellsCount = 0;
-
             ChangeGridForNextIteration(grid);
 
             Thread.Sleep(1000);
             DrawGrid(grid);
 
+            //clean live cells value
             int[] startCoordinates = { 0, 0 };
             userOutput.CleanLiveCellsCount(grid, startCoordinates);
 
             userOutput.MessageAfterEachIteration(grid);
         }
 
+        /// <summary>
+        /// Change grid for next iteration.
+        /// </summary>
+        /// <param name="grid">Game grid.</param>
         public void ChangeGridForNextIteration(Grid grid)
         {
+            grid.UncahngedCellsCount = 0;
+
             foreach (var cell in grid.Cells)
             {
                 cell.LiveNeighbours = grid.LiveNeighboursCount(cell);
@@ -289,13 +291,16 @@ namespace ConwaysGameOfLife
             grid.IterationCount++;
         }
 
+        /// <summary>
+        /// Play games in parallel.
+        /// </summary>
+        /// <param name="multipleGameList">List of games to play at the same time.</param>
         public void PlayMultipleGames(List<Grid> multipleGameList)
         {
-            Console.Clear();
-            Console.WriteLine("Press ESC to stop games");
-            Console.WriteLine($"You choose to play {multipleGameList.Count}");
+            userOutput.MultipleGamesIntro(multipleGameList);
             var listOfGamesToShow = ListOfSelectedGameGrids(multipleGameList);
             Console.Clear();
+
             do
             {
                 while (Console.KeyAvailable == false)
@@ -306,6 +311,8 @@ namespace ConwaysGameOfLife
                     }
 
                     DrawMultipleGrids(listOfGamesToShow);
+
+                    multipleGameList.RemoveAll(g => g.CountOfLiveCells() == 0 || g.CheckIfGridIsSame());                    
                 }
 
             } while (Console.ReadKey(true).Key != ConsoleKey.Escape);
@@ -313,42 +320,77 @@ namespace ConwaysGameOfLife
             userOutput.GameOverMessage();
         }
 
+        /// <summary>
+        /// Display multiple game grids on one screen.
+        /// </summary>
+        /// <param name="grids">List of games to play at the same time.</param>
         public void DrawMultipleGrids(List<Grid> grids)
         {
             Thread.Sleep(1000);
             Console.SetCursorPosition(0, 0);
-            var gameCountInOneRow = HowManyGamesCanBeInOneRow(grids.First());
+
+            //used to make padding between games, not only based on grid size, but also on message length.
+            var commonLengthOfMessage = $"Game name: {grids.First().GameName}".Length + 3;
+            var startPointForPadding = Math.Max(commonLengthOfMessage, grids.First().Width);
+
+            var gameCountInOneRow = HowManyGamesCanBeInOneRow(startPointForPadding);
 
             foreach (var grid in grids)
             {
-               var startPoint = StartPointForGrid(grid, grids.IndexOf(grid), gameCountInOneRow);
+                var startPoint = StartPointForGrid(grid, grids.IndexOf(grid), gameCountInOneRow, startPointForPadding);
+
                 DrawOneOfMultipleGrids(grid, startPoint);
-            }            
+
+                if (grid.CountOfLiveCells() == 0 || grid.CheckIfGridIsSame())
+                {
+                    //display game over message above game grid.
+                    Console.SetCursorPosition(startPoint[0], startPoint[1] - 1);
+                    Console.Write("GameOver!");
+                }               
+            }
         }
 
-        public int HowManyGamesCanBeInOneRow(Grid grid)
+        /// <summary>
+        /// Counts how many playing grids fit on a certain screen width.
+        /// </summary>
+        /// <param name="startPointForLeftPadding">Width to back off for drawing next grid.</param>
+        /// <returns>Count of grids that fit in such screen width.</returns>
+        public int HowManyGamesCanBeInOneRow(int startPointForLeftPadding)
         {
             var windowWidth = Console.WindowWidth;
-            var paddingLeft = grid.Width + 10;
+            var paddingLeft = startPointForLeftPadding + 10;
+
             return (windowWidth / paddingLeft);
         }
 
-        public int[] StartPointForGrid(Grid grid, int gridIndex, int gameCountInOneRow)
+        /// <summary>
+        /// Finds start coordinates to start drawing grid on multiple games screen.
+        /// </summary>
+        /// <param name="grid">A grid to draw.</param>
+        /// <param name="gridIndex">Index number of this grid in a list.</param>
+        /// <param name="gameCountInOneRow">Maimum games count in one row.</param>
+        /// <param name="startPointForLeftPadding">Start point for left padding.</param>
+        /// <returns>Array of coordinates. First coordinate is left, second is top.</returns>
+        public int[] StartPointForGrid(Grid grid, int gridIndex, int gameCountInOneRow, int startPointForLeftPadding)
         {
-            
             int[] startCoordinates = new int[2];
 
-            var paddingLeft = grid.Width + 10;
+            var paddingLeft = startPointForLeftPadding + 10;
 
             var paddingTop = grid.Height + 5;
             var topPositionCount = gridIndex / gameCountInOneRow;
 
             startCoordinates[0] = paddingLeft * (gridIndex - (gameCountInOneRow * topPositionCount));
-            startCoordinates[1] = paddingTop * topPositionCount;
+            startCoordinates[1] = paddingTop * topPositionCount + 1;
 
             return startCoordinates;
         }
 
+        /// <summary>
+        /// Display on a screen onre of game grids on a multiple games field.
+        /// </summary>
+        /// <param name="grid">Grid to draw.</param>
+        /// <param name="startCoordinates">Array of coordinates to start drawing. [0]-left, [1]-top.</param>
         public void DrawOneOfMultipleGrids(Grid grid, int[] startCoordinates)
         {
             var offsetFromLeft = startCoordinates[0];
@@ -364,16 +406,16 @@ namespace ConwaysGameOfLife
                 Console.WriteLine();
             }
 
-            //if width is too small will overlap game grid
             userOutput.CleanLiveCellsCount(grid, startCoordinates);
             userOutput.MultipleGameMessageAfterIteration(grid, startCoordinates);
         }
 
-        /// <summary>
-        /// Creates random game fields based on inoutted user data.
+        /// <summary> 
+        /// Creates multiple random game fields based on inputted user data.
         /// </summary>
-        /// <param name="grid">Grid where are saved base data to create multiple games.</param>
-        /// <param name="gameCount">Count of the games that will play in parallel.</param>
+        /// <param name="gridParameters">Grid parameters to create multiple random game grids.</param>
+        /// <param name="gameCount">Count of the grids to create.</param>
+        /// <returns>List of created game grids.</returns>
         public List<Grid> MultipleGridList(GridOptions gridParameters, int gameCount)
         {
             var multipleGameList = new List<Grid>();
@@ -388,6 +430,11 @@ namespace ConwaysGameOfLife
             return multipleGameList;
         }
 
+        /// <summary>
+        /// Select games to display and store them in a list.
+        /// </summary>
+        /// <param name="multipleGamesList">List of all games played in parallel.</param>
+        /// <returns>List of games to show on a screen.</returns>
         public List<Grid> ListOfSelectedGameGrids(List<Grid> multipleGamesList)
         {
             var chosenGames = userOutput.ChooseMultipleGames(multipleGamesList.Count);
