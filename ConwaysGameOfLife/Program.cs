@@ -26,7 +26,6 @@ class Program
                     var gridParametersRandomGame = userOutput.GetGridParametersFromInput();
                     var createdGridRandom = Grid.CreateNewGrid(gridParametersRandomGame.Height, gridParametersRandomGame.Width, gridParametersRandomGame.GameName);
                     var randomGrid = game.CreateRandomGrid(createdGridRandom);
-                    ///do i even need this method
                     game.DisplayRandomGrid(randomGrid);
                     game.PlayGame(randomGrid);
                     break;

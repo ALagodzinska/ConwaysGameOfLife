@@ -69,7 +69,7 @@ namespace ConwaysGameOfLife
         {
             Console.Clear();
             DrawGrid(grid);
-            userOutput.MessageAfterEachIteration(0, grid.CountOfLiveCells());
+            userOutput.MessageAfterEachIteration(grid);
         }
 
         /// <summary>
@@ -78,6 +78,7 @@ namespace ConwaysGameOfLife
         /// <param name="grid">Game grid.</param>
         public void ChooseLiveCells(Grid grid)
         {
+            Console.Clear();
             DrawGrid(grid);
             userOutput.CustomGameGridRulesMessage();
             bool setField = true;
@@ -162,6 +163,10 @@ namespace ConwaysGameOfLife
                         break;
                 }
             }
+
+            //clean line with rules
+            Console.SetCursorPosition(0, grid.Height + 1);
+            Console.Write(new string(' ', Console.WindowWidth));
         }
 
         /// <summary>
@@ -195,8 +200,10 @@ namespace ConwaysGameOfLife
             do
             {
                 while (Console.KeyAvailable == false && grid.CountOfLiveCells() != 0 && !CheckIfGridIsSame(grid))
-                {
-                    DrawNextGeneration(grid);
+                {                   
+
+                    DrawNextGeneration(grid);                    
+
                     Console.WriteLine("Press ESC to stop game");
                 }
 
@@ -256,7 +263,10 @@ namespace ConwaysGameOfLife
             Thread.Sleep(1000);
             DrawGrid(grid);
 
-            userOutput.MessageAfterEachIteration(grid.IterationCount, grid.CountOfLiveCells());
+            int[] startCoordinates = { 0, 0 };
+            userOutput.CleanLiveCellsCount(grid, startCoordinates);
+
+            userOutput.MessageAfterEachIteration(grid);
         }
 
         public void ChangeGridForNextIteration(Grid grid)
@@ -313,7 +323,7 @@ namespace ConwaysGameOfLife
             {
                var startPoint = StartPointForGrid(grid, grids.IndexOf(grid), gameCountInOneRow);
                 DrawOneOfMultipleGrids(grid, startPoint);
-            }
+            }            
         }
 
         public int HowManyGamesCanBeInOneRow(Grid grid)
@@ -355,10 +365,8 @@ namespace ConwaysGameOfLife
             }
 
             //if width is too small will overlap game grid
-            Console.SetCursorPosition(offsetFromLeft, grid.Height + offsetFromTop + 1);
-            Console.Write($"Game name: {grid.GameName}");
-            Console.SetCursorPosition(offsetFromLeft, grid.Height + offsetFromTop + 2);
-            Console.Write($"Live cells: {grid.CountOfLiveCells()}");
+            userOutput.CleanLiveCellsCount(grid, startCoordinates);
+            userOutput.MultipleGameMessageAfterIteration(grid, startCoordinates);
         }
 
         /// <summary>

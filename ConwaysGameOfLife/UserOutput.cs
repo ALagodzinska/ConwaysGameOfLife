@@ -247,6 +247,8 @@
 
             var existingGame = GameNameOnSearchValidation(userInputtedName);
 
+            Console.Clear();
+
             return dataSerializer.FindGameGridByName(existingGame);
         }
 
@@ -272,11 +274,20 @@
         /// </summary>
         /// <param name="iterationCount">Count of game iteration.</param>
         /// <param name="liveCellsCount">Count of live cells on a grid at this iteration.</param>
-        public void MessageAfterEachIteration(int iterationCount, int liveCellsCount)
+        public void MessageAfterEachIteration(Grid grid)
         {
+            Console.SetCursorPosition(0, grid.Height);
             Console.WriteLine();
-            Console.WriteLine($"Iteration count: {iterationCount}");
-            Console.WriteLine($"Live cells count: {liveCellsCount}");
+            Console.WriteLine($"Iteration count: {grid.IterationCount}");
+            Console.WriteLine($"Live cells: {grid.CountOfLiveCells()}");
+        }
+
+        public void MultipleGameMessageAfterIteration(Grid grid, int[] startCoordinates)
+        {
+            Console.SetCursorPosition(startCoordinates[0], grid.Height + startCoordinates[1] + 1);
+            Console.Write($"Game name: {grid.GameName}");
+            Console.SetCursorPosition(startCoordinates[0], grid.Height + startCoordinates[1] + 2);
+            Console.Write($"Live cells: {grid.CountOfLiveCells()}");
         }
         
         public void ShowGamesStatistics(List<Grid> gridList)
@@ -285,6 +296,14 @@
             Console.Clear();
             Console.WriteLine($"Played games:{gridList.Count()}");
             Console.WriteLine($"Live cells count in total:");
+        }
+
+        public void CleanLiveCellsCount(Grid grid, int[] startCoordinates)
+        {
+            var mainPartOfMessage = "Live cells: ";
+            var countLength = grid.CountOfLiveCells().ToString().Length;
+            Console.SetCursorPosition(startCoordinates[0] + mainPartOfMessage.Length, startCoordinates[1] + grid.Height + 2);
+            Console.Write(new string(' ', countLength + 1));
         }
     }
 }
