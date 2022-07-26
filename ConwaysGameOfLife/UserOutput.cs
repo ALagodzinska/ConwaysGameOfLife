@@ -1,4 +1,6 @@
-﻿namespace ConwaysGameOfLife
+﻿using System.Linq;
+
+namespace ConwaysGameOfLife
 {
     /// <summary>
     /// Class responsible for displaying information to user.
@@ -42,7 +44,7 @@
 
             Console.WriteLine("Input height of field:");
             var heightInput = Console.ReadLine();
-            var validHeight = DimensionInputValidation(heightInput, "height");           
+            var validHeight = DimensionInputValidation(heightInput, "height");
 
             Console.WriteLine("Input width of field:");
             var widthInput = Console.ReadLine();
@@ -124,7 +126,7 @@
             {
                 Console.WriteLine($"To choose game input a number from 1 to {countOfAllGames}");
                 var gameNumberInput = Console.ReadLine();
-                var validGameNumber = GameNumberValidation(gameNumberInput, countOfAllGames);
+                var validGameNumber = GameNumberValidation(gameNumberInput, countOfAllGames, gamesArray);
                 gamesArray[i] = validGameNumber;
             }
 
@@ -137,12 +139,15 @@
         /// <param name="gameNumberInput">Serial number of game to choose from list.</param>
         /// <param name="countOfAllGames">Count of all games in a list</param>
         /// <returns>Returns valid game numeric identifier.</returns>
-        public int GameNumberValidation(string gameNumberInput, int countOfAllGames)
+        public int GameNumberValidation(string gameNumberInput, int countOfAllGames, int[] gamesToShowArray)
         {
             while (!int.TryParse(gameNumberInput, out validInput) || validInput <= 0
-                || validInput > countOfAllGames)
+                || validInput > countOfAllGames || gamesToShowArray.Contains(validInput))
             {
-                Console.WriteLine("Such game don't exist, try one more time!");
+                var message = gamesToShowArray.Contains(validInput) && validInput != 0 ? 
+                    "You already chose this game, try one more time!" : "Such game don't exist, try one more time!";
+
+                Console.WriteLine(message);
                 gameNumberInput = Console.ReadLine();
             }
 
