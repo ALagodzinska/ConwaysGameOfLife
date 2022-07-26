@@ -352,5 +352,18 @@ namespace ConwaysGameOfLife
             Console.Clear();
             Console.WriteLine($"You choose to play {multipleGameList.Count} games.");
         }
+
+        /// <summary>
+        /// Statistics message, display how many games are live and how many live cells in total they have.
+        /// </summary>
+        /// <param name="liveGamesCount">Count of live games.</param>
+        /// <param name="totalLiveCellsCount">Total of all live cells.</param>
+        public void MessageForMultipleGames(int liveGamesCount, int totalLiveCellsCount)
+        {
+            Console.SetCursorPosition(0, 0);
+            Console.WriteLine(String.Format("{0," + Console.WindowWidth / 2 + "}", $"Count of live games: {liveGamesCount}"));
+            Console.WriteLine(String.Format("{0," + Console.WindowWidth / 2 + "}", $"Total count of live cells: {totalLiveCellsCount}"));
+            Console.WriteLine();
+        }
     }
 }

@@ -312,6 +312,8 @@ namespace ConwaysGameOfLife
 
                     DrawMultipleGrids(listOfGamesToShow);
 
+                    userOutput.MessageForMultipleGames(multipleGameList.Count, TotalOfLiveCells(multipleGameList));
+
                     multipleGameList.RemoveAll(g => g.CountOfLiveCells() == 0 || g.CheckIfGridIsSame());                    
                 }
 
@@ -381,7 +383,8 @@ namespace ConwaysGameOfLife
             var topPositionCount = gridIndex / gameCountInOneRow;
 
             startCoordinates[0] = paddingLeft * (gridIndex - (gameCountInOneRow * topPositionCount));
-            startCoordinates[1] = paddingTop * topPositionCount + 1;
+            //+4 to display on top of the screen statistics about games.
+            startCoordinates[1] = paddingTop * topPositionCount + 4;
 
             return startCoordinates;
         }
@@ -450,6 +453,23 @@ namespace ConwaysGameOfLife
             }
 
             return games;
+        }
+
+        /// <summary>
+        /// Count total number of live cells in multiple games.
+        /// </summary>
+        /// <param name="multipleGamesList">List of the games played.</param>
+        /// <returns>Count of live cells in all games.</returns>
+        public int TotalOfLiveCells(List<Grid> multipleGamesList)
+        {
+            var totalLiveCellsCount = 0;
+
+            foreach(var game in multipleGamesList)
+            {
+                totalLiveCellsCount += game.CountOfLiveCells();
+            }
+
+            return totalLiveCellsCount;
         }
     }
 }
