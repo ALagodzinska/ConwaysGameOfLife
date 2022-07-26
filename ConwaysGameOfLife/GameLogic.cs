@@ -1,6 +1,4 @@
-﻿using System.Diagnostics;
-
-namespace ConwaysGameOfLife
+﻿namespace ConwaysGameOfLife
 {
     /// <summary>
     /// Contain methods that apply game rules and logic.
@@ -317,9 +315,18 @@ namespace ConwaysGameOfLife
                     multipleGameList.RemoveAll(g => g.CountOfLiveCells() == 0 || g.CheckIfGridIsSame());                    
                 }
 
-            } while (Console.ReadKey(true).Key != ConsoleKey.Escape);
+            } while (Console.ReadKey(true).Key != ConsoleKey.Spacebar);
 
-            userOutput.GameOverMessage();
+            var isExit = userOutput.DecisionOnStop(multipleGameList);
+
+            if (isExit)
+            {
+                userOutput.GameOverMessage();
+            }
+            else
+            {
+                PlayMultipleGames(multipleGameList);
+            }
         }
 
         /// <summary>
@@ -383,8 +390,8 @@ namespace ConwaysGameOfLife
             var topPositionCount = gridIndex / gameCountInOneRow;
 
             startCoordinates[0] = paddingLeft * (gridIndex - (gameCountInOneRow * topPositionCount));
-            //+4 to display on top of the screen statistics about games.
-            startCoordinates[1] = paddingTop * topPositionCount + 4;
+            //+6 to display on top of the screen statistics about games.
+            startCoordinates[1] = paddingTop * topPositionCount + 6;
 
             return startCoordinates;
         }

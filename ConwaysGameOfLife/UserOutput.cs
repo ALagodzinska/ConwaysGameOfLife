@@ -1,6 +1,4 @@
-﻿using System.Linq;
-
-namespace ConwaysGameOfLife
+﻿namespace ConwaysGameOfLife
 {
     /// <summary>
     /// Class responsible for displaying information to user.
@@ -122,9 +120,10 @@ namespace ConwaysGameOfLife
 
             int[] gamesArray = new int[countOfSelectedGames];
 
+            Console.WriteLine($"To choose game input any NUMBER from 1 to {countOfAllGames}. Choose {countOfSelectedGames} numbers.");
+
             for (int i = 0; i < countOfSelectedGames; i++)
-            {
-                Console.WriteLine($"To choose game input a number from 1 to {countOfAllGames}");
+            {                
                 var gameNumberInput = Console.ReadLine();
                 var validGameNumber = GameNumberValidation(gameNumberInput, countOfAllGames, gamesArray);
                 gamesArray[i] = validGameNumber;
@@ -361,9 +360,35 @@ namespace ConwaysGameOfLife
         public void MessageForMultipleGames(int liveGamesCount, int totalLiveCellsCount)
         {
             Console.SetCursorPosition(0, 0);
+            Console.WriteLine("Press SPACE to stop the game. If you want to save or change displayed grids.");
+            Console.WriteLine();
             Console.WriteLine(String.Format("{0," + Console.WindowWidth / 2 + "}", $"Count of live games: {liveGamesCount}"));
             Console.WriteLine(String.Format("{0," + Console.WindowWidth / 2 + "}", $"Total count of live cells: {totalLiveCellsCount}"));
             Console.WriteLine();
+        }
+
+        /// <summary>
+        /// Show to user actions after stopping the game. Validate users choise.
+        /// </summary>
+        /// <param name="gameList">List of played game grids.</param>
+        /// <returns>Return true if user chooses to exit. Return false if user wants to continue and change game grids.</returns>
+        public bool DecisionOnStop(List<Grid> gameList)
+        {
+            Console.Clear();
+
+            Console.WriteLine($"You have stopped the game. Live games count - {gameList.Count()}");
+            Console.WriteLine("Type 'EXIT' if you want to save all live games and go back to main menu.");
+            Console.WriteLine("Type 'CONTINUE' if you want to continue playing and change displayed games on a screen.");
+
+            var userChoise = Console.ReadLine();
+
+            while (userChoise.ToLower() != "exit" && userChoise.ToLower() != "continue")
+            {
+                Console.WriteLine("Wrong input! Choose 'EXIT' or 'CONTINUE'");
+                userChoise = Console.ReadLine();
+            }
+
+            return userChoise.ToLower() == "exit" ? true : false;
         }
     }
 }
