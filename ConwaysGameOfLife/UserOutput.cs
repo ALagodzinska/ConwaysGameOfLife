@@ -19,7 +19,7 @@
         {
             Console.Clear();
             Console.WriteLine("Hello, Welcome to the 'Game Of Life'!" + "\n");
-            Console.WriteLine("Please choose action what you want to do?(INPUT NUMBER)");
+            Console.WriteLine("Please choose action what you want to do?(INPUT NUMBER)" + "\n");
             Console.WriteLine("1. Play Game: Create Random field");
             Console.WriteLine("2. Play Game: Create Customized field");
             Console.WriteLine("3. Restore Game: Continue to play one of the previous games");
@@ -225,6 +225,7 @@
         /// <returns>Array of numbers, number - indicate location in list of all games played at the same time.</returns>
         public int[] ChooseMultipleGames(int countOfAllGames)
         {
+            Console.WriteLine();
             Console.WriteLine("No more than 8 games can be shown on the screen.");
             Console.WriteLine("How many games you want to see on the screen?");
 

@@ -187,6 +187,7 @@
                     Console.WriteLine("Press ESC to stop game and go back to main menu.");
                 }
 
+                Console.WriteLine();
                 Console.WriteLine("Game is over!");
 
             } while (Console.ReadKey(true).Key != ConsoleKey.Escape);
