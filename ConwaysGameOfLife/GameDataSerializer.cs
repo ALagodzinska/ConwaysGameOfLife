@@ -23,58 +23,21 @@
         /// <summary>
         /// Path to the file where the data will be stored.
         /// </summary>
-        private readonly string FilePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), folderName, fileName);        
+        private readonly string FilePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), folderName, fileName);
 
         /// <summary>
-        /// Convert a field that contains two dimensional array to a list.
+        /// Read all data from file and convert them into Grid objects.
         /// </summary>
-        /// <param name="grid">A game grid.</param>
-        public void ConvertCellsArrayToList(Grid grid)
+        public void ReadDataFromTheFile()
         {
-            foreach (Cell cell in grid.Cells)
+            CreateDirectoryAndFile();
+
+            var jsonData = File.ReadAllLines(FilePath);
+            foreach (var oneGridData in jsonData)
             {
-                grid.SerializableCells.Add(cell);
-            }
-        }
-
-        /// <summary>
-        /// Convert a field with a list to two dimensioanl array.
-        /// </summary>
-        /// <param name="grid">A game grid.</param>
-        public void ConvertCellsListToArray(Grid grid)
-        {
-            foreach (Cell cell in grid.SerializableCells)
-            {
-                grid.Cells[cell.Height, cell.Width] = cell;
-            }
-        }
-
-        /// <summary>
-        /// Save data about one grid in one line of the file.
-        /// </summary>
-        /// <param name="grid">A game grid.</param>
-        public void SaveGameDataToFile(Grid grid)
-        {
-            List<string> gridListForFile = new();
-
-            ConvertCellsArrayToList(grid);
-            string jsonString = System.Text.Json.JsonSerializer.Serialize(grid);
-
-            gridListForFile.Add(jsonString);
-            File.AppendAllLines(FilePath, gridListForFile);
-        }
-
-        /// <summary>
-        /// Write data about all saved grids to the file.
-        /// </summary>
-        public void SaveAllData()
-        {
-            ClearFile();
-
-            var gridList = ReturnListOfExistingGrids();
-            foreach(var grid in gridList)
-            {
-                SaveGameDataToFile(grid);
+                var gridObject = System.Text.Json.JsonSerializer.Deserialize<Grid>(oneGridData);
+                ConvertCellsListToArray(gridObject);
+                gridList.Add(gridObject);
             }
         }
 
@@ -93,6 +56,30 @@
             {
                 File.Create(FilePath);
             }
+        }        
+
+        /// <summary>
+        /// Convert a field with a list to two dimensioanl array.
+        /// </summary>
+        /// <param name="grid">A game grid.</param>
+        public void ConvertCellsListToArray(Grid grid)
+        {
+            foreach (Cell cell in grid.SerializableCells)
+            {
+                grid.Cells[cell.Height, cell.Width] = cell;
+            }
+        }
+
+        /// <summary>
+        /// Convert a field that contains two dimensional array to a list.
+        /// </summary>
+        /// <param name="grid">A game grid.</param>
+        public void ConvertCellsArrayToList(Grid grid)
+        {
+            foreach (Cell cell in grid.Cells)
+            {
+                grid.SerializableCells.Add(cell);
+            }
         }
 
         /// <summary>
@@ -105,19 +92,13 @@
         }
 
         /// <summary>
-        /// Read all data from file and convert them into Grid objects.
+        /// Find grid by the grid name.
         /// </summary>
-        public void ReadDataFromTheFile()
+        /// <param name="name">Name of the grid.</param>
+        /// <returns>If exists return Grid object if not return null.</returns>
+        public Grid? FindGameGridByName(string name)
         {
-            CreateDirectoryAndFile();            
-
-            var jsonData = File.ReadAllLines(FilePath);
-            foreach (var oneGridData in jsonData)
-            {
-                var gridObject = System.Text.Json.JsonSerializer.Deserialize<Grid>(oneGridData);
-                ConvertCellsListToArray(gridObject);
-                gridList.Add(gridObject);
-            }
+            return gridList.FirstOrDefault(g => g.GameName == name);
         }
 
         /// <summary>
@@ -131,16 +112,35 @@
             TextWriter textWriter = new StreamWriter(FilePath, false);
             textWriter.Write(string.Empty);
             textWriter.Close();
+        }        
+
+        /// <summary>
+        /// Write data about all saved grids to the file.
+        /// </summary>
+        public void SaveAllData()
+        {
+            ClearFile();
+
+            var gridList = ReturnListOfExistingGrids();
+            foreach(var grid in gridList)
+            {
+                SaveGameDataToFile(grid);
+            }
         }
 
         /// <summary>
-        /// Find grid by the grid name.
+        /// Save data about one grid in one line of the file.
         /// </summary>
-        /// <param name="name">Name of the grid.</param>
-        /// <returns>If exists return Grid object if not return null.</returns>
-        public Grid? FindGameGridByName(string name)
+        /// <param name="grid">A game grid.</param>
+        public void SaveGameDataToFile(Grid grid)
         {
-           return gridList.FirstOrDefault(g => g.GameName == name);
+            List<string> gridListForFile = new();
+
+            ConvertCellsArrayToList(grid);
+            string jsonString = System.Text.Json.JsonSerializer.Serialize(grid);
+
+            gridListForFile.Add(jsonString);
+            File.AppendAllLines(FilePath, gridListForFile);
         }
     }
 }

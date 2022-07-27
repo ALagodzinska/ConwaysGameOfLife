@@ -9,39 +9,6 @@
         GameDataSerializer dataSerializer = new();
 
         /// <summary>
-        /// Draw grid based on the cells stored in the grid.
-        /// </summary>
-        /// <param name="grid">Game grid.</param>
-        public void DrawGrid(Grid grid)
-        {
-            Console.SetCursorPosition(0, 0);
-
-            for (int h = 0; h < grid.Height; h++)
-            {
-                for (int w = 0; w < grid.Width; w++)
-                {
-                    Console.SetCursorPosition(w, h);
-                    DrawCell(grid.Cells[h, w].IsLive);
-                }
-
-                Console.WriteLine();
-            }
-        }
-
-        /// <summary>
-        /// Draw one cell on the grid in certain style, depending on whether it is alive or not.
-        /// </summary>
-        /// <param name="isLive">Cell parameter that note if cell is live or not.</param>
-        public void DrawCell(bool isLive)
-        {
-            string cellSymbol = isLive ? "*" : "-";
-            Console.BackgroundColor = isLive ? ConsoleColor.Red : ConsoleColor.White;
-            Console.ForegroundColor = ConsoleColor.Black;
-            Console.Write(cellSymbol);
-            Console.ResetColor();
-        }
-
-        /// <summary>
         /// Create a random grid with where by random is placed live and dead cells.
         /// </summary>
         /// <param name="grid">Game grid.</param>
@@ -173,26 +140,36 @@
         }
 
         /// <summary>
-        /// Apply all game rules for one cell, and change IsLive status for next iteration.
+        /// Draw grid based on the cells stored in the grid.
         /// </summary>
-        /// <param name="cell">A cell from a game grid.</param>
-        /// <returns>Value for cell IsLive parameter.</returns>
-        public bool DecideIfIsLive(Cell cell)
+        /// <param name="grid">Game grid.</param>
+        public void DrawGrid(Grid grid)
         {
-            if ((cell.LiveNeighbours < 2 && cell.IsLive) || (cell.LiveNeighbours > 3 && cell.IsLive))
+            Console.SetCursorPosition(0, 0);
+
+            for (int h = 0; h < grid.Height; h++)
             {
-                //cell is live has one or no neighbour || or four or more neighbours - it dies
-                return false;
+                for (int w = 0; w < grid.Width; w++)
+                {
+                    Console.SetCursorPosition(w, h);
+                    DrawCell(grid.Cells[h, w].IsLive);
+                }
+
+                Console.WriteLine();
             }
-            else if (cell.LiveNeighbours == 3 && cell.IsLive == false)
-            {
-                //empty cell with three neighbours - populated
-                return true;
-            }
-            else
-            {
-                return cell.IsLive;
-            }
+        }
+
+        /// <summary>
+        /// Draw one cell on the grid in certain style, depending on whether it is alive or not.
+        /// </summary>
+        /// <param name="isLive">Cell parameter that note if cell is live or not.</param>
+        public void DrawCell(bool isLive)
+        {
+            string cellSymbol = isLive ? "*" : "-";
+            Console.BackgroundColor = isLive ? ConsoleColor.Red : ConsoleColor.White;
+            Console.ForegroundColor = ConsoleColor.Black;
+            Console.Write(cellSymbol);
+            Console.ResetColor();
         }
 
         /// <summary>
@@ -218,32 +195,6 @@
 
             userOutput.GameOverMessage();
         }
-
-        /// <summary>
-        /// Save stopped game in the list where are stored all previous games. Or if this game has been restored replace with updated data.
-        /// </summary>
-        /// <param name="grid">A played game grid.</param>
-        public void UpdateGridList(Grid grid)
-        {
-            var gridList = dataSerializer.ReturnListOfExistingGrids();
-            var restoredGridFromTheList = gridList.FirstOrDefault(g => g.GameName == grid.GameName);
-
-            if (restoredGridFromTheList != null)
-            {
-                restoredGridFromTheList = grid;
-                if (grid.CountOfLiveCells() == 0 || grid.CheckIfGridIsSame())
-                {
-                    gridList.Remove(restoredGridFromTheList);
-                }
-            }
-            else
-            {
-                if (grid.CountOfLiveCells() != 0 && !grid.CheckIfGridIsSame())
-                {
-                    gridList.Add(grid);
-                }
-            }
-        }        
 
         /// <summary>
         /// Draw grid for next generation.
@@ -290,6 +241,75 @@
         }
 
         /// <summary>
+        /// Apply all game rules for one cell, and change IsLive status for next iteration.
+        /// </summary>
+        /// <param name="cell">A cell from a game grid.</param>
+        /// <returns>Value for cell IsLive parameter.</returns>
+        public bool DecideIfIsLive(Cell cell)
+        {
+            if ((cell.LiveNeighbours < 2 && cell.IsLive) || (cell.LiveNeighbours > 3 && cell.IsLive))
+            {
+                //cell is live has one or no neighbour || or four or more neighbours - it dies
+                return false;
+            }
+            else if (cell.LiveNeighbours == 3 && cell.IsLive == false)
+            {
+                //empty cell with three neighbours - populated
+                return true;
+            }
+            else
+            {
+                return cell.IsLive;
+            }
+        }
+
+        /// <summary>
+        /// Save stopped game in the list where are stored all previous games. Or if this game has been restored replace with updated data.
+        /// </summary>
+        /// <param name="grid">A played game grid.</param>
+        public void UpdateGridList(Grid grid)
+        {
+            var gridList = dataSerializer.ReturnListOfExistingGrids();
+            var restoredGridFromTheList = gridList.FirstOrDefault(g => g.GameName == grid.GameName);
+
+            if (restoredGridFromTheList != null)
+            {
+                restoredGridFromTheList = grid;
+                if (grid.CountOfLiveCells() == 0 || grid.CheckIfGridIsSame())
+                {
+                    gridList.Remove(restoredGridFromTheList);
+                }
+            }
+            else
+            {
+                if (grid.CountOfLiveCells() != 0 && !grid.CheckIfGridIsSame())
+                {
+                    gridList.Add(grid);
+                }
+            }
+        }
+
+        /// <summary> 
+        /// Creates multiple random game fields based on inputted user data.
+        /// </summary>
+        /// <param name="gridParameters">Grid parameters to create multiple random game grids.</param>
+        /// <param name="gameCount">Count of the grids to create.</param>
+        /// <returns>List of created game grids.</returns>
+        public List<Grid> MultipleGridList(GridOptions gridParameters, int gameCount)
+        {
+            var multipleGameList = new List<Grid>();
+
+            for (int i = 0; i < gameCount; i++)
+            {
+                var newGrid = Grid.CreateNewGrid(gridParameters.Height, gridParameters.Width, gridParameters.GameName + i.ToString());
+                var randomGrid = CreateRandomGrid(newGrid);
+                multipleGameList.Add(randomGrid);
+            }
+
+            return multipleGameList;
+        }
+
+        /// <summary>
         /// Play games in parallel.
         /// </summary>
         /// <param name="multipleGameList">List of games to play at the same time.</param>
@@ -332,6 +352,28 @@
             {
                 PlayMultipleGames(multipleGameList);
             }
+        }
+
+        /// <summary>
+        /// Select games to display and store them in a list.
+        /// </summary>
+        /// <param name="multipleGamesList">List of all games played in parallel.</param>
+        /// <returns>List of games to show on a screen.</returns>
+        public List<Grid> ListOfSelectedGameGrids(List<Grid> multipleGamesList)
+        {
+            var chosenGames = userOutput.ChooseMultipleGames(multipleGamesList.Count);
+            var games = new List<Grid>();
+
+            foreach (var gameNumber in chosenGames)
+            {
+                var foundGame = multipleGamesList[gameNumber - 1];
+                if (foundGame != null)
+                {
+                    games.Add(foundGame);
+                }
+            }
+
+            return games;
         }
 
         /// <summary>
@@ -423,48 +465,6 @@
 
             userOutput.CleanLiveCellsCount(grid, startCoordinates);
             userOutput.MultipleGameMessageAfterIteration(grid, startCoordinates);
-        }
-
-        /// <summary> 
-        /// Creates multiple random game fields based on inputted user data.
-        /// </summary>
-        /// <param name="gridParameters">Grid parameters to create multiple random game grids.</param>
-        /// <param name="gameCount">Count of the grids to create.</param>
-        /// <returns>List of created game grids.</returns>
-        public List<Grid> MultipleGridList(GridOptions gridParameters, int gameCount)
-        {
-            var multipleGameList = new List<Grid>();
-
-            for (int i = 0; i < gameCount; i++)
-            {
-                var newGrid = Grid.CreateNewGrid(gridParameters.Height, gridParameters.Width, gridParameters.GameName + i.ToString());
-                var randomGrid = CreateRandomGrid(newGrid);
-                multipleGameList.Add(randomGrid);
-            }
-
-            return multipleGameList;
-        }
-
-        /// <summary>
-        /// Select games to display and store them in a list.
-        /// </summary>
-        /// <param name="multipleGamesList">List of all games played in parallel.</param>
-        /// <returns>List of games to show on a screen.</returns>
-        public List<Grid> ListOfSelectedGameGrids(List<Grid> multipleGamesList)
-        {
-            var chosenGames = userOutput.ChooseMultipleGames(multipleGamesList.Count);
-            var games = new List<Grid>();
-
-            foreach (var gameNumber in chosenGames)
-            {
-                var foundGame = multipleGamesList[gameNumber - 1];
-                if (foundGame != null)
-                {
-                    games.Add(foundGame);
-                }
-            }
-
-            return games;
         }
 
         /// <summary>

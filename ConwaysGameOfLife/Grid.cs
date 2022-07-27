@@ -86,6 +86,24 @@ namespace ConwaysGameOfLife
             }
 
             return grid;
+        }        
+
+        /// <summary>
+        /// Count live cells in the game grid.
+        /// </summary>
+        /// <returns>Count of live cells(int) in the current grid.</returns>
+        public int CountOfLiveCells()
+        {
+            return this.Cells.OfType<Cell>().Where(c => c.IsLive == true).Count();
+        }
+
+        /// <summary>
+        /// Check if unchanged cells count is the same with cells count in a grid. If all cells stay unchanged - game is over.
+        /// </summary>
+        /// <returns>True if all cells stayed the same, false if grid have been changed.</returns>
+        public bool CheckIfGridIsSame()
+        {
+            return this.UncahngedCellsCount == this.Height * this.Width ? true : false;
         }
 
         /// <summary>
@@ -118,24 +136,6 @@ namespace ConwaysGameOfLife
             }
 
             return liveCellsCount;
-        }
-
-        /// <summary>
-        /// Count live cells in the game grid.
-        /// </summary>
-        /// <returns>Count of live cells(int) in the current grid.</returns>
-        public int CountOfLiveCells()
-        {
-            return this.Cells.OfType<Cell>().Where(c => c.IsLive == true).Count();
-        }
-
-        /// <summary>
-        /// Check if unchanged cells count is the same with cells count in a grid. If all cells stay unchanged - game is over.
-        /// </summary>
-        /// <returns>True if all cells stayed the same, false if grid have been changed.</returns>
-        public bool CheckIfGridIsSame()
-        {
-            return this.UncahngedCellsCount == this.Height * this.Width ? true : false;
         }
     }
 }
