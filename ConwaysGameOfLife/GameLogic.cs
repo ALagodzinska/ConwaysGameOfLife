@@ -321,6 +321,11 @@
 
             if (isExit)
             {
+                foreach(var game in multipleGameList)
+                {
+                    UpdateGridList(game);
+                }
+                
                 userOutput.GameOverMessage();
             }
             else
