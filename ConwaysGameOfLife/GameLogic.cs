@@ -435,7 +435,7 @@
         {
             var multipleGameList = new List<Grid>();
 
-            for (int i = 0; i <= gameCount; i++)
+            for (int i = 0; i < gameCount; i++)
             {
                 var newGrid = Grid.CreateNewGrid(gridParameters.Height, gridParameters.Width, gridParameters.GameName + i.ToString());
                 var randomGrid = CreateRandomGrid(newGrid);
