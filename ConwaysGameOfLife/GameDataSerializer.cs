@@ -86,20 +86,15 @@
         /// Return a list of played game grids.
         /// </summary>
         /// <returns>List of game grids.</returns>
-        public List<Grid> ReturnListOfExistingGrids()
-        {
-            return gridList;
-        }
+        public List<Grid> ReturnListOfExistingGrids() => gridList;
 
         /// <summary>
         /// Find grid by the grid name.
         /// </summary>
         /// <param name="name">Name of the grid.</param>
         /// <returns>If exists return Grid object if not return null.</returns>
-        public Grid? FindGameGridByName(string name)
-        {
-            return gridList.FirstOrDefault(g => g.GameName == name);
-        }
+
+        public Grid? FindGameGridByName(string name) => gridList.FirstOrDefault(g => g.GameName == name);        
 
         /// <summary>
         /// Clear all the data that was written inside file.
