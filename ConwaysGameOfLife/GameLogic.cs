@@ -30,7 +30,7 @@
             }
 
             return grid;
-        }        
+        }
 
         /// <summary>
         /// Allow to move coursor around field and change dead cells to live.
@@ -127,7 +127,7 @@
             //clean line with rules
             Console.SetCursorPosition(0, grid.Height + 1);
             Console.Write(new string(' ', Console.WindowWidth));
-        }        
+        }
 
         /// <summary>
         /// Playing game until user wants to stop it or the game is over.
@@ -153,7 +153,7 @@
             UpdateGridList(grid);
 
             userOutput.GameOverMessage();
-        }        
+        }
 
         /// <summary>
         /// Change grid for next iteration.
@@ -262,31 +262,33 @@
 
             do
             {
-                while (Console.KeyAvailable == false)
+                while (Console.KeyAvailable == false && multipleGameList.Count != 0)
                 {
                     foreach (var game in multipleGameList)
                     {
                         ChangeGridForNextIteration(game);
                     }
 
-                    displayGame.DrawMultipleGrids(listOfGamesToShow);
+                    displayGame.DrawMultipleGrids(listOfGamesToShow);                    
+
+                    multipleGameList.RemoveAll(g => g.CountOfLiveCells() == 0 || g.CheckIfGridIsSame());
 
                     userOutput.MessageForMultipleGames(multipleGameList.Count, TotalOfLiveCells(multipleGameList));
-
-                    multipleGameList.RemoveAll(g => g.CountOfLiveCells() == 0 || g.CheckIfGridIsSame());                    
                 }
 
             } while (Console.ReadKey(true).Key != ConsoleKey.Spacebar);
 
-            var isExit = userOutput.DecisionOnStop(multipleGameList);
+            var isExit = multipleGameList.Count > 0 ? userOutput.DecisionOnStop(multipleGameList) : true;
 
             if (isExit)
             {
-                foreach(var game in multipleGameList)
+                foreach (var game in multipleGameList)
                 {
                     UpdateGridList(game);
                 }
-                
+
+                Console.Clear();
+
                 userOutput.GameOverMessage();
             }
             else
@@ -315,7 +317,7 @@
             }
 
             return games;
-        }           
+        }
 
         /// <summary>
         /// Count total number of live cells in multiple games.

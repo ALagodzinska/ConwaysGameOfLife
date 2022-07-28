@@ -1,5 +1,6 @@
 ﻿namespace ConwaysGameOfLife
 {
+
     /// <summary>
     /// Class responsible for displaying information to user.
     /// </summary>
@@ -27,9 +28,6 @@
         /// </summary>
         const string widthManyGames = "multipleGameWidth";
 
-        /// <summary>
-        /// 
-        /// </summary>
         const string exitChoise = "exit";
 
         const string continueChoise = "continue";
@@ -45,8 +43,8 @@
         public void ShowMenu()
         {
             Console.Clear();
-            Console.WriteLine("Hello, Welcome to the 'Game Of Life'!" + "\n");
-            Console.WriteLine("Please choose action what you want to do?(INPUT NUMBER)" + "\n");
+            Console.WriteLine("Hello, Welcome to the 'Game Of Life'!\n");
+            Console.WriteLine("Please choose action what you want to do?(INPUT NUMBER)\n");
             Console.WriteLine("1. Play Game: Create Random field");
             Console.WriteLine("2. Play Game: Create Customized field");
             Console.WriteLine("3. Restore Game: Continue to play one of the previous games");
@@ -61,7 +59,7 @@
         public GridOptions GetGridParametersFromInput()
         {
             Console.Clear();
-            Console.WriteLine("Please Remember that MAX Height is 30 and MAX Width is 60" + "\n");
+            Console.WriteLine("Please Remember that MAX Height is 30 and MAX Width is 60\n");
 
             Console.WriteLine("Create name for this game:");
             var gameNameInput = Console.ReadLine();
@@ -95,7 +93,8 @@
             while (dataSerializer.FindGameGridByName(gameName) != null ||
                 gameName == null || gameName.ToLower() == exitChoise)
             {
-                Console.WriteLine("That name is taken" + "\n" + "Please enter valid input!");
+                Console.WriteLine(@"That name is taken
+Please enter valid input!");
                 gameName = Console.ReadLine();
             }
 
@@ -133,7 +132,8 @@
             int numberInList = 1;
             var gridList = dataSerializer.ReturnListOfExistingGrids();
 
-            Console.WriteLine("Please choose one of the games from the list" + "\n" + "List of saved games:" + "\n");
+            Console.WriteLine(@"Please choose one of the games from the list.
+List of saved games:" + "\n");
 
             foreach (var grid in gridList)
             {
@@ -148,7 +148,8 @@
         /// <returns>A game grid.</returns>
         public Grid? RestoreGameFromUserInput()
         {
-            Console.WriteLine("\n" + "Please input NAME of the game you want to restore." + "\n" + "Type EXIT if you want to go back to main menu.");
+            Console.WriteLine("\n" + @"Please input NAME of the game you want to restore.
+Type EXIT if you want to go back to main menu.");
             var userInputtedName = Console.ReadLine();
 
             if (userInputtedName.ToLower() == exitChoise)
@@ -172,7 +173,8 @@
         {
             while (dataSerializer.FindGameGridByName(gameName) == null)
             {
-                Console.WriteLine("There is no game with such name" + "\n" + "Please enter one of the names from the list!");
+                Console.WriteLine(@"There is no game with such name
+Please enter one of the names from the list!");
                 gameName = Console.ReadLine();
             }
 
@@ -414,7 +416,7 @@
         /// </summary>
         public void GameOverMessage()
         {
-            Console.WriteLine("\n" + "You will be sent to main menu ater 5 seconds.");
+            Console.WriteLine("\nYou will be sent to main menu ater 5 seconds.");
             Thread.Sleep(5000);
         }
     }
