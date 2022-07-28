@@ -11,7 +11,6 @@ class Program
         UserOutput userOutput = new();
         GameData dataSerializer = new();
         DisplayGame displayGame = new();
-        Converter converter = new();
 
         var exit = "continue";
 
