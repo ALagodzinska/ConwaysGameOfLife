@@ -318,7 +318,7 @@
         /// </summary>
         public void CustomGameGridRulesMessage()
         {
-            Console.WriteLine("\n" + "To move use ARROWS. To make cell live use SPACE. To stop setting field use ENTER.");
+            Console.WriteLine("\nTo move use ARROWS. To make cell live use SPACE. To stop setting field use ENTER.");
         }
 
         /// <summary>

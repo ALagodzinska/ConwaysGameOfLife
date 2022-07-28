@@ -5,6 +5,8 @@
     /// </summary>
     public class GameData
     {
+        Converter converter = new();
+
         /// <summary>
         /// List to store played game grids.
         /// </summary>
@@ -36,7 +38,7 @@
             foreach (var oneGridData in jsonData)
             {
                 var gridObject = System.Text.Json.JsonSerializer.Deserialize<Grid>(oneGridData);
-                ConvertCellsListToArray(gridObject);
+                converter.ConvertCellsListToArray(gridObject);
                 gridList.Add(gridObject);
             }
         }
@@ -56,44 +58,7 @@
             {
                 File.Create(FilePath);
             }
-        }        
-
-        /// <summary>
-        /// Convert a field with a list to two dimensioanl array.
-        /// </summary>
-        /// <param name="grid">A game grid.</param>
-        public void ConvertCellsListToArray(Grid grid)
-        {
-            foreach (Cell cell in grid.SerializableCells)
-            {
-                grid.Cells[cell.Height, cell.Width] = cell;
-            }
-        }
-
-        /// <summary>
-        /// Convert a field that contains two dimensional array to a list.
-        /// </summary>
-        /// <param name="grid">A game grid.</param>
-        public void ConvertCellsArrayToList(Grid grid)
-        {
-            foreach (Cell cell in grid.Cells)
-            {
-                grid.SerializableCells.Add(cell);
-            }
-        }
-
-        /// <summary>
-        /// Return a list of played game grids.
-        /// </summary>
-        /// <returns>List of game grids.</returns>
-        public List<Grid> ReturnListOfExistingGrids() => gridList;
-
-        /// <summary>
-        /// Find grid by the grid name.
-        /// </summary>
-        /// <param name="name">Name of the grid.</param>
-        /// <returns>If exists return Grid object if not return null.</returns>
-        public Grid? FindGameGridByName(string name) => gridList.FirstOrDefault(g => g.GameName == name);        
+        }                          
 
         /// <summary>
         /// Clear all the data that was written inside file.
@@ -130,11 +95,24 @@
         {
             List<string> gridListForFile = new();
 
-            ConvertCellsArrayToList(grid);
+            converter.ConvertCellsArrayToList(grid);
             string jsonString = System.Text.Json.JsonSerializer.Serialize(grid);
 
             gridListForFile.Add(jsonString);
             File.AppendAllLines(FilePath, gridListForFile);
         }
+
+        /// <summary>
+        /// Return a list of played game grids.
+        /// </summary>
+        /// <returns>List of game grids.</returns>
+        public List<Grid> ReturnListOfExistingGrids() => gridList;
+
+        /// <summary>
+        /// Find grid by the grid name.
+        /// </summary>
+        /// <param name="name">Name of the grid.</param>
+        /// <returns>If exists return Grid object if not return null.</returns>
+        public Grid? FindGameGridByName(string name) => gridList.FirstOrDefault(g => g.GameName == name);
     }
 }

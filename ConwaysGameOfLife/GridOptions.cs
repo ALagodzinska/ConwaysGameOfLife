@@ -19,5 +19,12 @@
         /// Width of grid.
         /// </summary>
         public int Width { get; set; }
+
+        /// <summary>
+        /// Converts user input into Grid object.
+        /// </summary>
+        /// <param name="gridOptions">User inputted parameters for grid.</param>
+        /// <returns>Return created grid object.</returns>
+        public Grid ConvertGridOptionsToGrid() => Grid.CreateNewGrid(this.Height, this.Width, this.GameName);
     }
 }

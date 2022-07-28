@@ -10,6 +10,8 @@ class Program
         GameLogic game = new();
         UserOutput userOutput = new();
         GameData dataSerializer = new();
+        DisplayGame displayGame = new();
+        Converter converter = new();
 
         var exit = "continue";
 
@@ -24,15 +26,15 @@ class Program
             {
                 case "1":
                     var gridParametersRandomGame = userOutput.GetGridParametersFromInput();
-                    var createdGridRandom = Grid.CreateNewGrid(gridParametersRandomGame.Height, gridParametersRandomGame.Width, gridParametersRandomGame.GameName);
+                    var createdGridRandom = gridParametersRandomGame.ConvertGridOptionsToGrid();
                     var randomGrid = game.CreateRandomGrid(createdGridRandom);
-                    game.DisplayRandomGrid(randomGrid);
+                    displayGame.DisplayRandomGrid(randomGrid);
                     game.PlayGame(randomGrid);
                     break;
 
                 case "2":
                     var gridParametersCustomGame = userOutput.GetGridParametersFromInput();
-                    var createdGridCustom = Grid.CreateNewGrid(gridParametersCustomGame.Height, gridParametersCustomGame.Width, gridParametersCustomGame.GameName);
+                    var createdGridCustom = gridParametersCustomGame.ConvertGridOptionsToGrid();
                     game.ChooseLiveCells(createdGridCustom);
                     game.PlayGame(createdGridCustom);
                     break;
