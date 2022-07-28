@@ -3,7 +3,7 @@
     /// <summary>
     /// Contains methods to work with file - get data, remove and add.
     /// </summary>
-    public class GameDataSerializer
+    public class GameData
     {
         /// <summary>
         /// List to store played game grids.
@@ -93,7 +93,6 @@
         /// </summary>
         /// <param name="name">Name of the grid.</param>
         /// <returns>If exists return Grid object if not return null.</returns>
-
         public Grid? FindGameGridByName(string name) => gridList.FirstOrDefault(g => g.GameName == name);        
 
         /// <summary>

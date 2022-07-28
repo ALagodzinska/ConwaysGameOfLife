@@ -9,7 +9,7 @@ class Program
 
         GameLogic game = new();
         UserOutput userOutput = new();
-        GameDataSerializer dataSerializer = new();
+        GameData dataSerializer = new();
 
         var exit = "continue";
 

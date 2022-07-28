@@ -6,7 +6,11 @@
     public class GameLogic
     {
         UserOutput userOutput = new();
-        GameDataSerializer dataSerializer = new();
+        GameData dataSerializer = new();
+
+        const int indentLeft = 10;
+        const int indentTop = 5;
+        const int topLines = 6;
 
         /// <summary>
         /// Create a random grid with where by random is placed live and dead cells.
@@ -290,7 +294,7 @@
             }
         }
 
-        /// <summary> 
+        /// <summary> +10
         /// Creates multiple random game fields based on inputted user data.
         /// </summary>
         /// <param name="gridParameters">Grid parameters to create multiple random game grids.</param>
@@ -415,7 +419,7 @@
         public int HowManyGamesCanBeInOneRow(int startPointForLeftPadding)
         {
             var windowWidth = Console.WindowWidth;
-            var paddingLeft = startPointForLeftPadding + 10;
+            var paddingLeft = startPointForLeftPadding + indentLeft;
 
             return (windowWidth / paddingLeft);
         }
@@ -432,14 +436,13 @@
         {
             int[] startCoordinates = new int[2];
 
-            var paddingLeft = startPointForLeftPadding + 10;
+            var paddingLeft = startPointForLeftPadding + indentLeft;
 
-            var paddingTop = grid.Height + 5;
+            var paddingTop = grid.Height + indentTop;
             var topPositionCount = gridIndex / gameCountInOneRow;
 
             startCoordinates[0] = paddingLeft * (gridIndex - (gameCountInOneRow * topPositionCount));
-            //+6 to display on top of the screen statistics about games.
-            startCoordinates[1] = paddingTop * topPositionCount + 6;
+            startCoordinates[1] = paddingTop * topPositionCount + topLines;
 
             return startCoordinates;
         }
@@ -473,16 +476,6 @@
         /// </summary>
         /// <param name="multipleGamesList">List of the games played.</param>
         /// <returns>Count of live cells in all games.</returns>
-        public int TotalOfLiveCells(List<Grid> multipleGamesList)
-        {
-            var totalLiveCellsCount = 0;
-
-            foreach(var game in multipleGamesList)
-            {
-                totalLiveCellsCount += game.CountOfLiveCells();
-            }
-
-            return totalLiveCellsCount;
-        }
+        public int TotalOfLiveCells(List<Grid> multipleGamesList) => multipleGamesList.Sum(game => game.CountOfLiveCells());
     }
 }

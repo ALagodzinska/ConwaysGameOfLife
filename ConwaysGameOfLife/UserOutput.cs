@@ -5,7 +5,34 @@
     /// </summary>
     public class UserOutput
     {
-        GameDataSerializer dataSerializer = new();
+        GameData dataSerializer = new();
+
+        /// <summary>
+        /// Additional parameter to apply validation for grid height when playing one game.
+        /// </summary>
+        const string heightOneGame = "height";
+
+        /// <summary>
+        /// Additional parameter to apply validation for grid width when playing one game.
+        /// </summary>
+        const string widthOneGame = "width";
+
+        /// <summary>
+        /// Additional parameter to apply validation for grid height when playing multiple games.
+        /// </summary>
+        const string heightManyGames = "multipleGameHeight";
+
+        /// <summary>
+        /// Additional parameter to apply validation for grid width when playing multiple games.
+        /// </summary>
+        const string widthManyGames = "multipleGameWidth";
+
+        /// <summary>
+        /// 
+        /// </summary>
+        const string exitChoise = "exit";
+
+        const string continueChoise = "continue";
 
         /// <summary>
         /// Field that stores number input if it meet all requirements.
@@ -42,11 +69,11 @@
 
             Console.WriteLine("Input height of field:");
             var heightInput = Console.ReadLine();
-            var validHeight = DimensionInputValidation(heightInput, "height");
+            var validHeight = DimensionInputValidation(heightInput, heightOneGame);
 
             Console.WriteLine("Input width of field:");
             var widthInput = Console.ReadLine();
-            var validWidth = DimensionInputValidation(widthInput, "width");
+            var validWidth = DimensionInputValidation(widthInput, widthOneGame);
 
             var gridParameters = new GridOptions()
             {
@@ -65,9 +92,8 @@
         /// <returns>Return valid(not taken) name for game grid.</returns>
         public string GameNameOnCreateValidation(string gameName)
         {
-            var exitName = "exit";
             while (dataSerializer.FindGameGridByName(gameName) != null ||
-                gameName == null || gameName.ToLower() == exitName)
+                gameName == null || gameName.ToLower() == exitChoise)
             {
                 Console.WriteLine("That name is taken" + "\n" + "Please enter valid input!");
                 gameName = Console.ReadLine();
@@ -85,10 +111,10 @@
         public int DimensionInputValidation(string numberInput, string typeOfInput)
         {
             while (!int.TryParse(numberInput, out validInput) || validInput <= 0
-                || typeOfInput == "height" && validInput > 30
-                || typeOfInput == "width" && validInput > 60
-                || typeOfInput == "multipleGameWidth" && validInput > 20
-                || typeOfInput == "multipleGameHeight" && validInput > 15)
+                || typeOfInput == heightOneGame && validInput > 30
+                || typeOfInput == widthOneGame && validInput > 60
+                || typeOfInput == widthManyGames && validInput > 20
+                || typeOfInput == heightManyGames && validInput > 15)
             {
                 Console.WriteLine("Please enter valid input!");
                 numberInput = Console.ReadLine();
@@ -125,7 +151,7 @@
             Console.WriteLine("\n" + "Please input NAME of the game you want to restore." + "\n" + "Type EXIT if you want to go back to main menu.");
             var userInputtedName = Console.ReadLine();
 
-            if (userInputtedName.ToLower() == "exit")
+            if (userInputtedName.ToLower() == exitChoise)
             {
                 return null;
             }
@@ -202,11 +228,11 @@
 
             Console.WriteLine("Input height of field:");
             var heightInput = Console.ReadLine();
-            var validHeight = DimensionInputValidation(heightInput, "multipleGameHeight");
+            var validHeight = DimensionInputValidation(heightInput, heightManyGames);
 
             Console.WriteLine("Input width of field:");
             var widthInput = Console.ReadLine();
-            var validWidth = DimensionInputValidation(widthInput, "multipleGameWidth");
+            var validWidth = DimensionInputValidation(widthInput, widthManyGames);
 
             var gridParameters = new GridOptions()
             {
@@ -374,13 +400,13 @@
 
             var userChoise = Console.ReadLine();
 
-            while (userChoise.ToLower() != "exit" && userChoise.ToLower() != "continue")
+            while (userChoise.ToLower() != exitChoise && userChoise.ToLower() != continueChoise)
             {
                 Console.WriteLine("Wrong input! Choose 'EXIT' or 'CONTINUE'");
                 userChoise = Console.ReadLine();
             }
 
-            return userChoise.ToLower() == "exit" ? true : false;
+            return userChoise.ToLower() == exitChoise ? true : false;
         }
 
         /// <summary>
