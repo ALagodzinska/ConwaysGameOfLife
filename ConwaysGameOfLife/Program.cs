@@ -9,9 +9,9 @@ class Program
         //setting window size to maximum, makes it easier to play multiple games.
         SetWindowSize(LargestWindowWidth, LargestWindowHeight);
 
-        GameData dataSerializer = new();
+        GameData gameData = new();
 
-        dataSerializer.ReadDataFromTheFile();
+        gameData.ReadDataFromTheFile();
 
         StartGame game = new StartGame();
         game.Start();        

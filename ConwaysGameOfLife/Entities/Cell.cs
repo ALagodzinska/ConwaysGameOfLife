@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace ConwaysGameOfLife
+namespace ConwaysGameOfLife.Entities
 {
     /// <summary>
     /// Stores data about a cell in a grid.

@@ -1,4 +1,6 @@
-﻿namespace ConwaysGameOfLife
+﻿using ConwaysGameOfLife.Entities;
+
+namespace ConwaysGameOfLife
 {
     /// <summary>
     /// Contain methods that apply game rules and logic.

@@ -1,4 +1,6 @@
-﻿namespace ConwaysGameOfLife
+﻿using ConwaysGameOfLife.Entities;
+
+namespace ConwaysGameOfLife
 {
     public class Converter
     { 
@@ -24,6 +26,17 @@
             {
                 grid.SerializableCells.Add(cell);
             }
+        }
+
+        public string[] ConvertGridListToStringArray(List<Grid> gridList)
+        {
+            string[] gridNamesArray = new string[gridList.Count];
+            for(int i = 0; i < gridList.Count; i++)
+            {
+                gridNamesArray[i] = gridList[i].GameName;
+            }
+
+            return gridNamesArray;
         }
     }
 }

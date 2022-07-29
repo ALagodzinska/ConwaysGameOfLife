@@ -1,4 +1,4 @@
-﻿namespace ConwaysGameOfLife
+﻿namespace ConwaysGameOfLife.Entities
 {
     /// <summary>
     /// Stores users data from input. Used as a base for creating Grid object.
@@ -25,6 +25,6 @@
         /// </summary>
         /// <param name="gridOptions">User inputted parameters for grid.</param>
         /// <returns>Return created grid object.</returns>
-        public Grid ConvertGridOptionsToGrid() => Grid.CreateNewGrid(this.Height, this.Width, this.GameName);
+        public Grid ConvertGridOptionsToGrid() => Grid.CreateNewGrid(Height, Width, GameName);
     }
 }

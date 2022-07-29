@@ -1,4 +1,4 @@
-﻿namespace ConwaysGameOfLife
+﻿namespace ConwaysGameOfLife.Entities
 {
     public class Menu
     {

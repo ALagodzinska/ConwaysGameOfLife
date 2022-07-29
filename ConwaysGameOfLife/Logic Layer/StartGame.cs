@@ -1,10 +1,12 @@
-﻿namespace ConwaysGameOfLife
+﻿using ConwaysGameOfLife.Entities;
+
+namespace ConwaysGameOfLife
 {
     public class StartGame
     {
         GameLogic game = new();
         UserOutput userOutput = new();
-        GameData dataSerializer = new();
+        GameData gameData = new();
         DisplayGame displayGame = new();
 
         public void Start()
@@ -72,7 +74,7 @@ Please choose what you want to do?
 
                     case 4:
                         Console.WriteLine("Thank you for the game. Bye!");
-                        dataSerializer.SaveAllData();
+                        gameData.SaveAllData();
                         exit = "exit";
                         Environment.Exit(0);
                         break;

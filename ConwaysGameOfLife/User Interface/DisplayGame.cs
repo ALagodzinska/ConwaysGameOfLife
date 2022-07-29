@@ -1,4 +1,6 @@
-﻿namespace ConwaysGameOfLife
+﻿using ConwaysGameOfLife.Entities;
+
+namespace ConwaysGameOfLife
 {
     /// <summary>
     /// Contains methods to display game on the screen.
