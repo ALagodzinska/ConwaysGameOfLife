@@ -17,7 +17,7 @@ namespace ConwaysGameOfLife
 
         private void RunMainMenu()
         {
-            string menuIntro = @"
+            var menuIntro = @"
  ██████╗  █████╗ ███╗   ███╗███████╗     ██████╗ ███████╗    ██╗     ██╗███████╗███████╗
 ██╔════╝ ██╔══██╗████╗ ████║██╔════╝    ██╔═══██╗██╔════╝    ██║     ██║██╔════╝██╔════╝
 ██║  ███╗███████║██╔████╔██║█████╗      ██║   ██║█████╗      ██║     ██║█████╗  █████╗  
@@ -41,7 +41,7 @@ Please choose what you want to do?
                 switch (selectedIndex)
                 {
                     case 0:
-                        var gridParametersRandomGame = userOutput.GetGridParametersFromInput();
+                        var gridParametersRandomGame = userOutput.GetGridParametersFromInput(false);
                         var createdGridRandom = gridParametersRandomGame.ConvertGridOptionsToGrid();
                         var randomGrid = game.CreateRandomGrid(createdGridRandom);
                         displayGame.DisplayRandomGrid(randomGrid);
@@ -49,7 +49,7 @@ Please choose what you want to do?
                         break;
 
                     case 1:
-                        var gridParametersCustomGame = userOutput.GetGridParametersFromInput();
+                        var gridParametersCustomGame = userOutput.GetGridParametersFromInput(false);
                         var createdGridCustom = gridParametersCustomGame.ConvertGridOptionsToGrid();
                         game.ChooseLiveCells(createdGridCustom);
                         game.PlayGame(createdGridCustom);
@@ -67,7 +67,7 @@ Please choose what you want to do?
 
                     case 3:
                         var gameCount = userOutput.GameCountInput();
-                        var gridParametersMultipleGames = userOutput.GetMultipleGamesParametersFromInput();
+                        var gridParametersMultipleGames = userOutput.GetGridParametersFromInput(true);
                         var listOfGames = game.MultipleGridList(gridParametersMultipleGames, gameCount);
                         game.PlayMultipleGames(listOfGames);
                         break;

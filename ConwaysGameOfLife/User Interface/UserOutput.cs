@@ -10,42 +10,17 @@ namespace ConwaysGameOfLife
     {
         GameData gameData = new();
 
-        DataValidation validation = new();
-
-        ///// <summary>
-        ///// Additional parameter to apply validation for grid height when playing one game.
-        ///// </summary>
-        //const string heightOneGame = "height";
-
-        ///// <summary>
-        ///// Additional parameter to apply validation for grid width when playing one game.
-        ///// </summary>
-        //const string widthOneGame = "width";
-
-        ///// <summary>
-        ///// Additional parameter to apply validation for grid height when playing multiple games.
-        ///// </summary>
-        //const string heightManyGames = "multipleGameHeight";
-
-        ///// <summary>
-        ///// Additional parameter to apply validation for grid width when playing multiple games.
-        ///// </summary>
-        //const string widthManyGames = "multipleGameWidth";
-
-        //const string exitChoise = "exit";
-
-        //const string continueChoise = "continue";
-
-               
+        DataValidation validation = new();               
 
         /// <summary>
         /// Display to user what values should be inputted for one game and processes data input.
         /// </summary>
         /// <returns>Return base parameters(GridOptions) for future game grid.</returns>
-        public GridOptions GetGridParametersFromInput()
+        public GridOptions GetGridParametersFromInput(bool isMultipleGames)
         {
             Console.Clear();
-            Console.WriteLine("Please Remember that MAX Height is 30 and MAX Width is 60\n");
+            var message = isMultipleGames ? "Please Remember that MAX Height is 15 and MAX Width is 20\n" : "Please Remember that MAX Height is 30 and MAX Width is 60\n";
+            Console.WriteLine(message);
 
             Console.WriteLine("Create name for this game:");
             var gameNameInput = Console.ReadLine();
@@ -53,11 +28,11 @@ namespace ConwaysGameOfLife
 
             Console.WriteLine("Input height of field:");
             var heightInput = Console.ReadLine();
-            var validHeight = validation.DimensionInput(heightInput, "height");
+            var validHeight = validation.GridHeightInput(heightInput, isMultipleGames);
 
             Console.WriteLine("Input width of field:");
             var widthInput = Console.ReadLine();
-            var validWidth = validation.DimensionInput(widthInput, "width");
+            var validWidth = validation.GridWidthInput(widthInput, isMultipleGames);
 
             var gridParameters = new GridOptions()
             {
@@ -68,10 +43,6 @@ namespace ConwaysGameOfLife
 
             return gridParameters;
         }
-
-        
-
-        
 
         /// <summary>
         /// Show to user all names of the grids that are stored in a list.
@@ -135,41 +106,6 @@ List of saved games:" + "\n");
             return validGameCountInput;
         }
 
-        
-
-        
-
-        /// <summary>
-        /// Display to user what values should be inputted for multiple games and processes data input.
-        /// </summary>
-        /// <returns>Return base parameters(GridOptions) for future game grid.</returns>
-        public GridOptions GetMultipleGamesParametersFromInput()
-        {
-            Console.Clear();
-            Console.WriteLine("Please Remember that MAX Height is 15 and MAX Width is 20" + "\n");
-
-            Console.WriteLine("Create name for this game:");
-            var gameNameInput = Console.ReadLine();
-            var validName = validation.GameNameOnCreate(gameNameInput);
-
-            Console.WriteLine("Input height of field:");
-            var heightInput = Console.ReadLine();
-            var validHeight = validation.DimensionInput(heightInput, "multipleGameHeight");
-
-            Console.WriteLine("Input width of field:");
-            var widthInput = Console.ReadLine();
-            var validWidth = validation.DimensionInput(widthInput, "multipleGameHeight");
-
-            var gridParameters = new GridOptions()
-            {
-                GameName = validName,
-                Height = validHeight,
-                Width = validWidth,
-            };
-
-            return gridParameters;
-        }
-
         /// <summary>
         /// Get data from user about what games should be displayed on the screen.
         /// </summary>
@@ -196,11 +132,7 @@ List of saved games:" + "\n");
             }
 
             return gamesArray;
-        }
-
-        
-
-        
+        }        
 
         /// <summary>
         /// Message to display rules for customazing the grid.
@@ -283,19 +215,15 @@ List of saved games:" + "\n");
         {
             Console.Clear();
 
-            Console.WriteLine($"You have stopped the game. Live games count - {gameList.Count()}");
-            Console.WriteLine("Type 'EXIT' if you want to save all live games and go back to main menu.");
-            Console.WriteLine("Type 'CONTINUE' if you want to continue playing and change displayed games on a screen.");
+            var menuIntro = @$"You have stopped the game. Live games count - {gameList.Count()}.
+Choose if you want EXIT game ang go back to main menu. Or CONTINUE and choose different cells to display on a screen.";
+            string[] options = { "GO BACK TO MAIN MENU", "CONTINUE TO PLAY" };
 
-            var userChoise = Console.ReadLine();
+            Menu mainMenu = new Menu(options, menuIntro);
+            var selectedIndex = mainMenu.SelectFromMenu();
+            var exit = selectedIndex == 0 ? true : false;
 
-            while (userChoise.ToLower() != exitChoise && userChoise.ToLower() != continueChoise)
-            {
-                Console.WriteLine("Wrong input! Choose 'EXIT' or 'CONTINUE'");
-                userChoise = Console.ReadLine();
-            }
-
-            return userChoise.ToLower() == exitChoise ? true : false;
+            return exit;
         }
 
         /// <summary>

@@ -6,29 +6,11 @@ namespace ConwaysGameOfLife
     {
         GameData gameData = new();
 
-        /// <summary>
-        /// Additional parameter to apply validation for grid height when playing one game.
-        /// </summary>
-        const string heightOneGame = "height";
+        const int maxHeightForOneGame = 30;
+        const int maxWidthForOneGame = 60;
 
-        /// <summary>
-        /// Additional parameter to apply validation for grid width when playing one game.
-        /// </summary>
-        const string widthOneGame = "width";
-
-        /// <summary>
-        /// Additional parameter to apply validation for grid height when playing multiple games.
-        /// </summary>
-        const string heightManyGames = "multipleGameHeight";
-
-        /// <summary>
-        /// Additional parameter to apply validation for grid width when playing multiple games.
-        /// </summary>
-        const string widthManyGames = "multipleGameWidth";
-
-        const string exitChoise = "exit";
-
-        const string continueChoise = "continue";
+        const int maxHeightForManyGames = 15;
+        const int maxWidthForManyGames = 20;
 
         /// <summary>
         /// Field that stores number input if it meet all requirements.
@@ -42,8 +24,7 @@ namespace ConwaysGameOfLife
         /// <returns>Return valid(not taken) name for game grid.</returns>
         public string GameNameOnCreate(string gameName)
         {
-            while (gameData.FindGameGridByName(gameName) != null ||
-                gameName == null || gameName.ToLower() == exitChoise)
+            while (gameData.FindGameGridByName(gameName) != null || gameName == null)
             {
                 Console.WriteLine(@"That name is taken
 Please enter valid input!");
@@ -53,21 +34,28 @@ Please enter valid input!");
             return gameName;
         }
 
-        /// <summary>
-        /// Check if inputted numeric value for grid dimensions is valid. If not asks for valid input.
-        /// </summary>
-        /// <param name="numberInput">Parameter for grid that was inputted by user.</param>
-        /// <param name="typeOfInput">Allows to understand what type of input it is(height or width). Used for validation.</param>
-        /// <returns>Returns a valid integer - Grid parameter.</returns>
-        public int DimensionInput(string numberInput, string typeOfInput)
+        public int GridHeightInput(string numberInput, bool isMultipleGames)
         {
             while (!int.TryParse(numberInput, out validInput) || validInput <= 0
-                || typeOfInput == heightOneGame && validInput > 30
-                || typeOfInput == widthOneGame && validInput > 60
-                || typeOfInput == widthManyGames && validInput > 20
-                || typeOfInput == heightManyGames && validInput > 15)
+                || isMultipleGames == false && validInput > maxHeightForOneGame
+                || isMultipleGames == true && validInput > maxHeightForManyGames)
             {
-                Console.WriteLine("Please enter valid input!");
+                var message = isMultipleGames ? $"Height of the field should be less or equals to {maxHeightForManyGames}" : $"Height of the field should be less or equals to {maxHeightForOneGame}";
+                Console.WriteLine(message);
+                numberInput = Console.ReadLine();
+            }
+
+            return validInput;
+        }
+
+        public int GridWidthInput(string numberInput, bool isMultipleGames)
+        {
+            while (!int.TryParse(numberInput, out validInput) || validInput <= 0
+                || isMultipleGames == false && validInput > maxWidthForOneGame
+                || isMultipleGames == true && validInput > maxWidthForManyGames)
+            {
+                var message = isMultipleGames ? $"Width of the field should be less or equals to {maxWidthForManyGames}" : $"Width of the field should be less or equals to {maxWidthForOneGame}";
+                Console.WriteLine(message);
                 numberInput = Console.ReadLine();
             }
 
