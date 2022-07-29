@@ -11,6 +11,8 @@
 
         DataValidation validation = new();
 
+        const string liveCellsMessage = "Live cells: ";
+
         /// <summary>
         /// Display to user what values should be inputted for game and processes data input.
         /// </summary>
@@ -151,7 +153,7 @@ List of saved games:" + "\n");
             Console.SetCursorPosition(0, grid.Height);
             Console.WriteLine();
             Console.WriteLine($"Iteration count: {grid.IterationCount}");
-            Console.WriteLine($"Live cells: {grid.CountOfLiveCells()}");
+            Console.WriteLine($"{liveCellsMessage}{grid.CountOfLiveCells()}");
         }
 
         /// <summary>
@@ -161,7 +163,7 @@ List of saved games:" + "\n");
         /// <param name="startCoordinates">Start coordinates of a displayed grid.</param>
         public void CleanLiveCellsCount(Grid grid, int[] startCoordinates)
         {
-            var mainPartOfMessage = "Live cells: ";
+            var mainPartOfMessage = liveCellsMessage;
             var countLength = grid.CountOfLiveCells().ToString().Length;
 
             Console.SetCursorPosition(startCoordinates[0] + mainPartOfMessage.Length, startCoordinates[1] + grid.Height + 2);
@@ -203,7 +205,7 @@ List of saved games:" + "\n");
             Console.SetCursorPosition(startCoordinates[0], grid.Height + startCoordinates[1] + 1);
             Console.Write($"Game name: {grid.GameName}");
             Console.SetCursorPosition(startCoordinates[0], grid.Height + startCoordinates[1] + 2);
-            Console.Write($"Live cells: {grid.CountOfLiveCells()}");
+            Console.Write($"{liveCellsMessage}{grid.CountOfLiveCells()}");
         }
 
         /// <summary>

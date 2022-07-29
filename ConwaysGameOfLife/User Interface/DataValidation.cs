@@ -29,6 +29,8 @@
         /// </summary>
         const int maxWidthForManyGames = 20;
 
+        const string enterValidInput = "Please enter valid input!";
+
         /// <summary>
         /// Field that stores number input if it meet all requirements.
         /// </summary>
@@ -43,8 +45,8 @@
         {
             while (gameData.FindGameGridByName(gameName) != null || gameName == null)
             {
-                Console.WriteLine(@"That name is taken
-Please enter valid input!");
+                Console.WriteLine(@$"That name is taken
+{enterValidInput}");
                 gameName = Console.ReadLine();
             }
 
@@ -102,7 +104,7 @@ Please enter valid input!");
                 || validInput < 2
                 || validInput > 1000)
             {
-                Console.WriteLine("Please enter valid input!");
+                Console.WriteLine(enterValidInput);
                 countOfAllGames = Console.ReadLine();
             }
 
@@ -120,7 +122,7 @@ Please enter valid input!");
             while (!int.TryParse(gameToRestore, out validInput) || validInput <= 0
                 || validInput > gridList.Count)
             {
-                Console.WriteLine("Please enter valid input!");
+                Console.WriteLine(enterValidInput);
                 gameToRestore = Console.ReadLine();
             }
 
@@ -140,7 +142,7 @@ Please enter valid input!");
                 || validInput > countOfAllGames
                 || validInput > 8)
             {
-                Console.WriteLine("Please enter valid input!");
+                Console.WriteLine(enterValidInput);
                 gamesCountInput = Console.ReadLine();
             }
 
