@@ -1,7 +1,6 @@
-﻿using ConwaysGameOfLife.Entities;
-
-namespace ConwaysGameOfLife
+﻿namespace ConwaysGameOfLife
 {
+    using ConwaysGameOfLife.Entities;
 
     /// <summary>
     /// Class responsible for displaying information to user.
@@ -10,11 +9,12 @@ namespace ConwaysGameOfLife
     {
         GameData gameData = new();
 
-        DataValidation validation = new();               
+        DataValidation validation = new();
 
         /// <summary>
-        /// Display to user what values should be inputted for one game and processes data input.
+        /// Display to user what values should be inputted for game and processes data input.
         /// </summary>
+        /// <param name="isMultipleGames">Help to distinguish if it is single or multiple games play. True - multiple grids game. False - One grid game.</param>
         /// <returns>Return base parameters(GridOptions) for future game grid.</returns>
         public GridOptions GetGridParametersFromInput(bool isMultipleGames)
         {

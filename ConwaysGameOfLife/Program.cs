@@ -1,20 +1,19 @@
-﻿namespace ConwaysGameOfLife;
-
-using static System.Console;
-
-class Program
+﻿namespace ConwaysGameOfLife
 {
-    static void Main(string[] args)
+    class Program
     {
-        //setting window size to maximum, makes it easier to play multiple games.
-        SetWindowSize(LargestWindowWidth, LargestWindowHeight);
+        static void Main(string[] args)
+        {
+            //setting window size to maximum, makes it easier to play multiple games.
+            Console.SetWindowSize(Console.LargestWindowWidth, Console.LargestWindowHeight);
 
-        GameData gameData = new();
+            GameData gameData = new();
 
-        gameData.ReadDataFromTheFile();
+            gameData.ReadDataFromTheFile();
 
-        StartGame game = new StartGame();
-        game.Start();        
+            StartGame game = new StartGame();
+            game.Start();
+        }
     }
 }
 

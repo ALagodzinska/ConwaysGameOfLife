@@ -1,15 +1,32 @@
-﻿using ConwaysGameOfLife.Entities;
-
-namespace ConwaysGameOfLife
+﻿namespace ConwaysGameOfLife
 {
+    using ConwaysGameOfLife.Entities;
+
+    /// <summary>
+    /// Stores methods used for validating user input.
+    /// </summary>
     public class DataValidation
     {
         GameData gameData = new();
 
+        /// <summary>
+        /// Maximum grid height allowed for playing single game.
+        /// </summary>
         const int maxHeightForOneGame = 30;
+
+        /// <summary>
+        /// Maximum grid width allowed for playing single game.
+        /// </summary>
         const int maxWidthForOneGame = 60;
 
+        /// <summary>
+        /// Maximum grid height allowed for playing multiple games.
+        /// </summary>
         const int maxHeightForManyGames = 15;
+
+        /// <summary>
+        /// Maximum grid width allowed for playing multiple games.
+        /// </summary>
         const int maxWidthForManyGames = 20;
 
         /// <summary>
@@ -34,29 +51,41 @@ Please enter valid input!");
             return gameName;
         }
 
-        public int GridHeightInput(string numberInput, bool isMultipleGames)
+        /// <summary>
+        /// Check if height input meet all requirements.
+        /// </summary>
+        /// <param name="heightInput">User input for height parameter.</param>
+        /// <param name="isMultipleGames">Help to distinguish if it is single or multiple games play. True - multiple grids game. False - One grid game.</param>
+        /// <returns>Valid height value.</returns>
+        public int GridHeightInput(string heightInput, bool isMultipleGames)
         {
-            while (!int.TryParse(numberInput, out validInput) || validInput <= 0
+            while (!int.TryParse(heightInput, out validInput) || validInput <= 0
                 || isMultipleGames == false && validInput > maxHeightForOneGame
                 || isMultipleGames == true && validInput > maxHeightForManyGames)
             {
                 var message = isMultipleGames ? $"Height of the field should be less or equals to {maxHeightForManyGames}" : $"Height of the field should be less or equals to {maxHeightForOneGame}";
                 Console.WriteLine(message);
-                numberInput = Console.ReadLine();
+                heightInput = Console.ReadLine();
             }
 
             return validInput;
         }
 
-        public int GridWidthInput(string numberInput, bool isMultipleGames)
+        /// <summary>
+        /// Check if width input meet all requirements.
+        /// </summary>
+        /// <param name="widthInput">User input for width parameter.</param>
+        /// <param name="isMultipleGames">Help to distinguish if it is single or multiple games play. True - multiple grids game. False - One grid game.</param>
+        /// <returns>Valid width value.</returns>
+        public int GridWidthInput(string widthInput, bool isMultipleGames)
         {
-            while (!int.TryParse(numberInput, out validInput) || validInput <= 0
+            while (!int.TryParse(widthInput, out validInput) || validInput <= 0
                 || isMultipleGames == false && validInput > maxWidthForOneGame
                 || isMultipleGames == true && validInput > maxWidthForManyGames)
             {
                 var message = isMultipleGames ? $"Width of the field should be less or equals to {maxWidthForManyGames}" : $"Width of the field should be less or equals to {maxWidthForOneGame}";
                 Console.WriteLine(message);
-                numberInput = Console.ReadLine();
+                widthInput = Console.ReadLine();
             }
 
             return validInput;
@@ -80,6 +109,12 @@ Please enter valid input!");
             return validInput;
         }
 
+        /// <summary>
+        /// Check if inputted value is valid integer.
+        /// </summary>
+        /// <param name="gameToRestore">User inputted to choose game.</param>
+        /// <param name="gridList">List of all available games.</param>
+        /// <returns>Return valid numeric value that represents game in a list.</returns>
         public int GameToRestore(string gameToRestore, List<Grid> gridList)
         {
             while (!int.TryParse(gameToRestore, out validInput) || validInput <= 0

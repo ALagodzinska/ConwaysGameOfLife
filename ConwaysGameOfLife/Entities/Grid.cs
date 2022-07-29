@@ -1,9 +1,9 @@
-﻿using Newtonsoft.Json;
-
-namespace ConwaysGameOfLife.Entities
+﻿namespace ConwaysGameOfLife.Entities
 {
+    using Newtonsoft.Json;
+
     /// <summary>
-    /// Stores data about game field.
+    /// Stores data about game field and game grid methods.
     /// </summary>
     [JsonObject(MemberSerialization.OptOut)]
     public class Grid
@@ -98,7 +98,7 @@ namespace ConwaysGameOfLife.Entities
         /// Check if unchanged cells count is the same with cells count in a grid. If all cells stay unchanged - game is over.
         /// </summary>
         /// <returns>True if all cells stayed the same, false if grid have been changed.</returns>
-        public bool CheckIfGridIsSame() => UncahngedCellsCount == Height * Width ? true : false;
+        public bool CheckIfGridIsSame() => UncahngedCellsCount == Height * Width;
 
         /// <summary>
         /// Count all live neighbours of one cell.

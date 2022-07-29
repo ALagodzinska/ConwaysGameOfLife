@@ -1,7 +1,7 @@
-﻿using ConwaysGameOfLife.Entities;
-
-namespace ConwaysGameOfLife
+﻿namespace ConwaysGameOfLife
 {
+    using ConwaysGameOfLife.Entities;
+
     /// <summary>
     /// Contains methods to work with file - get data, remove and add.
     /// </summary>

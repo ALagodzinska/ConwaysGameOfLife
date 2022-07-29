@@ -1,7 +1,10 @@
-﻿using ConwaysGameOfLife.Entities;
-
-namespace ConwaysGameOfLife
+﻿namespace ConwaysGameOfLife
 {
+    using ConwaysGameOfLife.Entities;
+
+    /// <summary>
+    /// Converts data for serialization and desirialization.
+    /// </summary>
     public class Converter
     { 
         /// <summary>
@@ -26,17 +29,6 @@ namespace ConwaysGameOfLife
             {
                 grid.SerializableCells.Add(cell);
             }
-        }
-
-        public string[] ConvertGridListToStringArray(List<Grid> gridList)
-        {
-            string[] gridNamesArray = new string[gridList.Count];
-            for(int i = 0; i < gridList.Count; i++)
-            {
-                gridNamesArray[i] = gridList[i].GameName;
-            }
-
-            return gridNamesArray;
         }
     }
 }

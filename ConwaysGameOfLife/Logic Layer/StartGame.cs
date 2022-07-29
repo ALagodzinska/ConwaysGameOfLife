@@ -1,7 +1,10 @@
-﻿using ConwaysGameOfLife.Entities;
-
-namespace ConwaysGameOfLife
+﻿namespace ConwaysGameOfLife
 {
+    using ConwaysGameOfLife.Entities;
+
+    /// <summary>
+    /// Class responsible for running the game.
+    /// </summary>
     public class StartGame
     {
         GameLogic game = new();
@@ -9,12 +12,18 @@ namespace ConwaysGameOfLife
         GameData gameData = new();
         DisplayGame displayGame = new();
 
+        /// <summary>
+        /// Starts game.
+        /// </summary>
         public void Start()
         {
             Console.Title = "GAME OF LIFE";
             RunMainMenu();
         }
 
+        /// <summary>
+        /// Display main menu.
+        /// </summary>
         private void RunMainMenu()
         {
             var menuIntro = @"

@@ -1,12 +1,14 @@
-﻿using ConwaysGameOfLife.Entities;
-
-namespace ConwaysGameOfLife
+﻿namespace ConwaysGameOfLife
 {
+    using ConwaysGameOfLife.Entities;
+
     /// <summary>
     /// Contains methods to display game on the screen.
     /// </summary>
     public class DisplayGame
     {
+        UserOutput userOutput = new();
+
         /// <summary>
         /// Side spacing between grids.
         /// </summary>
@@ -20,9 +22,7 @@ namespace ConwaysGameOfLife
         /// <summary>
         /// Indentation from top of the console.
         /// </summary>
-        const int topLines = 6;
-
-        UserOutput userOutput = new();
+        const int topLines = 6;        
 
         /// <summary>
         /// Draw grid based on the cells stored in the grid.
