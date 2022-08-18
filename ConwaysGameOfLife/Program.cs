@@ -11,8 +11,8 @@
 
             gameData.ReadDataFromTheFile();
 
-            StartGame game = new StartGame();
-            game.Start();
+            GameController game = new GameController();
+            game.RunGame();
         }
     }
 }

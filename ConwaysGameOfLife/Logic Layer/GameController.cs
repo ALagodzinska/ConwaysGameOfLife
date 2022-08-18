@@ -1,55 +1,69 @@
 ﻿namespace ConwaysGameOfLife
 {
-    using ConwaysGameOfLife.Entities;
+    using ConwaysGameOfLife.Entities.Menu;
+    using System.Reflection;
+    using System.Resources;
 
     /// <summary>
     /// Class responsible for running the game.
     /// </summary>
-    public class StartGame
+    public class GameController
     {
+        /// <summary>
+        /// Main game logic.
+        /// </summary>
         GameLogic game = new();
+
+        /// <summary>
+        /// User output.
+        /// </summary>
         UserOutput userOutput = new();
+
+        /// <summary>
+        /// Storing game data.
+        /// </summary>
         GameData gameData = new();
+
+        /// <summary>
+        /// Displaying game field.
+        /// </summary>
         DisplayGame displayGame = new();
 
         /// <summary>
-        /// Starts game.
+        /// Stores menu data.
         /// </summary>
-        public void Start()
+        GameMainMenu menu;
+
+        /// <summary>
+        /// Resource data.
+        /// </summary>
+        ResourceManager resourceManager = new ResourceManager("ConwaysGameOfLife.Resources.ResourceFile", Assembly.GetExecutingAssembly());
+
+        /// <summary>
+        /// Assign menu values to a menu field.
+        /// </summary>
+        public GameController()
         {
-            Console.Title = "GAME OF LIFE";
-            RunMainMenu();
+            menu = new GameMainMenu(resourceManager.GetString("MainMenuIntro"));
         }
 
         /// <summary>
-        /// Display main menu.
+        /// Display main menu and make it functional.
         /// </summary>
-        private void RunMainMenu()
+        public void RunGame()
         {
-            var menuIntro = @"
- ██████╗  █████╗ ███╗   ███╗███████╗     ██████╗ ███████╗    ██╗     ██╗███████╗███████╗
-██╔════╝ ██╔══██╗████╗ ████║██╔════╝    ██╔═══██╗██╔════╝    ██║     ██║██╔════╝██╔════╝
-██║  ███╗███████║██╔████╔██║█████╗      ██║   ██║█████╗      ██║     ██║█████╗  █████╗  
-██║   ██║██╔══██║██║╚██╔╝██║██╔══╝      ██║   ██║██╔══╝      ██║     ██║██╔══╝  ██╔══╝  
-╚██████╔╝██║  ██║██║ ╚═╝ ██║███████╗    ╚██████╔╝██║         ███████╗██║██║     ███████╗
- ╚═════╝ ╚═╝  ╚═╝╚═╝     ╚═╝╚══════╝     ╚═════╝ ╚═╝         ╚══════╝╚═╝╚═╝     ╚══════╝
-
-Hello, Welcome to the 'Game Of Life'!;
-Please choose what you want to do?
-(Use the arrow to cycle through options and press enter to select an option.)" + "\n";
-            string[] options = { "Play Game: Create Random field", "Play Game: Create Customized field", "Restore Game: Continue to play one of the previous games", "Play multiple games at once", "Exit Game" };
+            Console.Title = "GAME OF LIFE";            
 
             var exit = "continue";
                         
             while (exit == "continue")
             {
                 Console.Clear();
-                Menu mainMenu = new Menu(options, menuIntro);
-                var selectedIndex = mainMenu.SelectFromMenu();
+                var selectedOption = menu.SelectFromMenu();
 
-                switch (selectedIndex)
+                switch (selectedOption.Index)
                 {
-                    case 0:
+                    case MainMenuOptions.RandomGame:
                         var gridParametersRandomGame = userOutput.GetGridParametersFromInput(false);
                         var createdGridRandom = gridParametersRandomGame.ConvertGridOptionsToGrid();
                         var randomGrid = game.CreateRandomGrid(createdGridRandom);
@@ -57,14 +71,14 @@ Please choose what you want to do?
                         game.PlayGame(randomGrid);
                         break;
 
-                    case 1:
+                    case MainMenuOptions.CustomGame:
                         var gridParametersCustomGame = userOutput.GetGridParametersFromInput(false);
                         var createdGridCustom = gridParametersCustomGame.ConvertGridOptionsToGrid();
                         game.ChooseLiveCells(createdGridCustom);
                         game.PlayGame(createdGridCustom);
                         break;
 
-                    case 2:
+                    case MainMenuOptions.RestoredGame:
                         userOutput.DisplayGamesForUser();
                         var foundGrid = userOutput.RestoreGameFromUserInput();
                         if (foundGrid != null)
@@ -74,14 +88,14 @@ Please choose what you want to do?
 
                         break;
 
-                    case 3:
+                    case MainMenuOptions.MultipleGames:
                         var gameCount = userOutput.GameCountInput();
                         var gridParametersMultipleGames = userOutput.GetGridParametersFromInput(true);
                         var listOfGames = game.MultipleGridList(gridParametersMultipleGames, gameCount);
                         game.PlayMultipleGames(listOfGames);
                         break;
 
-                    case 4:
+                    case MainMenuOptions.ExitGame:
                         Console.WriteLine("Thank you for the game. Bye!");
                         gameData.SaveAllData();
                         exit = "exit";

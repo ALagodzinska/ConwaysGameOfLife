@@ -1,6 +1,9 @@
 ﻿namespace ConwaysGameOfLife
 {
     using ConwaysGameOfLife.Entities;
+    using ConwaysGameOfLife.Entities.Menu;
+    using System.Reflection;
+    using System.Resources;
 
     /// <summary>
     /// Class responsible for displaying information to user.
@@ -11,7 +14,12 @@
 
         DataValidation validation = new();
 
-        const string liveCellsMessage = "Live cells: ";
+        MenuOnStop menu;
+
+        /// <summary>
+        /// Resource data.
+        /// </summary>
+        ResourceManager resourceManager = new ResourceManager("ConwaysGameOfLife.Resources.ResourceFile", Assembly.GetExecutingAssembly());
 
         /// <summary>
         /// Display to user what values should be inputted for game and processes data input.
@@ -21,7 +29,8 @@
         public GridOptions GetGridParametersFromInput(bool isMultipleGames)
         {
             Console.Clear();
-            var message = isMultipleGames ? "Please Remember that MAX Height is 15 and MAX Width is 20\n" : "Please Remember that MAX Height is 30 and MAX Width is 60\n";
+            var message = isMultipleGames ? resourceManager.GetString("MessageForMultipleGamesFieldSize") + "\n" : 
+                resourceManager.GetString("MessageForOneGameFieldSize") +"\n";
             Console.WriteLine(message);
 
             Console.WriteLine("Create name for this game:");
@@ -56,8 +65,7 @@
             int numberInList = 1;
             var gridList = gameData.ReturnListOfExistingGrids();
 
-            Console.WriteLine(@"Please choose one of the games from the list.
-List of saved games:" + "\n");
+            Console.WriteLine(resourceManager.GetString("ListOfSavedGamesIntro") + "\n");
 
             foreach (var grid in gridList)
             {
@@ -76,7 +84,8 @@ List of saved games:" + "\n");
 
             if(listOfGames.Count != 0)
             {
-                Console.WriteLine("\nPlease input NUMBER of the game you want to restore.");
+                
+                Console.WriteLine(resourceManager.GetString("RuleForRestoringGame"));
                 var userInputtedNumber = Console.ReadLine();
 
                 var existingGame = validation.GameToRestore(userInputtedNumber, listOfGames);
@@ -86,7 +95,7 @@ List of saved games:" + "\n");
             }
             else
             {
-                Console.WriteLine("You dont have saved games! You will be sent back to main menu");
+                Console.WriteLine(resourceManager.GetString("MessageForEmtyGamesList"));
                 Thread.Sleep(3000);
                 return null;
             }
@@ -99,8 +108,7 @@ List of saved games:" + "\n");
         public int GameCountInput()
         {
             Console.Clear();
-            Console.WriteLine("How many games you want to play?");
-            Console.WriteLine("Input number from 2 to 1000");
+            Console.WriteLine(resourceManager.GetString("GameCountInputMessage"));            
 
             var gameCountInput = Console.ReadLine();
             var validGameCountInput = validation.GamesCountToPlay(gameCountInput);
@@ -116,8 +124,7 @@ List of saved games:" + "\n");
         public int[] ChooseMultipleGames(int countOfAllGames)
         {
             Console.WriteLine();
-            Console.WriteLine("No more than 8 games can be shown on the screen.");
-            Console.WriteLine("How many games you want to see on the screen?");
+            Console.WriteLine(resourceManager.GetString("ChooseMultipleGamesMessages"));            
 
             var gamesToDisplayCount = Console.ReadLine();
             var countOfSelectedGames = validation.SelectedGamesCount(gamesToDisplayCount, countOfAllGames);
@@ -153,7 +160,7 @@ List of saved games:" + "\n");
             Console.SetCursorPosition(0, grid.Height);
             Console.WriteLine();
             Console.WriteLine($"Iteration count: {grid.IterationCount}");
-            Console.WriteLine($"{liveCellsMessage}{grid.CountOfLiveCells()}");
+            Console.WriteLine(resourceManager.GetString("LiveCellsMessage") + grid.CountOfLiveCells());
         }
 
         /// <summary>
@@ -163,7 +170,7 @@ List of saved games:" + "\n");
         /// <param name="startCoordinates">Start coordinates of a displayed grid.</param>
         public void CleanLiveCellsCount(Grid grid, int[] startCoordinates)
         {
-            var mainPartOfMessage = liveCellsMessage;
+            var mainPartOfMessage = resourceManager.GetString("LiveCellsMessage");
             var countLength = grid.CountOfLiveCells().ToString().Length;
 
             Console.SetCursorPosition(startCoordinates[0] + mainPartOfMessage.Length, startCoordinates[1] + grid.Height + 2);
@@ -188,7 +195,7 @@ List of saved games:" + "\n");
         public void MessageForMultipleGames(int liveGamesCount, int totalLiveCellsCount)
         {
             Console.SetCursorPosition(0, 0);
-            Console.WriteLine("Press SPACE to stop the game. If you want to save or change displayed grids.");
+            Console.WriteLine(resourceManager.GetString("MessageToStopForMultipleGames"));
             Console.WriteLine();
             Console.WriteLine(String.Format("{0," + Console.WindowWidth / 2 + "}", $"Count of live games: {liveGamesCount}"));
             Console.WriteLine(String.Format("{0," + Console.WindowWidth / 2 + "}", $"Total count of live cells: {totalLiveCellsCount}"));
@@ -205,7 +212,7 @@ List of saved games:" + "\n");
             Console.SetCursorPosition(startCoordinates[0], grid.Height + startCoordinates[1] + 1);
             Console.Write($"Game name: {grid.GameName}");
             Console.SetCursorPosition(startCoordinates[0], grid.Height + startCoordinates[1] + 2);
-            Console.Write($"{liveCellsMessage}{grid.CountOfLiveCells()}");
+            Console.Write(resourceManager.GetString("LiveCellsMessage") + grid.CountOfLiveCells());
         }
 
         /// <summary>
@@ -217,13 +224,13 @@ List of saved games:" + "\n");
         {
             Console.Clear();
 
-            var menuIntro = @$"You have stopped the game. Live games count - {gameList.Count()}.
-Choose if you want EXIT game ang go back to main menu. Or CONTINUE and choose different cells to display on a screen.";
-            string[] options = { "GO BACK TO MAIN MENU", "CONTINUE TO PLAY" };
+            var menuIntro = @$"You have stopped the game. Live games count - {gameList.Count()}" +
+resourceManager.GetString("MenuOnStopIntro");
 
-            Menu mainMenu = new Menu(options, menuIntro);
-            var selectedIndex = mainMenu.SelectFromMenu();
-            var exit = selectedIndex == 0 ? true : false;
+            menu = new MenuOnStop(menuIntro);
+
+            var selectedOption = menu.SelectFromMenu();
+            var exit = selectedOption.Index == MenuOnStopOptions.BackToMainMenu ? true : false;
 
             return exit;
         }
@@ -231,10 +238,26 @@ Choose if you want EXIT game ang go back to main menu. Or CONTINUE and choose di
         /// <summary>
         /// Message that is showed to user after the game has been finished.
         /// </summary>
-        public void GameOverMessage()
+        public void BackToMainMenuMessage()
         {
-            Console.WriteLine("\nYou will be sent to main menu ater 5 seconds.");
+            Console.WriteLine("\n" + resourceManager.GetString("BackToMainMenuMessage"));
             Thread.Sleep(5000);
+        }
+
+        /// <summary>
+        /// Message display user rules how to go back to main menu.
+        /// </summary>
+        public void GoBackMessage()
+        {
+            Console.WriteLine(resourceManager.GetString("GoBackMessage"));
+        }
+
+        /// <summary>
+        /// Message shows that game is over.
+        /// </summary>
+        public void GameIsOverMessage()
+        {
+            Console.WriteLine("\n" + resourceManager.GetString("GameIsOverMessage"));
         }
     }
 }

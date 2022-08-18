@@ -9,24 +9,6 @@
     public class Grid
     {
         /// <summary>
-        /// Set initial values for grid fields.
-        /// </summary>
-        /// <param name="height">Height of grid.</param>
-        /// <param name="width">Width of grid.</param>
-        /// <param name="gameName">Name of the game.</param>
-        public Grid(int height, int width, string gameName)
-        {
-            Cell[,] cells = new Cell[height, width];
-            Cells = cells;
-            List<Cell> cellsList = new List<Cell>();
-            SerializableCells = cellsList;
-            GameName = gameName;
-            Height = height;
-            Width = width;
-            IterationCount = 0;
-        }
-
-        /// <summary>
         /// Name of the Game. To identify what game you want to replay.
         /// </summary>
         public string GameName { get; set; }
@@ -62,6 +44,24 @@
         /// List to serialize data of what is stored in two-dimensional array.
         /// </summary>
         public List<Cell> SerializableCells { get; set; }
+
+        /// <summary>
+        /// Set initial values for grid fields.
+        /// </summary>
+        /// <param name="height">Height of grid.</param>
+        /// <param name="width">Width of grid.</param>
+        /// <param name="gameName">Name of the game.</param>
+        public Grid(int height, int width, string gameName)
+        {
+            Cell[,] cells = new Cell[height, width];
+            Cells = cells;
+            List<Cell> cellsList = new List<Cell>();
+            SerializableCells = cellsList;
+            GameName = gameName;
+            Height = height;
+            Width = width;
+            IterationCount = 0;
+        }
 
         /// <summary>
         /// Create new grid and all cells inside of it.

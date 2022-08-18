@@ -1,36 +1,37 @@
-﻿namespace ConwaysGameOfLife.Entities
+﻿namespace ConwaysGameOfLife.Entities.Menu
 {
     /// <summary>
-    /// Stores menu data and implement menu methods.
+    /// Used for creating and displaying menu to user.
     /// </summary>
-    public class Menu
-    {
-        /// <summary>
-        /// Set initial values for menu fields.
-        /// </summary>
-        /// <param name="options">Menu items.</param>
-        /// <param name="menuIntro">Inscription above the menu.</param>
-        public Menu(string[] options, string menuIntro)
-        {
-            SelectedOptionIndex = 0;
-            Options = options;
-            MenuIntro = menuIntro;
-        }
-
+    /// <typeparam name="T">Enum of options.</typeparam>
+    public class Menu<T>
+    { 
         /// <summary>
         /// Option index that has been selected.
         /// </summary>
         private int SelectedOptionIndex;
 
         /// <summary>
-        /// Menu items to choose from.
+        /// Menu options to choose from.
         /// </summary>
-        private string[] Options;
+        protected MenuOptions<T>[] Options;
 
         /// <summary>
         /// Inscription above the menu.
         /// </summary>
         private string MenuIntro;
+
+        /// <summary>
+        /// Set initial values for menu fields.
+        /// </summary>
+        /// <param name="options">Menu options to choose from.</param>
+        /// <param name="menuIntro">Title and menu control rules.</param>
+        public Menu(MenuOptions<T>[] options, string menuIntro)
+        {
+            Options = options;
+            SelectedOptionIndex = 0;
+            MenuIntro = menuIntro;
+        }
 
         /// <summary>
         /// Shows menu on a screen.
@@ -41,7 +42,7 @@
             for (int i = 0; i < Options.Length; i++)
             {
                 bool isSelected = i == SelectedOptionIndex;
-                OptionStyle(isSelected, Options[i]);
+                OptionStyle(isSelected, Options[i].Title);
             }
 
             Console.ResetColor();
@@ -65,7 +66,7 @@
         /// Allows to select an option from the menu.
         /// </summary>
         /// <returns>Selected option index.</returns>
-        public int SelectFromMenu()
+        public MenuOptions<T> SelectFromMenu()
         {
             ConsoleKey keyPressed;
             do
@@ -95,7 +96,7 @@
 
             } while (keyPressed != ConsoleKey.Enter);
 
-            return SelectedOptionIndex;
+            return Options[SelectedOptionIndex];
         }
     }
 }

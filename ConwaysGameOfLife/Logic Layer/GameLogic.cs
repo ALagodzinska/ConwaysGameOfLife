@@ -144,17 +144,16 @@
                     ChangeGridForNextIteration(grid);
                     displayGame.DrawNextGeneration(grid);
 
-                    Console.WriteLine("Press ESC to stop game and go back to main menu.");
+                    userOutput.GoBackMessage();
                 }
 
-                Console.WriteLine();
-                Console.WriteLine("Game is over!");
+                userOutput.GameIsOverMessage();
 
             } while (Console.ReadKey(true).Key != ConsoleKey.Escape);
 
             UpdateGridList(grid);
 
-            userOutput.GameOverMessage();
+            userOutput.BackToMainMenuMessage();
         }
 
         /// <summary>
@@ -289,9 +288,7 @@
                     UpdateGridList(game);
                 }
 
-                Console.Clear();
-
-                userOutput.GameOverMessage();
+                userOutput.BackToMainMenuMessage();
             }
             else
             {
