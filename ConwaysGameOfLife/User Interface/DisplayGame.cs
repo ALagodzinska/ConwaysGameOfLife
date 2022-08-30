@@ -7,7 +7,12 @@
     /// </summary>
     public class DisplayGame
     {
-        UserOutput userOutput = new();
+        UserOutput UserOutput;
+
+        public DisplayGame(UserOutput userOutput)
+        {
+            UserOutput = userOutput;
+        }
 
         /// <summary>
         /// Side spacing between grids.
@@ -65,7 +70,7 @@
         {
             Console.Clear();
             DrawGrid(grid);
-            userOutput.MessageAfterEachIteration(grid);
+            UserOutput.MessageAfterEachIteration(grid);
         }
 
         /// <summary>
@@ -79,9 +84,9 @@
 
             //clean live cells value
             int[] startCoordinates = { 0, 0 };
-            userOutput.CleanLiveCellsCount(grid, startCoordinates);
+            UserOutput.CleanLiveCellsCount(grid, startCoordinates);
 
-            userOutput.MessageAfterEachIteration(grid);
+            UserOutput.MessageAfterEachIteration(grid);
         }
 
         /// <summary>
@@ -170,8 +175,8 @@
                 Console.WriteLine();
             }
 
-            userOutput.CleanLiveCellsCount(grid, startCoordinates);
-            userOutput.MultipleGameMessageAfterIteration(grid, startCoordinates);
+            UserOutput.CleanLiveCellsCount(grid, startCoordinates);
+            UserOutput.MultipleGameMessageAfterIteration(grid, startCoordinates);
         }
     }
 }

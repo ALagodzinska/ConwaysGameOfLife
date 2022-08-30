@@ -7,7 +7,11 @@
     /// </summary>
     public class DataValidation
     {
-        GameData gameData = new();
+        GameData GameData;
+        public DataValidation(GameData gameData)
+        {
+            GameData = gameData;
+        }
 
         /// <summary>
         /// Maximum grid height allowed for playing single game.
@@ -43,7 +47,7 @@
         /// <returns>Return valid(not taken) name for game grid.</returns>
         public string GameNameOnCreate(string gameName)
         {
-            while (gameData.FindGameGridByName(gameName) != null || gameName == null)
+            while (GameData.FindGameGridByName(gameName) != null || gameName == null)
             {
                 Console.WriteLine(@$"That name is taken
 {enterValidInput}");

@@ -10,29 +10,29 @@
     public class GameController
     {
         /// <summary>
+        /// Storing game data.
+        /// </summary>
+        GameData GameData;
+
+        /// <summary>
         /// Main game logic.
         /// </summary>
-        GameLogic game = new();
+        GameLogic game;
 
         /// <summary>
         /// User output.
         /// </summary>
-        UserOutput userOutput = new();
-
-        /// <summary>
-        /// Storing game data.
-        /// </summary>
-        GameData gameData = new();
-
-        /// <summary>
-        /// Displaying game field.
-        /// </summary>
-        DisplayGame displayGame = new();
+        UserOutput userOutput;
 
         /// <summary>
         /// Stores menu data.
         /// </summary>
         GameMainMenu menu;
+
+        /// <summary>
+        /// Displaying game field.
+        /// </summary>
+        DisplayGame displayGame;
 
         /// <summary>
         /// Resource data.
@@ -42,9 +42,13 @@
         /// <summary>
         /// Assign menu values to a menu field.
         /// </summary>
-        public GameController()
+        public GameController(GameData gameData)
         {
+            GameData = gameData;
             menu = new GameMainMenu(resourceManager.GetString("MainMenuIntro"));
+            userOutput = new UserOutput(gameData);            
+            displayGame = new DisplayGame(userOutput);
+            game = new GameLogic(gameData, userOutput, displayGame);
         }
 
         /// <summary>
@@ -97,7 +101,7 @@
 
                     case MainMenuOptions.ExitGame:
                         Console.WriteLine("Thank you for the game. Bye!");
-                        gameData.SaveAllData();
+                        GameData.SaveAllData();
                         exit = "exit";
                         Environment.Exit(0);
                         break;

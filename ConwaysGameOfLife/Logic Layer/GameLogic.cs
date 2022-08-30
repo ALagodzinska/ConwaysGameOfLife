@@ -7,9 +7,16 @@
     /// </summary>
     public class GameLogic
     {
-        DisplayGame displayGame = new();
-        GameData dataSerializer = new();
-        UserOutput userOutput = new();
+        DisplayGame DisplayGame;
+        GameData dataSerializer;
+        UserOutput UserOutput;
+
+        public GameLogic(GameData gameData, UserOutput userOutput, DisplayGame displayGame)
+        {
+            dataSerializer = gameData;
+            UserOutput = userOutput;
+            DisplayGame = displayGame;
+        }
 
         /// <summary>
         /// Create a random grid with where by random is placed live and dead cells.
@@ -41,8 +48,8 @@
         public void ChooseLiveCells(Grid grid)
         {
             Console.Clear();
-            displayGame.DrawGrid(grid);
-            userOutput.CustomGameGridRulesMessage();
+            DisplayGame.DrawGrid(grid);
+            UserOutput.CustomGameGridRulesMessage();
             bool setField = true;
 
             Console.SetCursorPosition(0, 0);
@@ -61,7 +68,7 @@
                         {
                             cell.IsLive = !cell.IsLive;
 
-                            displayGame.DrawCell(cell.IsLive);
+                            DisplayGame.DrawCell(cell.IsLive);
 
                             if (cell.Width == grid.Width - 1 || cell.Height == grid.Height - 1)
                             {
@@ -119,9 +126,9 @@
                         break;
 
                     default:
-                        displayGame.DrawGrid(grid);
+                        DisplayGame.DrawGrid(grid);
                         Console.SetCursorPosition(startPosition.Left, startPosition.Top);
-                        userOutput.CustomGameGridRulesMessage();
+                        UserOutput.CustomGameGridRulesMessage();
                         break;
                 }
             }
@@ -142,18 +149,18 @@
                 while (Console.KeyAvailable == false && grid.CountOfLiveCells() != 0 && !grid.CheckIfGridIsSame())
                 {
                     ChangeGridForNextIteration(grid);
-                    displayGame.DrawNextGeneration(grid);
+                    DisplayGame.DrawNextGeneration(grid);
 
-                    userOutput.GoBackMessage();
+                    UserOutput.GoBackMessage();
                 }
 
-                userOutput.GameIsOverMessage();
+                UserOutput.GameIsOverMessage();
 
             } while (Console.ReadKey(true).Key != ConsoleKey.Escape);
 
             UpdateGridList(grid);
 
-            userOutput.BackToMainMenuMessage();
+            UserOutput.BackToMainMenuMessage();
         }
 
         /// <summary>
@@ -257,7 +264,7 @@
         /// <param name="multipleGameList">List of games to play at the same time.</param>
         public void PlayMultipleGames(List<Grid> multipleGameList)
         {
-            userOutput.MultipleGamesIntro(multipleGameList);
+            UserOutput.MultipleGamesIntro(multipleGameList);
             var listOfGamesToShow = ListOfSelectedGameGrids(multipleGameList);
             Console.Clear();
 
@@ -270,16 +277,16 @@
                         ChangeGridForNextIteration(game);
                     }
 
-                    displayGame.DrawMultipleGrids(listOfGamesToShow);                    
+                    DisplayGame.DrawMultipleGrids(listOfGamesToShow);                    
 
                     multipleGameList.RemoveAll(g => g.CountOfLiveCells() == 0 || g.CheckIfGridIsSame());
 
-                    userOutput.MessageForMultipleGames(multipleGameList.Count, TotalOfLiveCells(multipleGameList));
+                    UserOutput.MessageForMultipleGames(multipleGameList.Count, TotalOfLiveCells(multipleGameList));
                 }
 
             } while (Console.ReadKey(true).Key != ConsoleKey.Spacebar);
 
-            var isExit = multipleGameList.Count > 0 ? userOutput.DecisionOnStop(multipleGameList) : true;
+            var isExit = multipleGameList.Count > 0 ? UserOutput.DecisionOnStop(multipleGameList) : true;
 
             if (isExit)
             {
@@ -288,7 +295,7 @@
                     UpdateGridList(game);
                 }
 
-                userOutput.BackToMainMenuMessage();
+                UserOutput.BackToMainMenuMessage();
             }
             else
             {
@@ -303,7 +310,7 @@
         /// <returns>List of games to show on a screen.</returns>
         public List<Grid> ListOfSelectedGameGrids(List<Grid> multipleGamesList)
         {
-            var chosenGames = userOutput.ChooseMultipleGames(multipleGamesList.Count);
+            var chosenGames = UserOutput.ChooseMultipleGames(multipleGamesList.Count);
             var games = new List<Grid>();
 
             foreach (var gameNumber in chosenGames)

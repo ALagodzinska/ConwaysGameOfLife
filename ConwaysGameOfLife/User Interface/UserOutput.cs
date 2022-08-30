@@ -10,9 +10,9 @@
     /// </summary>
     public class UserOutput
     {
-        GameData gameData = new();
+        GameData GameData;
 
-        DataValidation validation = new();
+        DataValidation validation;
 
         MenuOnStop menu;
 
@@ -20,6 +20,12 @@
         /// Resource data.
         /// </summary>
         ResourceManager resourceManager = new ResourceManager("ConwaysGameOfLife.Resources.ResourceFile", Assembly.GetExecutingAssembly());
+
+        public UserOutput(GameData gameData)
+        {
+            GameData = gameData;
+            validation = new DataValidation(gameData);
+        }
 
         /// <summary>
         /// Display to user what values should be inputted for game and processes data input.
@@ -63,7 +69,7 @@
             Console.Clear();
 
             int numberInList = 1;
-            var gridList = gameData.ReturnListOfExistingGrids();
+            var gridList = GameData.ReturnListOfExistingGrids();
 
             Console.WriteLine(resourceManager.GetString("ListOfSavedGamesIntro") + "\n");
 
@@ -80,7 +86,7 @@
         /// <returns>A game grid.</returns>
         public Grid? RestoreGameFromUserInput()
         {
-            var listOfGames = gameData.ReturnListOfExistingGrids();
+            var listOfGames = GameData.ReturnListOfExistingGrids();
 
             if(listOfGames.Count != 0)
             {
