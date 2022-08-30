@@ -49,7 +49,7 @@
         {
             Console.Clear();
             DisplayGame.DrawGrid(grid);
-            UserOutput.CustomGameGridRulesMessage();
+            UserOutput.DisplayRulesForCreateCustomGrid();
             bool setField = true;
 
             Console.SetCursorPosition(0, 0);
@@ -128,7 +128,7 @@
                     default:
                         DisplayGame.DrawGrid(grid);
                         Console.SetCursorPosition(startPosition.Left, startPosition.Top);
-                        UserOutput.CustomGameGridRulesMessage();
+                        UserOutput.DisplayRulesForCreateCustomGrid();
                         break;
                 }
             }
@@ -264,7 +264,7 @@
         /// <param name="multipleGameList">List of games to play at the same time.</param>
         public void PlayMultipleGames(List<Grid> multipleGameList)
         {
-            UserOutput.MultipleGamesIntro(multipleGameList);
+            UserOutput.DisplayMultipleGamesIntro(multipleGameList);
             var listOfGamesToShow = ListOfSelectedGameGrids(multipleGameList);
             Console.Clear();
 
@@ -281,12 +281,12 @@
 
                     multipleGameList.RemoveAll(g => g.CountOfLiveCells() == 0 || g.CheckIfGridIsSame());
 
-                    UserOutput.MessageForMultipleGames(multipleGameList.Count, TotalOfLiveCells(multipleGameList));
+                    UserOutput.DisplayGeneralStatisticsForMultipleGames(multipleGameList.Count, TotalOfLiveCells(multipleGameList));
                 }
 
             } while (Console.ReadKey(true).Key != ConsoleKey.Spacebar);
 
-            var isExit = multipleGameList.Count > 0 ? UserOutput.DecisionOnStop(multipleGameList) : true;
+            var isExit = multipleGameList.Count > 0 ? UserOutput.DisplayMenuOnStop(multipleGameList) : true;
 
             if (isExit)
             {

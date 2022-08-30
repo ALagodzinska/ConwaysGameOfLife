@@ -70,7 +70,7 @@
         {
             Console.Clear();
             DrawGrid(grid);
-            UserOutput.MessageAfterEachIteration(grid);
+            UserOutput.DisplayGameStatistics(grid);
         }
 
         /// <summary>
@@ -86,7 +86,7 @@
             int[] startCoordinates = { 0, 0 };
             UserOutput.CleanLiveCellsCount(grid, startCoordinates);
 
-            UserOutput.MessageAfterEachIteration(grid);
+            UserOutput.DisplayGameStatistics(grid);
         }
 
         /// <summary>
@@ -176,7 +176,7 @@
             }
 
             UserOutput.CleanLiveCellsCount(grid, startCoordinates);
-            UserOutput.MultipleGameMessageAfterIteration(grid, startCoordinates);
+            UserOutput.DisplayStatisticsForEachGameInMultipleGames(grid, startCoordinates);
         }
     }
 }

@@ -148,7 +148,7 @@
         /// <summary>
         /// Message to display rules for customazing the grid.
         /// </summary>
-        public void CustomGameGridRulesMessage()
+        public void DisplayRulesForCreateCustomGrid()
         {
             Console.WriteLine("\nTo move use ARROWS. To make cell live use SPACE. To stop setting field use ENTER.");
         }
@@ -157,7 +157,7 @@
         /// Display count of iteration and count of live cells to user.
         /// </summary>
         /// <param name="grid">Game grid.</param>
-        public void MessageAfterEachIteration(Grid grid)
+        public void DisplayGameStatistics(Grid grid)
         {
             Console.SetCursorPosition(0, grid.Height);
             Console.WriteLine();
@@ -183,7 +183,7 @@
         /// Intoduction message for multiple games option.
         /// </summary>
         /// <param name="multipleGameList">List of games played in parallel.</param>
-        public void MultipleGamesIntro(List<Grid> multipleGameList)
+        public void DisplayMultipleGamesIntro(List<Grid> multipleGameList)
         {
             Console.Clear();
             Console.WriteLine($"You choose to play {multipleGameList.Count} games.");
@@ -194,7 +194,7 @@
         /// </summary>
         /// <param name="liveGamesCount">Count of live games.</param>
         /// <param name="totalLiveCellsCount">Total of all live cells.</param>
-        public void MessageForMultipleGames(int liveGamesCount, int totalLiveCellsCount)
+        public void DisplayGeneralStatisticsForMultipleGames(int liveGamesCount, int totalLiveCellsCount)
         {
             Console.SetCursorPosition(0, 0);
             Console.WriteLine(ResourceFile.MessageToStopForMultipleGames);
@@ -209,7 +209,7 @@
         /// </summary>
         /// <param name="grid">Game grid.</param>
         /// <param name="startCoordinates">Start coordinates of a displayed grid.</param>
-        public void MultipleGameMessageAfterIteration(Grid grid, int[] startCoordinates)
+        public void DisplayStatisticsForEachGameInMultipleGames(Grid grid, int[] startCoordinates)
         {
             Console.SetCursorPosition(startCoordinates[0], grid.Height + startCoordinates[1] + 1);
             Console.Write($"Game name: {grid.GameName}");
@@ -222,7 +222,7 @@
         /// </summary>
         /// <param name="gameList">List of played game grids.</param>
         /// <returns>Return true if user chooses to exit. Return false if user wants to continue and change game grids.</returns>
-        public bool DecisionOnStop(List<Grid> gameList)
+        public bool DisplayMenuOnStop(List<Grid> gameList)
         {
             Console.Clear();
 
