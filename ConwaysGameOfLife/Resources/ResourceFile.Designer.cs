@@ -152,9 +152,9 @@ namespace ConwaysGameOfLife.Resources {
         /// <summary>
         ///   Looks up a localized string similar to You dont have saved games! You will be sent back to main menu..
         /// </summary>
-        internal static string MessageForEmtyGamesList {
+        internal static string MessageForEmptyGamesList {
             get {
-                return ResourceManager.GetString("MessageForEmtyGamesList", resourceCulture);
+                return ResourceManager.GetString("MessageForEmptyGamesList", resourceCulture);
             }
         }
         

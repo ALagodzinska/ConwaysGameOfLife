@@ -156,7 +156,7 @@ Please choose what you want to do?
   <data name="MenuOnStopIntro" xml:space="preserve">
     <value>Choose if you want EXIT game ang go back to main menu. Or CONTINUE and choose different cells to display on a screen.</value>
   </data>
-  <data name="MessageForEmtyGamesList" xml:space="preserve">
+  <data name="MessageForEmptyGamesList" xml:space="preserve">
     <value>You dont have saved games! You will be sent back to main menu.</value>
   </data>
   <data name="MessageForMultipleGamesFieldSize" xml:space="preserve">

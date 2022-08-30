@@ -1,6 +1,7 @@
 ﻿namespace ConwaysGameOfLife
 {
     using ConwaysGameOfLife.Entities.Menu;
+    using ConwaysGameOfLife.Resources;
     using System.Reflection;
     using System.Resources;
 
@@ -35,17 +36,12 @@
         DisplayGame displayGame;
 
         /// <summary>
-        /// Resource data.
-        /// </summary>
-        ResourceManager resourceManager = new ResourceManager("ConwaysGameOfLife.Resources.ResourceFile", Assembly.GetExecutingAssembly());
-
-        /// <summary>
         /// Assign menu values to a menu field.
         /// </summary>
         public GameController(GameData gameData)
         {
             GameData = gameData;
-            menu = new GameMainMenu(resourceManager.GetString("MainMenuIntro"));
+            menu = new GameMainMenu(ResourceFile.MainMenuIntro);
             userOutput = new UserOutput(gameData);            
             displayGame = new DisplayGame(userOutput);
             game = new GameLogic(gameData, userOutput, displayGame);

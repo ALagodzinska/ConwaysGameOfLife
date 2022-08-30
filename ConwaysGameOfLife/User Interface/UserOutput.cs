@@ -2,6 +2,7 @@
 {
     using ConwaysGameOfLife.Entities;
     using ConwaysGameOfLife.Entities.Menu;
+    using ConwaysGameOfLife.Resources;
     using System.Reflection;
     using System.Resources;
 
@@ -15,11 +16,6 @@
         DataValidation validation;
 
         MenuOnStop menu;
-
-        /// <summary>
-        /// Resource data.
-        /// </summary>
-        ResourceManager resourceManager = new ResourceManager("ConwaysGameOfLife.Resources.ResourceFile", Assembly.GetExecutingAssembly());
 
         public UserOutput(GameData gameData)
         {
@@ -35,8 +31,9 @@
         public GridOptions GetGridParametersFromInput(bool isMultipleGames)
         {
             Console.Clear();
-            var message = isMultipleGames ? resourceManager.GetString("MessageForMultipleGamesFieldSize") + "\n" : 
-                resourceManager.GetString("MessageForOneGameFieldSize") +"\n";
+
+            var message = isMultipleGames ? ResourceFile.MessageForMultipleGamesFieldSize + "\n" :
+                ResourceFile.MessageForOneGameFieldSize + "\n";
             Console.WriteLine(message);
 
             Console.WriteLine("Create name for this game:");
@@ -71,7 +68,7 @@
             int numberInList = 1;
             var gridList = GameData.ReturnListOfExistingGrids();
 
-            Console.WriteLine(resourceManager.GetString("ListOfSavedGamesIntro") + "\n");
+            Console.WriteLine(ResourceFile.ListOfSavedGamesIntro + "\n");
 
             foreach (var grid in gridList)
             {
@@ -89,9 +86,8 @@
             var listOfGames = GameData.ReturnListOfExistingGrids();
 
             if(listOfGames.Count != 0)
-            {
-                
-                Console.WriteLine(resourceManager.GetString("RuleForRestoringGame"));
+            {                
+                Console.WriteLine(ResourceFile.RuleForRestoringGame);
                 var userInputtedNumber = Console.ReadLine();
 
                 var existingGame = validation.GameToRestore(userInputtedNumber, listOfGames);
@@ -101,7 +97,7 @@
             }
             else
             {
-                Console.WriteLine(resourceManager.GetString("MessageForEmtyGamesList"));
+                Console.WriteLine(ResourceFile.MessageForEmptyGamesList);
                 Thread.Sleep(3000);
                 return null;
             }
@@ -114,7 +110,7 @@
         public int GameCountInput()
         {
             Console.Clear();
-            Console.WriteLine(resourceManager.GetString("GameCountInputMessage"));            
+            Console.WriteLine(ResourceFile.GameCountInputMessage);            
 
             var gameCountInput = Console.ReadLine();
             var validGameCountInput = validation.GamesCountToPlay(gameCountInput);
@@ -130,7 +126,7 @@
         public int[] ChooseMultipleGames(int countOfAllGames)
         {
             Console.WriteLine();
-            Console.WriteLine(resourceManager.GetString("ChooseMultipleGamesMessages"));            
+            Console.WriteLine(ResourceFile.ChooseMultipleGamesMessage);            
 
             var gamesToDisplayCount = Console.ReadLine();
             var countOfSelectedGames = validation.SelectedGamesCount(gamesToDisplayCount, countOfAllGames);
@@ -166,7 +162,7 @@
             Console.SetCursorPosition(0, grid.Height);
             Console.WriteLine();
             Console.WriteLine($"Iteration count: {grid.IterationCount}");
-            Console.WriteLine(resourceManager.GetString("LiveCellsMessage") + grid.CountOfLiveCells());
+            Console.WriteLine(ResourceFile.LiveCellsMessage + grid.CountOfLiveCells());
         }
 
         /// <summary>
@@ -176,7 +172,7 @@
         /// <param name="startCoordinates">Start coordinates of a displayed grid.</param>
         public void CleanLiveCellsCount(Grid grid, int[] startCoordinates)
         {
-            var mainPartOfMessage = resourceManager.GetString("LiveCellsMessage");
+            var mainPartOfMessage = ResourceFile.LiveCellsMessage;
             var countLength = grid.CountOfLiveCells().ToString().Length;
 
             Console.SetCursorPosition(startCoordinates[0] + mainPartOfMessage.Length, startCoordinates[1] + grid.Height + 2);
@@ -201,7 +197,7 @@
         public void MessageForMultipleGames(int liveGamesCount, int totalLiveCellsCount)
         {
             Console.SetCursorPosition(0, 0);
-            Console.WriteLine(resourceManager.GetString("MessageToStopForMultipleGames"));
+            Console.WriteLine(ResourceFile.MessageToStopForMultipleGames);
             Console.WriteLine();
             Console.WriteLine(String.Format("{0," + Console.WindowWidth / 2 + "}", $"Count of live games: {liveGamesCount}"));
             Console.WriteLine(String.Format("{0," + Console.WindowWidth / 2 + "}", $"Total count of live cells: {totalLiveCellsCount}"));
@@ -218,7 +214,7 @@
             Console.SetCursorPosition(startCoordinates[0], grid.Height + startCoordinates[1] + 1);
             Console.Write($"Game name: {grid.GameName}");
             Console.SetCursorPosition(startCoordinates[0], grid.Height + startCoordinates[1] + 2);
-            Console.Write(resourceManager.GetString("LiveCellsMessage") + grid.CountOfLiveCells());
+            Console.Write(ResourceFile.LiveCellsMessage + grid.CountOfLiveCells());
         }
 
         /// <summary>
@@ -231,7 +227,7 @@
             Console.Clear();
 
             var menuIntro = @$"You have stopped the game. Live games count - {gameList.Count()}" +
-resourceManager.GetString("MenuOnStopIntro");
+                            ResourceFile.MenuOnStopIntro;
 
             menu = new MenuOnStop(menuIntro);
 
@@ -246,7 +242,7 @@ resourceManager.GetString("MenuOnStopIntro");
         /// </summary>
         public void BackToMainMenuMessage()
         {
-            Console.WriteLine("\n" + resourceManager.GetString("BackToMainMenuMessage"));
+            Console.WriteLine("\n" + ResourceFile.BackToMainMenuMessage);
             Thread.Sleep(5000);
         }
 
@@ -255,7 +251,7 @@ resourceManager.GetString("MenuOnStopIntro");
         /// </summary>
         public void GoBackMessage()
         {
-            Console.WriteLine(resourceManager.GetString("GoBackMessage"));
+            Console.WriteLine(ResourceFile.GoBackMessage);
         }
 
         /// <summary>
@@ -263,7 +259,7 @@ resourceManager.GetString("MenuOnStopIntro");
         /// </summary>
         public void GameIsOverMessage()
         {
-            Console.WriteLine("\n" + resourceManager.GetString("GameIsOverMessage"));
+            Console.WriteLine("\n" + ResourceFile.GameIsOverMessage);
         }
     }
 }
