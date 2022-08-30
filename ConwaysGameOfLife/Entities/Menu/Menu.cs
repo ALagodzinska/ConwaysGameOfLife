@@ -14,7 +14,7 @@
         /// <summary>
         /// Menu options to choose from.
         /// </summary>
-        protected MenuOptions<T>[] Options;
+        protected MenuOption<T>[] Options;
 
         /// <summary>
         /// Inscription above the menu.
@@ -26,7 +26,7 @@
         /// </summary>
         /// <param name="options">Menu options to choose from.</param>
         /// <param name="menuIntro">Title and menu control rules.</param>
-        public Menu(MenuOptions<T>[] options, string menuIntro)
+        public Menu(MenuOption<T>[] options, string menuIntro)
         {
             Options = options;
             SelectedOptionIndex = 0;
@@ -66,7 +66,7 @@
         /// Allows to select an option from the menu.
         /// </summary>
         /// <returns>Selected option index.</returns>
-        public MenuOptions<T> SelectFromMenu()
+        public MenuOption<T> SelectFromMenu()
         {
             ConsoleKey keyPressed;
             do

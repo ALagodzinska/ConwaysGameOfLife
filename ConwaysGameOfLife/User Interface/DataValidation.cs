@@ -36,11 +36,6 @@
         const string enterValidInput = "Please enter valid input!";
 
         /// <summary>
-        /// Field that stores number input if it meet all requirements.
-        /// </summary>
-        int validInput;
-
-        /// <summary>
         /// On creating the new game check if inputted game name already exsists. If name is taken asks for new game name.
         /// </summary>
         /// <param name="gameName">Inputted name for the grid.</param>
@@ -65,6 +60,8 @@
         /// <returns>Valid height value.</returns>
         public int GridHeightInput(string heightInput, bool isMultipleGames)
         {
+            int validInput;
+
             while (!int.TryParse(heightInput, out validInput) || validInput <= 0
                 || isMultipleGames == false && validInput > maxHeightForOneGame
                 || isMultipleGames == true && validInput > maxHeightForManyGames)
@@ -85,6 +82,8 @@
         /// <returns>Valid width value.</returns>
         public int GridWidthInput(string widthInput, bool isMultipleGames)
         {
+            int validInput;
+
             while (!int.TryParse(widthInput, out validInput) || validInput <= 0
                 || isMultipleGames == false && validInput > maxWidthForOneGame
                 || isMultipleGames == true && validInput > maxWidthForManyGames)
@@ -104,6 +103,8 @@
         /// <returns>Returns an valid count of games to play in parallel.</returns>
         public int GamesCountToPlay(string countOfAllGames)
         {
+            int validInput;
+
             while (!int.TryParse(countOfAllGames, out validInput) || validInput <= 0
                 || validInput < 2
                 || validInput > 1000)
@@ -123,6 +124,8 @@
         /// <returns>Return valid numeric value that represents game in a list.</returns>
         public int GameToRestore(string gameToRestore, List<Grid> gridList)
         {
+            int validInput;
+
             while (!int.TryParse(gameToRestore, out validInput) || validInput <= 0
                 || validInput > gridList.Count)
             {
@@ -141,6 +144,8 @@
         /// <returns>Returns a valid count of games to display on screen.</returns>
         public int SelectedGamesCount(string gamesCountInput, int countOfAllGames)
         {
+            int validInput;
+
             // 8 because no more than 8 games can be displayed
             while (!int.TryParse(gamesCountInput, out validInput) || validInput <= 0
                 || validInput > countOfAllGames
@@ -161,6 +166,8 @@
         /// <returns>Returns valid game numeric identifier.</returns>
         public int GameNumber(string gameNumberInput, int countOfAllGames, int[] gamesToShowArray)
         {
+            int validInput;
+
             while (!int.TryParse(gameNumberInput, out validInput) || validInput <= 0
                 || validInput > countOfAllGames || gamesToShowArray.Contains(validInput))
             {

@@ -4,7 +4,7 @@
     /// Stores option data for a menu.
     /// </summary>
     /// <typeparam name="T">Enum of options.</typeparam>
-    public class MenuOptions<T>
+    public class MenuOption<T>
     {
         /// <summary>
         /// Option from enum T.

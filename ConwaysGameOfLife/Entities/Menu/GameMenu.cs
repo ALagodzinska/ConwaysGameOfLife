@@ -30,29 +30,29 @@
         /// Creates main menu.
         /// </summary>
         /// <param name="intro">Menu introduction text.</param>
-        public GameMainMenu(string intro) : base(new MenuOptions<MainMenuOptions>[Enum.GetNames(typeof(MainMenuOptions)).Length], intro)
+        public GameMainMenu(string intro) : base(new MenuOption<MainMenuOptions>[Enum.GetNames(typeof(MainMenuOptions)).Length], intro)
         {
-            Options[0] = new MenuOptions<MainMenuOptions>()
+            Options[0] = new MenuOption<MainMenuOptions>()
             {
                 Index = MainMenuOptions.RandomGame,
                 Title = "Play Game: Create Random field"
             };
-            Options[1] = new MenuOptions<MainMenuOptions>()
+            Options[1] = new MenuOption<MainMenuOptions>()
             {
                 Index = MainMenuOptions.CustomGame,
                 Title = "Play Game: Create Customized field"
             };
-            Options[2] = new MenuOptions<MainMenuOptions>()
+            Options[2] = new MenuOption<MainMenuOptions>()
             {
                 Index = MainMenuOptions.RestoredGame,
                 Title = "Restore Game: Continue to play one of the previous games"
             };
-            Options[3] = new MenuOptions<MainMenuOptions>()
+            Options[3] = new MenuOption<MainMenuOptions>()
             {
                 Index = MainMenuOptions.MultipleGames,
                 Title = "Play multiple games at once"
             };
-            Options[4] = new MenuOptions<MainMenuOptions>()
+            Options[4] = new MenuOption<MainMenuOptions>()
             {
                 Index = MainMenuOptions.ExitGame,
                 Title = "Exit Game"
@@ -69,14 +69,14 @@
         /// Creates menu on stop.
         /// </summary>
         /// <param name="intro">Menuintroduction text.</param>
-        public MenuOnStop(string intro) : base(new MenuOptions<MenuOnStopOptions>[Enum.GetNames(typeof(MenuOnStopOptions)).Length], intro)
+        public MenuOnStop(string intro) : base(new MenuOption<MenuOnStopOptions>[Enum.GetNames(typeof(MenuOnStopOptions)).Length], intro)
         {
-            Options[0] = new MenuOptions<MenuOnStopOptions>()
+            Options[0] = new MenuOption<MenuOnStopOptions>()
             {
                 Index = MenuOnStopOptions.BackToMainMenu,
                 Title = "GO BACK TO MAIN MENU"
             };
-            Options[1] = new MenuOptions<MenuOnStopOptions>()
+            Options[1] = new MenuOption<MenuOnStopOptions>()
             {
                 Index = MenuOnStopOptions.ContinueToPlay,
                 Title = "CONTINUE TO PLAY"
