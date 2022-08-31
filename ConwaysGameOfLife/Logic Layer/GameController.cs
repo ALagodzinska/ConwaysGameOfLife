@@ -63,7 +63,7 @@
 
                 switch (selectedOption.Index)
                 {
-                    case MainMenuOptions.RandomGame:
+                    case (int)MainMenuOptions.RandomGame:
                         var gridParametersRandomGame = userOutput.GetGridParametersFromInput(false);
                         var createdGridRandom = gridParametersRandomGame.ConvertGridOptionsToGrid();
                         var randomGrid = game.CreateRandomGrid(createdGridRandom);
@@ -71,14 +71,14 @@
                         game.PlayGame(randomGrid);
                         break;
 
-                    case MainMenuOptions.CustomGame:
+                    case (int)MainMenuOptions.CustomGame:
                         var gridParametersCustomGame = userOutput.GetGridParametersFromInput(false);
                         var createdGridCustom = gridParametersCustomGame.ConvertGridOptionsToGrid();
                         game.ChooseLiveCells(createdGridCustom);
                         game.PlayGame(createdGridCustom);
                         break;
 
-                    case MainMenuOptions.RestoredGame:
+                    case (int)MainMenuOptions.RestoredGame:
                         userOutput.DisplayGamesForUser();
                         var foundGrid = userOutput.RestoreGameFromUserInput();
                         if (foundGrid != null)
@@ -88,14 +88,14 @@
 
                         break;
 
-                    case MainMenuOptions.MultipleGames:
+                    case (int)MainMenuOptions.MultipleGames:
                         var gameCount = userOutput.GameCountInput();
                         var gridParametersMultipleGames = userOutput.GetGridParametersFromInput(true);
                         var listOfGames = game.MultipleGridList(gridParametersMultipleGames, gameCount);
                         game.PlayMultipleGames(listOfGames);
                         break;
 
-                    case MainMenuOptions.ExitGame:
+                    case (int)MainMenuOptions.ExitGame:
                         Console.WriteLine("Thank you for the game. Bye!");
                         GameData.SaveAllData();
                         exit = "exit";

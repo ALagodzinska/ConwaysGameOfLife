@@ -1,86 +1,101 @@
 ﻿namespace ConwaysGameOfLife.Entities.Menu
 {
     /// <summary>
-    /// Stores main menu options.
+    /// Used for creating and displaying menu to user.
     /// </summary>
-    public enum MainMenuOptions
-    {
-        RandomGame,
-        CustomGame,
-        RestoredGame,
-        MultipleGames,
-        ExitGame
-    }
-
-    /// <summary>
-    /// Stores menu on stop options.
-    /// </summary>
-    public enum MenuOnStopOptions
-    {
-        BackToMainMenu,
-        ContinueToPlay
-    }
-
-    /// <summary>
-    /// Contains method to create main menu.
-    /// </summary>
-    public class GameMainMenu : Menu<MainMenuOptions>
-    {
+    public class GameMenu
+    { 
         /// <summary>
-        /// Creates main menu.
+        /// Option index that has been selected.
         /// </summary>
-        /// <param name="intro">Menu introduction text.</param>
-        public GameMainMenu(string intro) : base(new MenuOption<MainMenuOptions>[Enum.GetNames(typeof(MainMenuOptions)).Length], intro)
+        private int SelectedOptionIndex;
+
+        /// <summary>
+        /// Menu options to choose from.
+        /// </summary>
+        protected MenuOption[] Options;
+
+        /// <summary>
+        /// Inscription above the menu.
+        /// </summary>
+        private string MenuIntro;
+
+        /// <summary>
+        /// Set initial values for menu fields.
+        /// </summary>
+        /// <param name="options">Menu options to choose from.</param>
+        /// <param name="menuIntro">Title and menu control rules.</param>
+        public GameMenu(MenuOption[] options, string menuIntro)
         {
-            Options[0] = new MenuOption<MainMenuOptions>()
-            {
-                Index = MainMenuOptions.RandomGame,
-                Title = "Play Game: Create Random field"
-            };
-            Options[1] = new MenuOption<MainMenuOptions>()
-            {
-                Index = MainMenuOptions.CustomGame,
-                Title = "Play Game: Create Customized field"
-            };
-            Options[2] = new MenuOption<MainMenuOptions>()
-            {
-                Index = MainMenuOptions.RestoredGame,
-                Title = "Restore Game: Continue to play one of the previous games"
-            };
-            Options[3] = new MenuOption<MainMenuOptions>()
-            {
-                Index = MainMenuOptions.MultipleGames,
-                Title = "Play multiple games at once"
-            };
-            Options[4] = new MenuOption<MainMenuOptions>()
-            {
-                Index = MainMenuOptions.ExitGame,
-                Title = "Exit Game"
-            };
+            Options = options;
+            SelectedOptionIndex = 0;
+            MenuIntro = menuIntro;
         }
-    }
 
-    /// <summary>
-    /// Contains method to create menu on a game stop.
-    /// </summary>
-    public class MenuOnStop : Menu<MenuOnStopOptions>
-    {
         /// <summary>
-        /// Creates menu on stop.
+        /// Shows menu on a screen.
         /// </summary>
-        /// <param name="intro">Menuintroduction text.</param>
-        public MenuOnStop(string intro) : base(new MenuOption<MenuOnStopOptions>[Enum.GetNames(typeof(MenuOnStopOptions)).Length], intro)
+        private void DisplayMenu()
         {
-            Options[0] = new MenuOption<MenuOnStopOptions>()
+            Console.WriteLine(MenuIntro);
+            for (int i = 0; i < Options.Length; i++)
             {
-                Index = MenuOnStopOptions.BackToMainMenu,
-                Title = "GO BACK TO MAIN MENU"
-            };
-            Options[1] = new MenuOption<MenuOnStopOptions>()
+                bool isSelected = i == SelectedOptionIndex;
+                OptionStyle(isSelected, Options[i].Title);
+            }
+
+            Console.ResetColor();
+        }
+
+        /// <summary>
+        /// Style menu options depending on where user hovered.
+        /// </summary>
+        /// <param name="isSelelcted">Is this option selected by a user.</param>
+        /// <param name="currentOption">Option to display.</param>
+        public void OptionStyle(bool isSelelcted, string currentOption)
+        {
+            string sideSymbol = isSelelcted ? Convert.ToChar(3).ToString() : Convert.ToChar(4).ToString();
+            string prefix = isSelelcted ? Convert.ToChar(16).ToString() : " ";
+            Console.BackgroundColor = isSelelcted ? ConsoleColor.White : ConsoleColor.Black;
+            Console.ForegroundColor = isSelelcted ? ConsoleColor.Black : ConsoleColor.White;
+            Console.WriteLine($"{prefix} {sideSymbol} {currentOption} {sideSymbol}");
+        }
+
+        /// <summary>
+        /// Allows to select an option from the menu.
+        /// </summary>
+        /// <returns>Selected option index.</returns>
+        public MenuOption SelectFromMenu()
+        {
+            ConsoleKey keyPressed;
+            do
             {
-                Index = MenuOnStopOptions.ContinueToPlay,
-                Title = "CONTINUE TO PLAY"
-            };
+                Console.SetCursorPosition(0, 0);
+                DisplayMenu();
+
+                ConsoleKeyInfo keyInfo = Console.ReadKey(true);
+                keyPressed = keyInfo.Key;
+
+                if (keyPressed == ConsoleKey.UpArrow)
+                {
+                    SelectedOptionIndex--;
+                    if (SelectedOptionIndex == -1)
+                    {
+                        SelectedOptionIndex = Options.Length - 1;
+                    }
+                }
+                else if (keyPressed == ConsoleKey.DownArrow)
+                {
+                    SelectedOptionIndex++;
+                    if (SelectedOptionIndex == Options.Length)
+                    {
+                        SelectedOptionIndex = 0;
+                    }
+                }
+
+            } while (keyPressed != ConsoleKey.Enter);
+
+            return Options[SelectedOptionIndex];
         }
     }
 }

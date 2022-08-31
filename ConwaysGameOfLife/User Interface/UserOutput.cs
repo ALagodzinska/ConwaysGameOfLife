@@ -226,13 +226,13 @@
         {
             Console.Clear();
 
-            var menuIntro = @$"You have stopped the game. Live games count - {gameList.Count()}" +
+            var menuIntro = @$"You have stopped the game. Live games count - {gameList.Count()}" + "\n" +
                             ResourceFile.MenuOnStopIntro;
 
             menu = new MenuOnStop(menuIntro);
 
             var selectedOption = menu.SelectFromMenu();
-            var exit = selectedOption.Index == MenuOnStopOptions.BackToMainMenu ? true : false;
+            var exit = selectedOption.Index == (int)MenuOnStopOptions.BackToMainMenu ? true : false;
 
             return exit;
         }
