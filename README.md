@@ -1,9 +1,12 @@
-# ConwaysGameOfLife
-Console application - Conway's Game of Life.
+# Conways Game Of Life
 
 <img width="640" alt="gol-1" src="https://user-images.githubusercontent.com/92057728/208986705-d2a2eae4-5425-4bb1-ae16-de6459318735.png">
 
 <img width="640" alt="gol-2" src="https://user-images.githubusercontent.com/92057728/208990676-849b5483-168b-4a66-978d-12d7d79e9037.png">
+
+Console application - Conway's Game of Life.
+
+# Features
 
 Main logic implemented in a game:
 
